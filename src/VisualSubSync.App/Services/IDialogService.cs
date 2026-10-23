@@ -105,6 +105,12 @@ public interface IDialogService
     /// <summary>MB_YESNO com ícone de aviso: false quando o usuário escolhe "No".</summary>
     bool Confirm(string caption, string message);
 
+    /// <summary>MessageDlg(..., mtInformation, [MbYes, MbNo], 0): true quando o usuário escolhe "Yes".</summary>
+    bool ConfirmInformation(string caption, string message);
+
+    /// <summary>MessageDlg(..., mtInformation, [MbOk], 0).</summary>
+    void ShowInformation(string message);
+
     void ShowError(string message);
 
     void ShowWarning(string message);

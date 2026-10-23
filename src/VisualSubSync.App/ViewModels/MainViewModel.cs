@@ -24,7 +24,7 @@ namespace VisualSubSync.App.ViewModels;
 /// <summary>Estado e ações da janela principal (TMainForm).</summary>
 public sealed partial class MainViewModel : ObservableObject, IDisposable
 {
-    public const string ApplicationName = "VisualSubSync";
+    public const string ApplicationName = "VisualSubSyncNET";
 
     private const string ProjectFilter = "VSS project (*.vssprj)|*.VSSPRJ|All files (*.*)|*.*";
 

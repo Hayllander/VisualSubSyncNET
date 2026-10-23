@@ -25,5 +25,8 @@ public partial class App : Application
 
         // TMainForm.ProcessParams.
         _ = viewModel.ProcessParams(e.Args);
+
+        // TimerChkUpdates: a procura de versão nova, quando ligada nas preferências.
+        _ = viewModel.CheckUpdatesOnStartup();
     }
 }

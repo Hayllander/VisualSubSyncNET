@@ -67,6 +67,7 @@ public partial class PreferencesWindow : Window
         EditBlankBetweenSub.Position = c.SpaceKeyBlankBetweenSubtitles;
         EditMaximalDuration.Position = c.MaximumSubtitleDuration;
         chkLoadMostRecentProjectOnStartup.IsChecked = c.LoadMostRecentProjectOnStartup;
+        chkCheckUpdates.IsChecked = c.CheckUpdates;
 
         EditServerPort.Position = c.WebServerPort;
         chkEnableCompression.IsChecked = c.WebServerEnableCompression;
@@ -114,6 +115,7 @@ public partial class PreferencesWindow : Window
         c.SpaceKeyBlankBetweenSubtitles = EditBlankBetweenSub.Position;
         c.MaximumSubtitleDuration = EditMaximalDuration.Position;
         c.LoadMostRecentProjectOnStartup = chkLoadMostRecentProjectOnStartup.IsChecked == true;
+        c.CheckUpdates = chkCheckUpdates.IsChecked == true;
 
         c.WebServerPort = EditServerPort.Position;
         c.WebServerEnableCompression = chkEnableCompression.IsChecked == true;

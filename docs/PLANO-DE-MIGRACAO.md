@@ -752,7 +752,27 @@ e `StartStopServer`.
   versões do Jint e do WeCantSpell.Hunspell. O endereço aparece como `christophe.paris@free.fr`, igual ao
   Enhanced e ao `mailto` do original (o rótulo do 1.0.1 dizia `free.com`). O painel invisível de teste de
   falha (`pnlCrashTest`) não foi portado. "Codecs installation" não está no menu do Enhanced e ficou de
-  fora; "Check for updates", "Recent changes" e "Google+ page" são do Enhanced e continuam desabilitados.
+  fora; "Recent changes" e "Google+ page" são do Enhanced e continuam desabilitados. "Check for updates"
+  era do Enhanced e ficou desabilitado; foi portado em 23/10/2026 (ver a seção seguinte).
+
+### Diferenças registradas no "Check for updates" (23/10/2026)
+
+- **Comportamento portado:** `CheckUpdates`, `MenuItemCheckUpdatesClick` e `TimerChkUpdatesTimer` de
+  `main.pas`, e `CheckUpdates`/`ChkUpdates` do `PreferencesFormUnit.pas`. O menu ? > Check for updates
+  procura a última versão no repositório e, se houver uma mais nova, mostra a nota da versão e pergunta
+  se quer baixá-la, abrindo o endereço do instalador no navegador; sem versão nova, avisa "No new updates
+  are available." ao ser chamado pelo menu (a procura automática fica em silêncio). A procura automática
+  ao iniciar tem 500 ms de espera, como o `TimerChkUpdates.Interval` do Enhanced, e só roda com
+  "Check for updates on start" ligado nas Preferences (`[Misc] CheckUpdates` no `VisualSubSync.ini`,
+  gravado como antes).
+- **Diferenças:** a consulta usa a API pública de Releases do GitHub
+  (`https://api.github.com/repos/Hayllander/VisualSubSyncNET/releases`) e lê o primeiro lançamento devolvido,
+  com o campo de download do primeiro anexo `-Setup.exe`. O endereço é fixo no programa; o original lia o
+  host de um `CheckUpdates` próprio do site do Enhanced, que não existe para este projeto. A comparação
+  de versões normaliza a etiqueta do lançamento (tira o `v` inicial e separa os sufixos de pré-lançamento,
+  como `-alpha.N`), porque as tags deste repositório levam esses prefixos; uma versão final (sem sufixo)
+  ordena depois das pré-lançamentos, como esperado. Uma falha de rede, de JSON ou de leitura só vai para
+  o Log, sem incomodar quem está editando.
 
 ### Diferenças registradas no instalador (M9)
 

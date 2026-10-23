@@ -123,6 +123,9 @@ public sealed class VssSettings
     /// <summary>[Misc] LoadMostRecentProjectOnStartup (Preferences): sem arquivo na linha de comando, abre o mais recente.</summary>
     public bool LoadMostRecentProjectOnStartup { get; set; }
 
+    /// <summary>[Misc] CheckUpdates (Enhanced, Preferences): procura uma versão nova ao iniciar.</summary>
+    public bool CheckUpdates { get; set; }
+
     /// <summary>[WebServer] Port (Preferences): porta do servidor web de sugestões.</summary>
     public int WebServerPort { get; set; } = 80;
 
@@ -238,6 +241,7 @@ public sealed class VssSettings
         SpaceKeyBlankBetweenSubtitles = ini.GetInt("Misc", "SpaceKeyBlankBetweenSubtitles", SpaceKeyBlankBetweenSubtitles);
         MaximumSubtitleDuration = ini.GetInt("Misc", "MaximumSubtitleDuration", MaximumSubtitleDuration);
         LoadMostRecentProjectOnStartup = ini.GetBool("Misc", "LoadMostRecentProjectOnStartup", LoadMostRecentProjectOnStartup);
+        CheckUpdates = ini.GetBool("Misc", "CheckUpdates", CheckUpdates);
 
         if (!isPresets)
         {
@@ -334,6 +338,7 @@ public sealed class VssSettings
         ini.SetInt("Misc", "SpaceKeyBlankBetweenSubtitles", SpaceKeyBlankBetweenSubtitles);
         ini.SetInt("Misc", "MaximumSubtitleDuration", MaximumSubtitleDuration);
         ini.SetBool("Misc", "LoadMostRecentProjectOnStartup", LoadMostRecentProjectOnStartup);
+        ini.SetBool("Misc", "CheckUpdates", CheckUpdates);
 
         ini.SetInt("WebServer", "Port", WebServerPort);
         ini.SetBool("WebServer", "EnableCompression", WebServerEnableCompression);

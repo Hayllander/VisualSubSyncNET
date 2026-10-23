@@ -330,6 +330,13 @@ public sealed class DialogService(VssSettings settings) : IDialogService
         MessageBox.Show(Application.Current.MainWindow, message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning)
             == MessageBoxResult.Yes;
 
+    public bool ConfirmInformation(string caption, string message) =>
+        MessageBox.Show(Application.Current.MainWindow, message, caption, MessageBoxButton.YesNo, MessageBoxImage.Information)
+            == MessageBoxResult.Yes;
+
+    public void ShowInformation(string message) =>
+        MessageBox.Show(Application.Current.MainWindow, message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
     public void ShowError(string message) =>
         MessageBox.Show(Application.Current.MainWindow, message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 

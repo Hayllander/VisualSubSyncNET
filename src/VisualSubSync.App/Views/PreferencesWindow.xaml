@@ -69,7 +69,7 @@
                 <CheckBox Canvas.Left="16" Canvas.Top="181" Width="89" Height="17" IsEnabled="False" Content="Default Path:" />
                 <CheckBox Canvas.Left="37" Canvas.Top="201" Width="188" Height="17" IsEnabled="False" Content="Always use the default path" />
                 <CheckBox Canvas.Left="16" Canvas.Top="226" Width="207" Height="17" IsEnabled="False" Content="Set UTF-8 project creation as default" />
-                <CheckBox Canvas.Left="16" Canvas.Top="281" Width="145" Height="17" IsEnabled="False" Content="Check for updates on start" />
+                <CheckBox x:Name="chkCheckUpdates" Canvas.Left="16" Canvas.Top="281" Width="145" Height="17" Content="Check for updates on start" />
                 <CheckBox Canvas.Left="16" Canvas.Top="252" Width="285" Height="20" IsEnabled="False" Content="Accents/uppercase assistant (only for Italian dictionary)" />
               </Canvas>
             </Grid>
