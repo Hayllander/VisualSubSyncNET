@@ -1,0 +1,12 @@
+# Normaliza os finais de linha: LF no repositorio, CRLF no checkout do Windows.
+* text=auto
+
+# Binarios: nunca converter (evita corromper imagens e recursos).
+*.png binary
+*.ico binary
+*.cur binary
+*.psd binary
+*.bmp binary
+*.dll binary
+*.exe binary
+*.pdb binary

@@ -25,6 +25,7 @@ by this project.
 - [Media pipeline](#media-pipeline)
 - [Documentation](#documentation)
 - [Project status](#project-status)
+- [License](#license)
 - [Credits](#credits)
 
 ---
@@ -202,10 +203,13 @@ Still to validate: the full subtitling workflow against real media, CFR/VFR/HEVC
 scaling, the detached video window, and installation on clean Windows 10/11 systems. Visual parity
 is not proven by the automated tests — it requires side-by-side comparison with the Enhanced build.
 
-## Credits
+## License
 
-VisualSubSync was created by **Christophe Paris** and released under the GNU GPL; this port keeps the
-same licensing as the upstream project.
+VisualSubSync was created by **Christophe Paris** and released under the [GNU General Public
+License version 2](LICENSE). This port is a derivative work and is distributed under the same
+license; the full text is in [LICENSE](LICENSE).
+
+## Credits
 
 This port would not be possible without the following components:
 

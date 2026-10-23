@@ -20,6 +20,8 @@ e com o texto do original, desabilitadas, em vez de omitidas.
 
 ## Outras regras
 
-- Trabalho local em `C:\Projetos`; nada sobe para a nuvem (sem GitHub).
+- Fonte e documentação são publicados em `https://github.com/Hayllander/VisualSubSyncNET` (branch
+  `main`). Artefatos de compilação (`publish\`, `installer\Redist\`, `_to_delete\`) não entram no
+  repositório: vão para as Releases.
 - Conversas e documentação em português; textos da interface em inglês, como no original.
 - .NET 10, WPF, MVVM com CommunityToolkit.Mvvm; avisos tratados como erro.
