@@ -1,0 +1,37 @@
+﻿JANELA x=100 y=100 w=1083 h=942
+HANDLE_HWND=1514922  raiz_name='VisualSubSync' raiz_cls='TMainForm.UnicodeClass' raiz_ct=ControlType.Window
+FILHOS_DIRETOS_DO_HANDLE=3
+ELEMENTOS_DO_PROCESSO_NO_DESKTOP=33
+  PROCESSO | id="" name="VisualSubSync" ct=Window cls=TMainForm.UnicodeClass rect=100,100 1083x942 off=False
+  PROCESSO | id="9770882" name="" ct=Pane cls=TPageControl rect=108,515 1067x500 off=False
+  PROCESSO | id="2366618" name="Subtitle" ct=Pane cls=TTabSheet rect=112,539 1059x472 off=False
+  PROCESSO | id="1514878" name="PanelBottom" ct=Pane cls=TPanel rect=112,971 1059x40 off=False
+  PROCESSO | id="7607274" name="" ct=Pane cls=TVirtualStringTree rect=112,971 1059x40 off=False
+  PROCESSO | id="4201926" name="" ct=Pane cls=TPanel rect=112,539 1059x428 off=False
+  PROCESSO | id="1120748" name="" ct=Pane cls=TTntRichEditCustomUndo.UnicodeClass rect=141,627 1030x340 off=False
+  PROCESSO | id="12847598" name="0" ct=Pane cls=TTntRichEdit.UnicodeClass rect=112,627 29x340 off=False
+  PROCESSO | id="10032604" name="" ct=Pane cls=TPanel rect=112,539 1059x88 off=False
+  PROCESSO | id="2432332" name="" ct=Pane cls=TPageControl rect=861,539 273x87 off=False
+  PROCESSO | id="6756456" name="Quick & Smart Delay" ct=Pane cls=TTabSheet rect=865,563 265x59 off=False
+  PROCESSO | id="7540736" name="All subs" ct=Pane cls=TTntCheckBox.UnicodeClass rect=969,598 56x19 off=False
+  PROCESSO | id="5378582" name="" ct=Pane cls=TTntComboBox.UnicodeClass rect=770,593 89x21 off=False
+  PROCESSO | id="11671060" name="Styles" ct=Pane cls=TTntButton.UnicodeClass rect=728,591 39x25 off=False
+  PROCESSO | id="13110894" name="" ct=Pane cls=TPanel rect=464,539 260x85 off=False
+  PROCESSO | id="4659672" name="" ct=Pane cls=TEdit rect=496,563 73x21 off=False
+  PROCESSO | id="794686" name="" ct=Pane cls=TEdit rect=648,592 73x21 off=False
+  PROCESSO | id="34607402" name="" ct=Pane cls=TEdit rect=572,592 73x21 off=False
+  PROCESSO | id="924412" name="" ct=Pane cls=TEdit rect=496,592 73x21 off=False
+  PROCESSO | id="1317248" name="" ct=Pane cls=TEdit rect=572,563 73x21 off=False
+  PROCESSO | id="8328600" name="" ct=Pane cls=TEdit rect=648,563 73x21 off=False
+  PROCESSO | id="4004966" name="00:00:00.000" ct=Pane cls=TPanel rect=309,582 150x42 off=False
+  PROCESSO | id="7146254" name="" ct=Pane cls=TPanel rect=216,539 90x53 off=False
+  PROCESSO | id="13502000" name="WAV display" ct=Pane cls=TTntCheckBox.UnicodeClass rect=222,556 84x17 off=False
+  PROCESSO | id="21960568" name="Subtitles" ct=Pane cls=TCheckBox rect=222,573 84x17 off=False
+  PROCESSO | id="6036102" name="" ct=Pane cls=TTntTrackBar.UnicodeClass rect=108,600 109x25 off=False
+  PROCESSO | id="989760" name="" ct=Pane cls=TPanel rect=108,1015 1067x19 off=False
+  PROCESSO | id="3739372" name="" ct=Pane cls=TTntPanel.UnicodeClass rect=358,1015 817x19 off=False
+  PROCESSO | id="4194858" name="Line: 1, Column: 1 | Total: 0" ct=Pane cls=TTntPanel.UnicodeClass rect=108,1015 250x19 off=False
+  PROCESSO | id="10883624" name="PanelWAV_Video" ct=Pane cls=TPanel rect=108,151 1067x360 off=False
+  PROCESSO | id="10098382" name="" ct=Pane cls=TPanel rect=109,152 1065x358 off=False
+  PROCESSO | id="10684428" name="" ct=Pane cls=TWAVDisplayer rect=109,152 1065x358 off=False
+  PROCESSO | id="1711448" name="" ct=Pane cls=TMiniScrollBar rect=109,498 1065x12 off=False

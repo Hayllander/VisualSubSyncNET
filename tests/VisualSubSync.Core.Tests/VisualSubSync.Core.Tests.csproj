@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <!-- Nomes de teste com sublinhado são convenção do xUnit. -->
+    <NoWarn>$(NoWarn);CA1515;CA1707</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Amostras do repositório original (samples\), usadas como referência de compatibilidade. -->
+    <None Include="Samples\**" CopyToOutputDirectory="PreserveNewest" />
+    <!-- O modelo da exportação para WAV, copiado de Release\web do original. -->
+    <None Include="../../src/VisualSubSync.App/web/index_wav_export.shtml" Link="web/index_wav_export.shtml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/VisualSubSync.App/jsplugin/**" Link="jsplugin/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/VisualSubSync.Core/VisualSubSync.Core.csproj" />
+  </ItemGroup>
+</Project>

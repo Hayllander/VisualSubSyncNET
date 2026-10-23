@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/VisualSubSync.Core/VisualSubSync.Core.csproj" />
+    <Project Path="src/VisualSubSync.Media/VisualSubSync.Media.csproj" />
+    <Project Path="src/VisualSubSync.Waveform/VisualSubSync.Waveform.csproj" />
+    <Project Path="src/VisualSubSync.App/VisualSubSync.App.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/VisualSubSync.Media.Tests/VisualSubSync.Media.Tests.csproj" />
+    <Project Path="tests/VisualSubSync.App.Tests/VisualSubSync.App.Tests.csproj" />
+    <Project Path="tests/VisualSubSync.Core.Tests/VisualSubSync.Core.Tests.csproj" />
+  </Folder>
+</Solution>

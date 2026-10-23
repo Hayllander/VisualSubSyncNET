@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<title>VisualSubSync - The subtitle program / subtitle editor</title>
+	<meta name="author" content="Christophe Paris">
+	<meta name="description" content="VisualSubSync is a subtitle program aimed to facilitate subtitle synchronization by showing you the audio form and allowing the WORLD to see the subtitle timestamp breakdowns via a webpage and allowing them to submit corrections.">
+	<meta name="keywords" content="VisualSubSync, subtitles, synchronization, synchro, transcript, subtitle editor, subtitle program, video, divx, sous-titres, synchronisation, CoreCodec, WAV">
+	<meta http-equiv="content-type" content="text/xml; charset=iso-8859-1">
+	<link rel="icon" href="images/ico16.png" type="image/png">
+	<link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+
+<div class="MainColumn">
+
+<a href="index.html"><img alt="back to index" class="TopLeftCorner" src="images/ico64.png" border="0"></a>
+
+<div class="MainTitleMainPage">VisualSubSync</div>
+<div class="SubTitleMainPage">(Subtitle program / Subtitle editor)</div>
+
+<br>
+
+<div style="text-align: right;"><img alt="drapeau français" src="images/frenchflag.png">&nbsp; <a href="french.html">Version fran&ccedil;aise</a></div>
+
+<div class="Title">Presentation</div>
+<p>
+VisualSubSync is a subtitle program using audio waveform representation as it's cornerstone.<br>
+SRT and SSA/ASS subtitle formats are supported.<br>
+It also provides some tools (error checking, speed indicators, network suggestions) to help improving the quality of your subtitle.  
+</p>
+
+<div class="Title">Download (Version 1.0.0)</div>
+<p>
+<a href="http://dl.visualsubsync.org">Click here</a><br>
+<a href="changelog.html">Changelog</a>
+</p>
+
+<div class="Title">Tutorial</div>
+<p>
+<a href="tutorial.html">Making a transcript of your favourite TV series with VisualSubSync</a><br>
+<a href="tutorial2.html">Synchronizing an already made transcript with VisualSubSync</a>
+</p>
+
+<div class="Title">Screenshot</div>
+<p>
+<a href="images/FullSS.png">A big screenshot showing VisualSubSync main window and tool windows.</a><br>
+<a href="images/FullSSKaraoke.png">Another screenshot showing the karaoke feature.</a>
+</p>
+
+<div class="Title">Help</div>
+<p>
+<a href="wavdisplaycontrol.html">WAV Display Control</a>
+</p>
+
+<div class="Title">FAQ</div>
+<ul>
+	<li><b>What VSS means?</b><br>
+	It's the short for <b>V</b>isual<b>S</b>ub<b>S</b>ync.</li>
+	<li><b>What are normal and timing mode?</b><br>
+	In VSS, there are two modes available: the normal mode and the timing mode.
+	Both modes have a different configurable (<i>Edit &gt; Preferences &gt; HotKeys</i>) set of hotkeys.
+	In timing mode you can change (<i>Edit &gt; Preferences &gt; Mouse</i>) the behavior of the mouse
+	to use a SubStation Alpha like mouse mode: Left/right mouse button set start/stop time.
+	You can also use the space key to create or modify
+	(<i>Edit &gt; Preferences &gt; General &gt; Misc</i>) subtitles with just
+	one key by pressing it when subtitle start,	then releasing it when subtitle stop.
+	</li>
+	<li><b>What is VSFilter/VobSub?</b><br>
+		It's a DirectShow filter (a sort of plugin) that makes it possible to show subtitles when you playback
+		a video file, if you use a compatible player like Windows Media Player or any of a lot of other players.
+		You can download VSFilter <a href="http://sourceforge.net/projects/guliverkli/">here</a>.</li>
+	<li><b>How do I create a karaoke?</b><br>
+		The easiest way is to first do the timing for the lyrics, sentence by sentence.
+		Then you separate each syllable by the slash character: '/'. Then select the subtitle,
+		right click on it and choose <i>Create Karaoke</i>. Finally adjust the timing for
+		each syllable starting from the first to the last one. See the links below for a
+		tutorial on karaoke creation.</li>
+	<li><b>My karaoke doesn't move in VSFilter, the sentence is just half filled, why?</b><br>
+		You need to modify VSFilter configuration, double click on the arrow in the taskbar,
+	go to the <i>Misc</i> tab and uncheck <i>Pre-buffer subpicture</i>.</li>
+	<li><b>What is the Text Pipe?</b><br>
+		See <a href="tutorial2.html">this</a> tutorial for more information.</li>
+  <li><b>How can I help the project?</b><br>
+		You can write some new tutorials/documentation, translate or help to improve the existing ones.
+		Some flash animated tutorial could be nice also.<br>
+		You can write and share some of your javascript plugins.
+		</li>
+  <li><b>I'm using Linux, how can I run VSS?</b><br>Unfortunately VSS is not made to be run on operating system other than Windows.
+    Maybe it would work with <a href="http://www.winehq.org/">Wine</a> but I've not tried it myself.<br>
+    A better alternative is to use the native application called <a href="http://home.gna.org/subtitleeditor">Subtitle Editor</a>.
+    It has lot's of similar feature with a nice, clean and simple GUI.
+		</li>
+</ul>
+
+<div class="Title">Known issues</div>
+<ul>
+	<li>Some version of Internet Explorer wrongly report support for deflate html page compression, so disable it if you use IE and the network mode.</li>
+	<li>When extracting WAV make sure you have enough disk space because there is no checking yet.</li>
+	<li>Showing still image of the video doesn't always works with mpeg file.</li>
+</ul>
+
+<div class="Title">Links</div>
+<p>
+<a href="http://pagesperso-orange.fr/sweetkaraoke/">SweetKaraok&eacute;</a> : A great french site with tutorials on karaoke. 
+You can also find there an amazing <a href="http://pagesperso-orange.fr/sweetkaraoke/Outils_english/Editeur_de_scripts/Editeur_de_scripts.html">script</a> to create karaoke effects automatically.
+<br>
+<a href="http://nathbot.frox.fr/vss/">Plugins for VisualSubSync by NathBot</a> (in french)<br>
+</p>
+
+<div class="Title">Contact</div>
+<p>
+Homepage : <a href="http://www.visualsubsync.org">http://www.visualsubsync.org</a><br>
+Project homepage : <a href="http://project.visualsubsync.org">http://project.visualsubsync.org</a><br>
+Bug report / feature request page : <a href="http://tracker.visualsubsync.org">http://tracker.visualsubsync.org</a><br>
+IRC : On the CoreCodec irc server : irc.corecodec.com - The channel is <a href="irc://irc.corecodec.com/VisualSubSync">#VisualSubSync</a> I'm usually available here between 19-22h GMT+1.<br>
+E-mail : It's available in VSS about box.
+</p>
+
+<br>
+<script type="text/javascript">
+<!--
+	if (String(location).substring(0,4) != 'http')
+	{
+		document.writeln('You can find the online version of this page <a href="http://www.visualsubsync.org">here</a>');
+	}
+//-->
+</script>
+
+</div> <!-- MainColumn -->
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-793640-3";
+urchinTracker("VSS home page");
+</script>
+
+</body>
+</html>

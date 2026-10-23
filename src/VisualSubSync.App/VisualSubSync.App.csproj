@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <!-- VideoHost usa LibraryImport (CreateWindowExW) para embutir a janela nativa do mpv. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>VisualSubSync.App</RootNamespace>
+    <AssemblyName>VisualSubSyncNET</AssemblyName>
+    <ApplicationIcon>Assets\VSS.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Resource Include="Assets\VSS.ico" />
+    <Resource Include="Assets\Glyphs\*.png" />
+    <Resource Include="Assets\Menu\*.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- ServerRootDir: as páginas do diretório web do original (Export to WAV e o servidor web). -->
+    <Content Include="web\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <!-- g_PluginPath: os plugins JavaScript do original (Release\jsplugin), sem alteração. -->
+    <Content Include="jsplugin\**" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <!-- MenuItemHelpIndexClick: as páginas de ajuda do original (Release\help), sem alteração. -->
+    <Content Include="help\**" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <!-- DIR_DICT do instalador original: o aviso sobre onde pôr os dicionários Hunspell. -->
+    <Content Include="dict\_about_dictionaries_.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../VisualSubSync.Core/VisualSubSync.Core.csproj" />
+    <ProjectReference Include="../VisualSubSync.Media/VisualSubSync.Media.csproj" />
+    <ProjectReference Include="../VisualSubSync.Waveform/VisualSubSync.Waveform.csproj" />
+  </ItemGroup>
+</Project>

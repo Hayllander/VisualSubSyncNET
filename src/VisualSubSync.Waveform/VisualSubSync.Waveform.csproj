@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>VisualSubSync.Waveform</RootNamespace>
+    <!-- ClipCursor e SetCursorPos (bloqueio de sobreposição e borda arrastada) usam LibraryImport. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- crHSplit da VCL (cursor sobre a borda de uma legenda). -->
+    <EmbeddedResource Include="Assets\hsplit.cur" LogicalName="VisualSubSync.Waveform.hsplit.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../VisualSubSync.Core/VisualSubSync.Core.csproj" />
+  </ItemGroup>
+</Project>

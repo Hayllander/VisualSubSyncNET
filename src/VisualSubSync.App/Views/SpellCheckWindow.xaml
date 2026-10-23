@@ -1,0 +1,41 @@
+<Window x:Class="VisualSubSync.App.Views.SpellCheckWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Spell check"
+        Width="480" Height="360"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+        FontFamily="Microsoft Sans Serif" FontSize="11"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True" SnapsToDevicePixels="True"
+        KeyUp="OnKeyUp">
+  <!-- TSpellCheckForm (docs/enhanced/TSPELLCHECKFORM.txt), BorderWidth = 4. -->
+  <DockPanel Margin="4">
+    <!-- TntPanel1 (alRight, 75 px) depois de TntBevel1 (espaço de 5 px). -->
+    <DockPanel DockPanel.Dock="Right" Width="75" Margin="5,0,0,0">
+      <Button x:Name="bttCancel" DockPanel.Dock="Bottom" Height="25" Margin="0,2,0,0" Content="Close" TabIndex="5" Click="OnClose" />
+      <Canvas>
+        <Button x:Name="bttReplace" Canvas.Top="32" Width="75" Height="25" Content="Replace" TabIndex="0" Click="OnReplace" />
+        <Button x:Name="bttReplaceAll" Canvas.Top="64" Width="75" Height="25" Content="Replace all" TabIndex="1" Click="OnReplaceAll" />
+        <Button x:Name="bttIgnore" Canvas.Top="104" Width="75" Height="25" Content="Ignore" TabIndex="2" Click="OnIgnore" />
+        <Button x:Name="bttIgnoreAll" Canvas.Top="136" Width="75" Height="25" Content="Ignore all" TabIndex="3" Click="OnIgnoreAll" />
+        <Button x:Name="bttAdd" Canvas.Top="176" Width="75" Height="25" Content="Add" TabIndex="4" Click="OnAdd" />
+        <!-- bttReset: só existe no Enhanced. -->
+        <Button Canvas.Top="248" Width="75" Height="25" Content="Go to First" IsEnabled="False" />
+      </Canvas>
+    </DockPanel>
+    <!-- TntPanel2 (alClient): os controles alTop um embaixo do outro, com os TntBevel de espaço. -->
+    <DockPanel>
+      <TextBlock x:Name="lblSub" DockPanel.Dock="Top" Height="13" FontWeight="Bold" Text="Subtitle 0/0 : 00:00:00.000 -> 00:00:00.000" />
+      <ProgressBar x:Name="pbSubs" DockPanel.Dock="Top" Height="10" Margin="0,3,0,3" />
+      <TextBlock DockPanel.Dock="Top" Height="13" Text="Text :" />
+      <RichTextBox x:Name="reSubtitleText" IsTabStop="False" DockPanel.Dock="Top" Height="59" Margin="0,4,0,0" IsReadOnly="True" IsReadOnlyCaretVisible="False"
+                   VerticalScrollBarVisibility="Auto" TabIndex="0" />
+      <TextBlock DockPanel.Dock="Top" Height="13" Margin="0,6,0,0" Text="Replace by : " />
+      <TextBox x:Name="edReplaceBy" DockPanel.Dock="Top" Height="21" Margin="0,4,0,0" VerticalContentAlignment="Center" TabIndex="1" />
+      <TextBlock DockPanel.Dock="Top" Height="13" Margin="0,6,0,0" Text="Suggestions :" />
+      <ListBox x:Name="lbSuggestions" Margin="0,4,0,0" TabIndex="2" SelectionChanged="OnSuggestionClick" />
+    </DockPanel>
+  </DockPanel>
+</Window>

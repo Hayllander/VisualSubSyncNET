@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>VisualSubSync.Poc.Player</RootNamespace>
+    <AssemblyName>vss-poc-player</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/VisualSubSync.Waveform/VisualSubSync.Waveform.csproj" />
+    <!-- Usa o motor promovido em src\VisualSubSync.Media. -->
+    <ProjectReference Include="../../src/VisualSubSync.Media/VisualSubSync.Media.csproj" />
+  </ItemGroup>
+</Project>

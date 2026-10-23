@@ -1,0 +1,87 @@
+<Window x:Class="VisualSubSync.App.Views.ErrorReportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Error report"
+        Left="427" Top="255" Width="321" Height="425" MinWidth="100" MinHeight="100"
+        WindowStyle="ToolWindow"
+        ShowInTaskbar="False"
+        Topmost="True"
+        WindowStartupLocation="Manual"
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+        FontFamily="Microsoft Sans Serif" FontSize="11"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True" SnapsToDevicePixels="True"
+        PreviewKeyDown="OnPreviewKeyDown">
+  <!-- TErrorReportForm (docs/enhanced/TERRORREPORTFORM.txt): bsSizeToolWin, fsStayOnTop, KeyPreview.
+       TntMainMenu1 (File), vtvErrorList (alClient, seleção múltipla, três linhas por nó) e
+       TntStatusBar1 (21 px, um painel). -->
+  <DockPanel>
+    <Menu DockPanel.Dock="Top">
+      <MenuItem Header="File">
+        <MenuItem Header="Check errors" Command="{Binding CheckErrorsCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_19.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Clear all" Click="OnClearAll" />
+        <MenuItem Header="Export to HTML..." Click="OnExportToHtml" />
+        <Separator />
+        <MenuItem Header="Error preferences" Command="{Binding ErrorPreferencesCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_22.png" /></MenuItem.Icon>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="Close" Click="OnClose" />
+      </MenuItem>
+    </Menu>
+    <StatusBar DockPanel.Dock="Bottom" Height="21" Padding="0">
+      <StatusBarItem Padding="2,0">
+        <TextBlock Text="{Binding ErrorReportStatus}" />
+      </StatusBarItem>
+    </StatusBar>
+    <ListBox x:Name="vtvErrorList" ItemsSource="{Binding Errors}" SelectionMode="Extended"
+             FontFamily="Arial" FontSize="11" TabIndex="0"
+             ScrollViewer.HorizontalScrollBarVisibility="Auto"
+             SelectionChanged="OnSelectionChanged" MouseDoubleClick="OnErrorDoubleClick"
+             ContextMenuOpening="OnContextMenuOpening">
+      <ListBox.ContextMenu>
+        <!-- ErrorListPopupMenu. Os itens que só existem no Enhanced ficam desativados. -->
+        <ContextMenu>
+          <MenuItem x:Name="pmiFixError" Header="Fix selected errors" Click="OnFixSelected" />
+          <MenuItem x:Name="pmiFixAllXXX" Header="Fix all errors of same type (color)" Click="OnFixAllSameType" />
+          <MenuItem x:Name="pmiFixAllYYY" Header="Fix all errors with same error msg" Click="OnFixAllSameMessage" />
+          <Separator />
+          <MenuItem x:Name="pmiSelectAllXXX" Header="Select all errors of same type (color)" Click="OnSelectAllSameType" />
+          <MenuItem x:Name="pmiSelectAllYYY" Header="Select all errors with same error msg" Click="OnSelectAllSameMessage" />
+          <Separator />
+          <MenuItem Header="Clear &amp;&amp; Forget" IsEnabled="False" />
+          <Separator />
+          <MenuItem Header="Clear" Click="OnClear" />
+          <MenuItem Header="Clear all errors with different error msg" IsEnabled="False" />
+          <MenuItem Header="Clear all errors with same error msg" IsEnabled="False" />
+          <MenuItem Header="Clear all" Click="OnClearAll" />
+        </ContextMenu>
+      </ListBox.ContextMenu>
+      <ListBox.ItemContainerStyle>
+        <!-- toShowHorzGridLines/toShowVertGridLines e toFullRowSelect. -->
+        <Style TargetType="ListBoxItem">
+          <Setter Property="Padding" Value="0" />
+          <Setter Property="BorderThickness" Value="0,0,1,1" />
+          <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+          <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+      </ListBox.ItemContainerStyle>
+      <ListBox.ItemTemplate>
+        <!-- vtvErrorListDrawNode: margem 10/2, linhas de 1,1 vez a altura do texto; a bolinha da cor
+             do plugin antes da mensagem. -->
+        <DataTemplate>
+          <StackPanel Margin="10,2,0,2">
+            <StackPanel Height="15" Orientation="Horizontal">
+              <Ellipse Width="10" Height="10" Margin="0,2,6,0" VerticalAlignment="Top" Fill="{Binding ColorBrush}" Stroke="Black" StrokeThickness="1" />
+              <TextBlock FontWeight="Bold" Text="{Binding Title}" />
+            </StackPanel>
+            <TextBlock Height="15" Text="{Binding Times}" />
+            <TextBlock Height="15" Text="{Binding Line}" />
+          </StackPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+  </DockPanel>
+</Window>

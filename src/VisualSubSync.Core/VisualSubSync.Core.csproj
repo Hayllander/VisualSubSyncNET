@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>VisualSubSync.Core</RootNamespace>
+    <!-- GetACP (TextFileReader.Ansi) usa LibraryImport. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Jint" />
+    <PackageReference Include="WeCantSpell.Hunspell" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="VisualSubSync.Core.Tests" />
+  </ItemGroup>
+</Project>

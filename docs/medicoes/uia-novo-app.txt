@@ -1,0 +1,145 @@
+﻿JANELA x=419 y=139 w=1083 h=755
+HANDLE_HWND=6755218
+ELEMENTOS=142
+  id="" name="VisualSubSync" ct=ControlType.Window cls=Window rect=419,139 1083x755 off=False
+  id="" name="" ct=ControlType.Menu cls=Menu rect=427,170 1067x20 off=False
+  id="" name="File" ct=ControlType.MenuItem cls=MenuItem rect=427,170 32x17 off=False
+  id="" name="File" ct=ControlType.Text cls=TextBlock rect=434,171 18x15 off=False
+  id="" name="Edit" ct=ControlType.MenuItem cls=MenuItem rect=459,170 34x17 off=False
+  id="" name="Edit" ct=ControlType.Text cls=TextBlock rect=466,171 20x15 off=False
+  id="" name="View" ct=ControlType.MenuItem cls=MenuItem rect=493,170 39x17 off=False
+  id="" name="View" ct=ControlType.Text cls=TextBlock rect=500,171 25x15 off=False
+  id="" name="Playback" ct=ControlType.MenuItem cls=MenuItem rect=532,170 61x17 off=False
+  id="" name="Playback" ct=ControlType.Text cls=TextBlock rect=539,171 47x15 off=False
+  id="" name="JS Tools" ct=ControlType.MenuItem cls=MenuItem rect=593,170 55x17 off=False
+  id="" name="JS Tools" ct=ControlType.Text cls=TextBlock rect=600,171 41x15 off=False
+  id="" name="?" ct=ControlType.MenuItem cls=MenuItem rect=648,170 19x17 off=False
+  id="" name="?" ct=ControlType.Text cls=TextBlock rect=655,171 5x15 off=False
+  id="" name="Line: 1, Column: 1 | Total: 0" ct=ControlType.Text cls=TextBlock rect=431,870 242x13 off=False
+  id="" name="" ct=ControlType.Text cls=TextBlock rect=681,870 809x13 off=False
+  id="" name="" ct=ControlType.Thumb cls=GridSplitter rect=427,415 1067x4 off=False
+  id="" name="" ct=ControlType.Tab cls=TabControl rect=427,419 1067x448 off=False
+  id="" name="Subtitle" ct=ControlType.TabItem cls=TabItem rect=427,420 51x21 off=False
+  id="" name="Subtitle" ct=ControlType.Text cls=TextBlock rect=435,424 35x13 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=435,443 25x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=440,448 15x15 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=459,443 24x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=463,448 15x15 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=483,443 25x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=487,447 16x16 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=507,443 25x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=512,448 15x15 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=435,467 33x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=443,471 16x16 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=467,467 33x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=475,471 16x16 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=499,467 33x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=508,472 15x15 off=False
+  id="" name="Volume" ct=ControlType.Text cls=TextBlock rect=435,493 39x13 off=False
+  id="" name="" ct=ControlType.Slider cls=Slider rect=427,504 109x25 off=False
+  id="DecreaseLarge" name="" ct=ControlType.Button cls=RepeatButton rect=427,505 98x19 off=False
+  id="IncreaseLarge" name="" ct=ControlType.Button cls=RepeatButton rect=-1,-1 -1x-1 off=False
+  id="Thumb" name="" ct=ControlType.Thumb cls=Thumb rect=525,505 11x18 off=False
+  id="" name="Auto-scroll :" ct=ControlType.Text cls=TextBlock rect=542,446 81x13 off=False
+  id="" name="WAV display" ct=ControlType.CheckBox cls=CheckBox rect=541,460 84x17 off=False
+  id="" name="WAV display" ct=ControlType.Text cls=TextBlock rect=561,459 60x13 off=False
+  id="" name="Subtitles" ct=ControlType.CheckBox cls=CheckBox rect=541,477 84x17 off=False
+  id="" name="Subtitles" ct=ControlType.Text cls=TextBlock rect=561,476 40x13 off=False
+  id="" name="Normal" ct=ControlType.Button cls=Button rect=551,497 49x25 off=False
+  id="" name="Normal" ct=ControlType.Text cls=TextBlock rect=556,503 39x13 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=632,451 23x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=636,456 15x15 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=654,451 23x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=658,456 15x15 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=676,451 23x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=680,456 15x15 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=698,451 23x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=702,456 15x15 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=720,451 23x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=724,456 15x15 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=755,451 23x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=759,455 16x16 off=False
+  id="" name="00:00:00.000" ct=ControlType.Text cls=TextBlock rect=634,493 138x28 off=False
+  id="" name="Begin" ct=ControlType.Text cls=TextBlock rect=815,447 32x13 off=False
+  id="" name="End" ct=ControlType.Text cls=TextBlock rect=891,447 22x13 off=False
+  id="" name="Length" ct=ControlType.Text cls=TextBlock rect=967,447 39x13 off=False
+  id="" name="Sel" ct=ControlType.Text cls=TextBlock rect=789,471 20x13 off=False
+  id="" name="View" ct=ControlType.Text cls=TextBlock rect=786,499 23x13 off=False
+  id="" name="" ct=ControlType.Edit cls=TextBox rect=815,467 73x21 off=False
+  id="" name="" ct=ControlType.Edit cls=TextBox rect=891,467 73x21 off=False
+  id="" name="" ct=ControlType.Edit cls=TextBox rect=967,467 73x21 off=False
+  id="" name="" ct=ControlType.Edit cls=TextBox rect=815,496 73x21 off=False
+  id="" name="" ct=ControlType.Edit cls=TextBox rect=891,496 73x21 off=False
+  id="" name="" ct=ControlType.Edit cls=TextBox rect=967,496 73x21 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=1054,453 25x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=1058,457 16x16 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=1078,453 25x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=1082,457 16x16 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=1102,453 25x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=1106,457 16x16 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=1126,453 25x25 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=1130,457 17x17 off=False
+  id="" name="Styles" ct=ControlType.Button cls=Button rect=1047,495 39x25 off=False
+  id="" name="Styles" ct=ControlType.Text cls=TextBlock rect=1053,501 28x13 off=False
+  id="" name="" ct=ControlType.ComboBox cls=ComboBox rect=1089,497 89x21 off=False
+  id="" name="" ct=ControlType.Tab cls=TabControl rect=1180,443 273x87 off=False
+  id="" name="Quick & Smart Delay" ct=ControlType.TabItem cls=TabItem rect=1180,443 113x19 off=False
+  id="" name="Quick & Smart Delay" ct=ControlType.Text cls=TextBlock rect=1188,446 97x13 off=False
+  id="" name="Negative shift delay" ct=ControlType.Text cls=TextBlock rect=1183,464 93x13 off=False
+  id="" name="Positive shift delay" ct=ControlType.Text cls=TextBlock rect=1346,464 87x13 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=1183,478 48x19 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=1187,480 19x16 off=False
+  id="" name="200" ct=ControlType.Text cls=TextBlock rect=1210,482 18x13 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=1233,478 48x19 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=1237,480 19x16 off=False
+  id="" name="100" ct=ControlType.Text cls=TextBlock rect=1260,482 18x13 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=1183,500 48x19 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=1193,502 11x16 off=False
+  id="" name="50" ct=ControlType.Text cls=TextBlock rect=1208,504 12x13 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=1233,500 48x19 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=1243,502 11x16 off=False
+  id="" name="10" ct=ControlType.Text cls=TextBlock rect=1258,504 12x13 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=1291,467 48x29 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=1303,473 16x16 off=False
+  id="" name="." ct=ControlType.Text cls=TextBlock rect=1323,475 3x13 off=False
+  id="" name="All subs" ct=ControlType.CheckBox cls=CheckBox rect=1287,500 56x19 off=False
+  id="" name="All subs" ct=ControlType.Text cls=TextBlock rect=1307,499 36x13 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=1346,478 48x19 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=1350,480 19x16 off=False
+  id="" name="100" ct=ControlType.Text cls=TextBlock rect=1373,482 18x13 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=1400,478 48x19 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=1404,480 19x16 off=False
+  id="" name="200" ct=ControlType.Text cls=TextBlock rect=1427,482 18x13 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=1346,500 48x19 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=1356,502 11x16 off=False
+  id="" name="50" ct=ControlType.Text cls=TextBlock rect=1371,504 12x13 off=False
+  id="" name="" ct=ControlType.Button cls=Button rect=1400,500 48x19 off=False
+  id="" name="" ct=ControlType.Image cls=Image rect=1410,502 11x16 off=False
+  id="" name="10" ct=ControlType.Text cls=TextBlock rect=1425,504 12x13 off=False
+  id="" name="Silent Zone" ct=ControlType.TabItem cls=TabItem rect=1291,445 66x17 off=False
+  id="" name="Silent Zone" ct=ControlType.Text cls=TextBlock rect=1297,447 54x13 off=False
+  id="" name="Smart Desynch" ct=ControlType.TabItem cls=TabItem rect=1357,445 84x17 off=False
+  id="" name="Smart Desynch" ct=ControlType.Text cls=TextBlock rect=1363,447 72x13 off=False
+  id="vtvSubsList" name="" ct=ControlType.DataGrid cls=DataGrid rect=431,531 1059x224 off=False
+  id="PART_ColumnHeadersPresenter" name="" ct=ControlType.Header cls=DataGridColumnHeadersPresenter rect=432,532 1057x14 off=False
+  id="" name="#" ct=ControlType.HeaderItem cls=DataGridColumnHeader rect=432,532 50x14 off=False
+  id="" name="#" ct=ControlType.Text cls=TextBlock rect=436,532 7x13 off=False
+  id="PART_RightHeaderGripper" name="" ct=ControlType.Thumb cls=Thumb rect=474,532 8x14 off=False
+  id="" name="Start" ct=ControlType.HeaderItem cls=DataGridColumnHeader rect=482,532 100x14 off=False
+  id="" name="Start" ct=ControlType.Text cls=TextBlock rect=486,532 22x13 off=False
+  id="PART_LeftHeaderGripper" name="" ct=ControlType.Thumb cls=Thumb rect=482,532 8x14 off=False
+  id="PART_RightHeaderGripper" name="" ct=ControlType.Thumb cls=Thumb rect=574,532 8x14 off=False
+  id="" name="Stop" ct=ControlType.HeaderItem cls=DataGridColumnHeader rect=582,532 100x14 off=False
+  id="" name="Stop" ct=ControlType.Text cls=TextBlock rect=586,532 22x13 off=False
+  id="PART_LeftHeaderGripper" name="" ct=ControlType.Thumb cls=Thumb rect=582,532 8x14 off=False
+  id="PART_RightHeaderGripper" name="" ct=ControlType.Thumb cls=Thumb rect=674,532 8x14 off=False
+  id="" name="Text" ct=ControlType.HeaderItem cls=DataGridColumnHeader rect=682,532 500x14 off=False
+  id="" name="Text" ct=ControlType.Text cls=TextBlock rect=686,532 21x13 off=False
+  id="PART_LeftHeaderGripper" name="" ct=ControlType.Thumb cls=Thumb rect=682,532 8x14 off=False
+  id="PART_RightHeaderGripper" name="" ct=ControlType.Thumb cls=Thumb rect=1174,532 8x14 off=False
+  id="" name="" ct=ControlType.Thumb cls=GridSplitter rect=431,755 1059x4 off=False
+  id="MemoLinesCounter" name="" ct=ControlType.Edit cls=TextBox rect=431,759 31x104 off=False
+  id="MemoSubtitleText" name="" ct=ControlType.Edit cls=TextBox rect=462,759 1028x104 off=False
+  id="VerticalScrollBar" name="" ct=ControlType.ScrollBar cls=ScrollBar rect=1472,760 17x102 off=False
+  id="PART_LineUpButton" name="" ct=ControlType.Button cls=RepeatButton rect=1472,760 17x17 off=False
+  id="PART_LineDownButton" name="" ct=ControlType.Button cls=RepeatButton rect=1472,845 17x17 off=False

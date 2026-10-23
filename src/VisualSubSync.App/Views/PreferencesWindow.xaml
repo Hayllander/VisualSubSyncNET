@@ -1,0 +1,466 @@
+<Window x:Class="VisualSubSync.App.Views.PreferencesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctl="clr-namespace:VisualSubSync.App.Controls"
+        Title="Preferences"
+        Width="770" Height="590" MinWidth="770" MinHeight="590"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+        FontFamily="Microsoft Sans Serif" FontSize="11"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True" SnapsToDevicePixels="True"
+        Activated="OnActivated" PreviewKeyDown="OnPreviewKeyDown">
+  <!-- TPreferencesForm do VisualSubSync Enhanced (docs/enhanced/TPREFERENCESFORM.txt), BorderWidth = 4.
+       As abas saem do .dfm (scratchpad gen_prefs.py); Error checking e Hotkeys são escritas à mão.
+       Os controles que só existem no Enhanced ficam desabilitados. -->
+  <DockPanel Margin="4">
+    <!-- Panel1 (alBottom, 36 px): OK e Cancel à direita. -->
+    <Grid DockPanel.Dock="Bottom" Height="36">
+      <Canvas Width="162" HorizontalAlignment="Right">
+        <Button x:Name="bttOk" Canvas.Left="1" Canvas.Top="9" Width="75" Height="25" Content="OK" Click="OnOk" />
+        <Button x:Name="bttCancel" Canvas.Left="87" Canvas.Top="9" Width="75" Height="25" Content="Cancel" IsCancel="False" Click="OnCancel" />
+      </Canvas>
+    </Grid>
+    <TabControl x:Name="PageControlPreferences">
+      <TabItem x:Name="tsGeneral" Header="General">
+        <Grid Margin="4">
+          <DockPanel LastChildFill="True">
+            <Grid DockPanel.Dock="Top" Height="49">  <!-- GroupBoxWebServer -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Web server : " />
+              <Canvas>
+                <TextBlock Canvas.Left="16" Canvas.Top="24" Text="Port :" />
+                <ctl:UpDownEdit x:Name="EditServerPort" Canvas.Left="48" Canvas.Top="20" Width="105" Height="21" Minimum="1" Maximum="32767" Increment="1" Thousands="False" Text="1" ToolTip="Port to which the webserver listen for connections" />
+                <CheckBox x:Name="chkEnableCompression" Canvas.Left="280" Canvas.Top="24" Width="121" Height="17" Content="Enable compression" ToolTip="Compress dynamic webpages for faster transmission (broken with IE)" />
+              </Canvas>
+            </Grid>
+            <Border DockPanel.Dock="Top" Height="4" />
+            <Grid DockPanel.Dock="Top" Height="87">  <!-- GroupBoxBackup -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Backup : " />
+              <Canvas>
+                <TextBlock Canvas.Left="16" Canvas.Top="52" Text="Automatic save every (minutes) :" />
+                <CheckBox x:Name="chkCreateBackup" Canvas.Left="16" Canvas.Top="24" Width="185" Height="17" Content="Create backup file (*.bak) on save" />
+                <Button x:Name="bttOpenBackupDir" Canvas.Left="288" Canvas.Top="49" Width="90" Height="20" Padding="0" Content="Show backups..." ToolTip="Open backup directory in VisualSubSync directory" Click="OnOpenBackupDir" />
+                <ctl:UpDownEdit x:Name="EditBackupTime" Canvas.Left="176" Canvas.Top="48" Width="72" Height="21" Minimum="0" Maximum="100" Increment="1" Text="0" />
+                <CheckBox x:Name="chkAutoSaveWhenPlaying" Canvas.Left="232" Canvas.Top="24" Width="169" Height="17" Content="Auto save when playing start" />
+                <Button x:Name="bttOpenBackupTempDir" Canvas.Left="384" Canvas.Top="49" Width="113" Height="20" Padding="0" Content="Show temp backups..." ToolTip="Open backup on any modification in TEMP directory" Click="OnOpenBackupTempDir" />
+                <Button Canvas.Left="618" Canvas.Top="49" Width="98" Height="20" Padding="0" IsEnabled="False" Content="Save configuration" ToolTip="Save configuration and custom dictionary" />
+                <Button Canvas.Left="506" Canvas.Top="49" Width="108" Height="20" Padding="0" IsEnabled="False" Content="Restore configuration" ToolTip="Restore configuration from saved file" />
+              </Canvas>
+            </Grid>
+            <Border DockPanel.Dock="Top" Height="4" />
+            <Grid>  <!-- GroupBoxMisc -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Misc : " />
+              <Canvas>
+                <TextBlock Canvas.Left="45" Canvas.Top="150" Text="Set cursor behind subtitle when smart is used (ms)" />
+                <TextBlock Canvas.Left="106" Canvas.Top="181" Width="481" Height="17" IsEnabled="False" Text="Select path..." />
+                <CheckBox x:Name="chkAssociateExtVSSPRJ" Canvas.Left="16" Canvas.Top="24" Width="265" Height="17" Content="Associate project file (*.vssprj) with VisualSubSync" ToolTip="Double click on a .vssprj file will automatically open the project in VisualSubSync" Click="OnAssociateClick" />
+                <CheckBox x:Name="chkSwapSubList" Canvas.Left="16" Canvas.Top="75" Width="385" Height="17" Content="Swap subtitles list" />
+                <CheckBox x:Name="chkAssociateExtSRT" Canvas.Left="16" Canvas.Top="49" Width="209" Height="17" Content="Associate .SRT file with VisualSubSync" Click="OnAssociateClick" />
+                <CheckBox x:Name="chkAssociateExtSSA" Canvas.Left="232" Canvas.Top="49" Width="217" Height="17" Content="Associate .SSA file with VisualSubSync" Click="OnAssociateClick" />
+                <CheckBox x:Name="chkAssociateExtASS" Canvas.Left="451" Canvas.Top="49" Width="210" Height="17" Content="Associate .ASS file with VisualSubSync" Click="OnAssociateClick" />
+                <CheckBox x:Name="chkLoadMostRecentProjectOnStartup" Canvas.Left="16" Canvas.Top="102" Width="201" Height="17" Content="Load most recent project on startup" />
+                <CheckBox Canvas.Left="16" Canvas.Top="131" Width="225" Height="17" IsEnabled="False" Content="Enable quick/smart and silent zone panels" />
+                <ctl:UpDownEdit Canvas.Left="287" Canvas.Top="148" Width="57" Height="21" Minimum="0" Maximum="1500" Increment="10" Text="500" IsEnabled="False" />
+                <CheckBox Canvas.Left="352" Canvas.Top="149" Width="184" Height="17" IsEnabled="False" Content="Auto play from new cursor position" />
+                <CheckBox Canvas.Left="16" Canvas.Top="181" Width="89" Height="17" IsEnabled="False" Content="Default Path:" />
+                <CheckBox Canvas.Left="37" Canvas.Top="201" Width="188" Height="17" IsEnabled="False" Content="Always use the default path" />
+                <CheckBox Canvas.Left="16" Canvas.Top="226" Width="207" Height="17" IsEnabled="False" Content="Set UTF-8 project creation as default" />
+                <CheckBox Canvas.Left="16" Canvas.Top="281" Width="145" Height="17" IsEnabled="False" Content="Check for updates on start" />
+                <CheckBox Canvas.Left="16" Canvas.Top="252" Width="285" Height="20" IsEnabled="False" Content="Accents/uppercase assistant (only for Italian dictionary)" />
+              </Canvas>
+            </Grid>
+          </DockPanel>
+        </Grid>
+      </TabItem>
+      <TabItem x:Name="TsPlayback" Header="Playback">
+        <Grid Margin="4" IsEnabled="False">
+          <DockPanel LastChildFill="True">
+            <Grid>  <!-- TntGroupBoxPlaybackOptions -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <Canvas>
+                <TextBlock Canvas.Left="269" Canvas.Top="423" Text="Set subtitle preview delay (ms)" />
+                <CheckBox Canvas.Left="10" Canvas.Top="21" Width="209" Height="17" Content="Prefer internal filters for rendering" />
+                <RadioButton Canvas.Left="27" Canvas.Top="143" Width="174" Height="17" Content="MPC-HC codec (discontinued)" />
+                <RadioButton Canvas.Left="27" Canvas.Top="66" Width="126" Height="17" Content="LAV codec" />
+                <Grid Canvas.Left="177" Canvas.Top="46" Width="371" Height="44">  <!-- GroupBoxLavVideoHwModes -->
+                  <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+                  <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text="Hardware Acceleration" />
+                  <Canvas>
+                    <RadioButton Canvas.Left="67" Canvas.Top="16" Width="102" Height="18" Content="Intel Quick Sync" />
+                    <RadioButton Canvas.Left="181" Canvas.Top="16" Width="50" Height="18" Content="Cuda" />
+                    <RadioButton Canvas.Left="251" Canvas.Top="16" Width="105" Height="18" Content="Dxva2(copy-back)" />
+                    <RadioButton Canvas.Left="8" Canvas.Top="16" Width="50" Height="18" Content="None" />
+                  </Canvas>
+                </Grid>
+                <CheckBox Canvas.Left="268" Canvas.Top="351" Width="137" Height="17" Content="Improve subtitles quality" ToolTip="Improve subtitles quality using Directvobsub upscaling feature (only if video resolution is lower than 720p)" />
+                <CheckBox Canvas.Left="10" Canvas.Top="374" Width="162" Height="17" Content="Disable desktop composition" ToolTip="Disable desktop composition/Aero feature in Windosws Vista &amp; Windows Seven" />
+                <CheckBox Canvas.Left="10" Canvas.Top="351" Width="161" Height="17" Content="Force stop play when pausing" />
+                <CheckBox Canvas.Left="268" Canvas.Top="374" Width="241" Height="17" Content="Use reclock audio renderer when available" />
+                <Grid Canvas.Left="29" Canvas.Top="202" Width="382" Height="69">  <!-- GroupBoxCreateProject -->
+                  <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+                  <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text="Building new projects" />
+                  <Canvas>
+                    <CheckBox Canvas.Left="12" Canvas.Top="20" Width="149" Height="17" Content="Do not use internal filters" />
+                    <CheckBox Canvas.Left="20" Canvas.Top="44" Width="161" Height="17" Content="Force default audio codec" />
+                    <CheckBox Canvas.Left="193" Canvas.Top="44" Width="149" Height="17" Content="Force LAV audio codec" />
+                  </Canvas>
+                </Grid>
+                <CheckBox Canvas.Left="43" Canvas.Top="111" Width="117" Height="17" Content="Enable audio mixing" />
+                <CheckBox Canvas.Left="28" Canvas.Top="176" Width="253" Height="17" Content="Prefer registered system codecs (when avaiable)" />
+                <TextBlock Canvas.Left="176" Canvas.Top="95" Text="Preferred languages" />
+                <TextBox Canvas.Left="176" Canvas.Top="111" Width="145" Height="21" VerticalContentAlignment="Center" />
+                <CheckBox Canvas.Left="10" Canvas.Top="398" Width="102" Height="17" Content="Flipped picture" ToolTip="Check to flip picture" />
+                <CheckBox Canvas.Left="268" Canvas.Top="398" Width="102" Height="17" Content="Flipped subtitles" ToolTip="Check to flip subtitles" />
+                <Grid Canvas.Left="29" Canvas.Top="285" Width="382" Height="56">  <!-- GroupBoxRenderer -->
+                  <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+                  <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text="Video renderer to use" />
+                  <Canvas>
+                    <RadioButton Canvas.Left="181" Canvas.Top="24" Width="180" Height="17" Content="Video Mixing Renderer 9 (VMR-9)" />
+                    <RadioButton Canvas.Left="7" Canvas.Top="24" Width="170" Height="17" IsEnabled="False" Content="Video Mixing Filter 7 (VMR-7)" />
+                  </Canvas>
+                </Grid>
+                <CheckBox Canvas.Left="10" Canvas.Top="423" Width="247" Height="17" Content="Force auto scroll/wav display starting playback" />
+                <ctl:UpDownEdit Canvas.Left="420" Canvas.Top="420" Width="57" Height="21" Minimum="0" Maximum="2000" Increment="50" Text="750" ToolTip="Writing into subtitle edit box the result will be updated every N milliseconds according " />
+              </Canvas>
+            </Grid>
+          </DockPanel>
+        </Grid>
+      </TabItem>
+      <TabItem x:Name="tsSubtitle" Header="Subtitle">
+        <Grid Margin="4">
+          <DockPanel LastChildFill="True">
+            <Grid>  <!-- TntGroupBox1 -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <Canvas>
+                <TextBlock Canvas.Left="16" Canvas.Top="164" Text="Blank between subtitles (ms) :" />
+                <TextBlock Canvas.Left="8" Canvas.Top="16" Width="731" Height="33" TextWrapping="Wrap" Text="Common settings used when editing subtitles in normal or timing mode, and possibly when fixing error with JavaScript plug-ins." />
+                <TextBlock Canvas.Left="16" Canvas.Top="68" Text="Characters per second target :" />
+                <TextBlock Canvas.Left="16" Canvas.Top="100" Text="Minimum subtitle duration (ms) :" />
+                <TextBlock Canvas.Left="16" Canvas.Top="132" Text="Maximum subtitle duration (ms) :" />
+                <ctl:UpDownEdit x:Name="EditBlankBetweenSub" Canvas.Left="176" Canvas.Top="160" Width="96" Height="21" Minimum="0" Maximum="500" Increment="10" Text="0" />
+                <ctl:UpDownEdit x:Name="EditCPSTarget" Canvas.Left="176" Canvas.Top="64" Width="96" Height="21" Minimum="5" Maximum="50" Increment="1" Thousands="False" Text="5" />
+                <ctl:UpDownEdit x:Name="EditMinimalDuration" Canvas.Left="176" Canvas.Top="96" Width="96" Height="21" Minimum="200" Maximum="5000" Increment="100" Thousands="False" Text="500" />
+                <ctl:UpDownEdit x:Name="EditMaximalDuration" Canvas.Left="176" Canvas.Top="128" Width="97" Height="21" Minimum="1000" Maximum="25000" Increment="100" Thousands="False" Text="6000" />
+                <CheckBox Canvas.Left="16" Canvas.Top="203" Width="137" Height="17" IsEnabled="False" Content="Set custom default text" />
+              </Canvas>
+            </Grid>
+          </DockPanel>
+        </Grid>
+      </TabItem>
+      <TabItem x:Name="tsErrorChecking" Header="Error checking">
+        <DockPanel Margin="4">
+          <!-- ListPluginParam (alBottom, 112 px): duplo clique ou F2 edita a coluna Value. -->
+          <ListView x:Name="ListPluginParam" DockPanel.Dock="Bottom" Height="112"
+                    SelectionMode="Single" KeyboardNavigation.DirectionalNavigation="Continue"
+                    MouseDoubleClick="OnParamDoubleClick" PreviewKeyDown="OnParamListKeyDown">
+            <ListView.ItemContainerStyle>
+              <Style TargetType="ListViewItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="ToolTip" Value="{Binding Description}" />
+              </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+              <GridView>
+                <GridViewColumn Header="Parameter" Width="248" DisplayMemberBinding="{Binding Name}" />
+                <GridViewColumn Header="Value" Width="294">
+                  <GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                      <Grid>
+                        <TextBlock Text="{Binding ValueAsString}" />
+                        <ContentPresenter Content="{Binding Editor}" />
+                      </Grid>
+                    </DataTemplate>
+                  </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Header="Unit" Width="184" DisplayMemberBinding="{Binding Unit}" />
+              </GridView>
+            </ListView.View>
+          </ListView>
+          <!-- Panel2 (alBottom, 88 px, bvLowered): descrição e cor do plugin. -->
+          <Border DockPanel.Dock="Bottom" Height="88" BorderThickness="1"
+                  BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="64" />
+              </Grid.ColumnDefinitions>
+              <TextBlock Margin="7,6,0,0" FontWeight="Bold" Text="Description :" />
+              <TextBlock x:Name="lbErrorDescription" Margin="7,20,-1,7" TextWrapping="Wrap" Text="-" />
+              <Border Grid.Column="1" Margin="0,7,0,7" HorizontalAlignment="Left" Width="1"
+                      Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
+              <TextBlock Grid.Column="1" Margin="7,3,0,0" Width="57" TextAlignment="Center" Text="Color :" />
+              <Ellipse x:Name="ShapeErrorColor" Grid.Column="1" Margin="23,23,0,0" Width="25" Height="25"
+                       HorizontalAlignment="Left" VerticalAlignment="Top" Stroke="Black" Fill="White" />
+            </Grid>
+          </Border>
+          <Border DockPanel.Dock="Bottom" Height="8" />
+          <!-- ListErrorChecking (alClient, Sorted): marcar ativa o plugin. -->
+          <ListBox x:Name="ListErrorChecking" SelectionChanged="OnErrorCheckingSelected" KeyDown="OnErrorCheckingKeyDown">
+            <ListBox.ContextMenu>
+              <ContextMenu>
+                <MenuItem Header="Select all" Click="OnSelectAllPlugins" />
+                <MenuItem Header="Unselect all" Click="OnUnselectAllPlugins" />
+              </ContextMenu>
+            </ListBox.ContextMenu>
+            <ListBox.ItemContainerStyle>
+              <Style TargetType="ListBoxItem">
+                <Setter Property="Padding" Value="1,0" />
+              </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <CheckBox IsChecked="{Binding Enabled}" Content="{Binding Name}" Focusable="False"
+                          Click="OnPluginCheckClick" />
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </DockPanel>
+      </TabItem>
+      <TabItem x:Name="tsHotKeys" Header="Hotkeys">
+        <DockPanel Margin="4">
+          <!-- PanelHotKey (alBottom, 35 px). -->
+          <Canvas DockPanel.Dock="Bottom" Height="35">
+            <TextBlock Canvas.Left="1" Canvas.Top="0" Text="Mode :" />
+            <TextBlock Canvas.Left="128" Canvas.Top="0" Width="49" Height="13" Text="Hot key :" />
+            <ComboBox x:Name="ComboHotkeyMode" Canvas.Left="0" Canvas.Top="13" Width="113" Height="21"
+                      SelectedIndex="0" SelectionChanged="OnHotkeyModeSelected">
+              <ComboBoxItem Content="Normal" />
+              <ComboBoxItem Content="Timing" />
+            </ComboBox>
+            <TextBox x:Name="HotKey1" Canvas.Left="128" Canvas.Top="13" Width="457" Height="21"
+                     VerticalContentAlignment="Center" IsReadOnly="True" IsReadOnlyCaretVisible="True"
+                     IsUndoEnabled="False" ContextMenu="{x:Null}"
+                     PreviewKeyDown="OnHotKeyPreviewKeyDown" PreviewKeyUp="OnHotKeyPreviewKeyUp" />
+            <Button Canvas.Left="595" Canvas.Top="12" Width="33" Height="22" Padding="0" Content="Set" Click="OnSetHotkey" />
+            <Button Canvas.Left="632" Canvas.Top="12" Width="34" Height="22" Padding="0" Content="Clear" Click="OnClearHotkey" />
+            <Button Canvas.Left="669" Canvas.Top="12" Width="53" Height="22" Padding="0" Content="Reset all" Click="OnResetAllHotkeys" />
+          </Canvas>
+          <Border DockPanel.Dock="Bottom" Height="4" />
+          <!-- ListHotkeys (vsReport, RowSelect, SortType = stText). -->
+          <ListView x:Name="ListHotkeys" SelectionMode="Single" SelectionChanged="OnHotkeySelected">
+            <ListView.View>
+              <GridView>
+                <GridViewColumn Header="Name" Width="250" DisplayMemberBinding="{Binding Caption}" />
+                <GridViewColumn Header="Normal" Width="100" DisplayMemberBinding="{Binding NormalText}" />
+                <GridViewColumn Header="Timing" Width="100" DisplayMemberBinding="{Binding TimingText}" />
+              </GridView>
+            </ListView.View>
+          </ListView>
+        </DockPanel>
+      </TabItem>
+      <TabItem x:Name="tsMouse" Header="Mouse">
+        <Grid Margin="4">
+          <DockPanel LastChildFill="True">
+            <Grid DockPanel.Dock="Top" Height="121">  <!-- GroupBox2 -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Mouse wheel control : " />
+              <Canvas>
+                <TextBlock Canvas.Left="24" Canvas.Top="44" Width="93" Height="13" Text="Time scrolling :" />
+                <TextBlock Canvas.Left="24" Canvas.Top="68" Width="93" Height="13" Text="Vertical Zoom :" />
+                <TextBlock Canvas.Left="24" Canvas.Top="92" Width="93" Height="13" Text="Horizontal Zoom :" />
+                <TextBlock Canvas.Left="24" Canvas.Top="22" Width="93" Height="13" FontWeight="Bold" TextAlignment="Center" Text="Actions" />
+                <TextBlock Canvas.Left="124" Canvas.Top="22" Width="261" Height="13" FontWeight="Bold" TextAlignment="Center" Text="Modifiers" />
+                <ComboBox x:Name="ComboWheelTimeScrollModifier" Canvas.Left="124" Canvas.Top="40" Width="261" Height="21">
+                  <ComboBoxItem Content="Shift" />
+                  <ComboBoxItem Content="Alt" />
+                  <ComboBoxItem Content="Ctrl" />
+                  <ComboBoxItem Content="None" />
+                </ComboBox>
+                <ComboBox x:Name="ComboWheelVZoomModifier" Canvas.Left="124" Canvas.Top="64" Width="261" Height="21">
+                  <ComboBoxItem Content="Shift" />
+                  <ComboBoxItem Content="Alt" />
+                  <ComboBoxItem Content="Ctrl" />
+                  <ComboBoxItem Content="None" />
+                </ComboBox>
+                <ComboBox x:Name="ComboWheelHZoomModifier" Canvas.Left="124" Canvas.Top="88" Width="261" Height="21">
+                  <ComboBoxItem Content="Shift" />
+                  <ComboBoxItem Content="Alt" />
+                  <ComboBoxItem Content="Ctrl" />
+                  <ComboBoxItem Content="None" />
+                </ComboBox>
+              </Canvas>
+            </Grid>
+            <Border DockPanel.Dock="Top" Height="4" />
+            <Grid>  <!-- GroupBox3 -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Misc : " />
+              <Canvas>
+                <CheckBox x:Name="chkEnableSSATimingMode" Canvas.Left="16" Canvas.Top="24" Width="385" Height="17" Content="Left/right mouse button set start/stop time in Timing Mode (SSA mouse mode)" />
+                <CheckBox x:Name="chkEnableMouseSnapping" Canvas.Left="16" Canvas.Top="40" Width="385" Height="17" Content="Enable mouse snapping" />
+                <CheckBox x:Name="chkEnableMouseAntiOverlapping" Canvas.Left="16" Canvas.Top="56" Width="385" Height="17" Content="Enable mouse anti-overlapping" />
+              </Canvas>
+            </Grid>
+          </DockPanel>
+        </Grid>
+      </TabItem>
+      <TabItem x:Name="tsFonts" Header="Fonts">
+        <Grid Margin="4">
+          <DockPanel LastChildFill="True">
+            <Grid DockPanel.Dock="Top" Height="81">  <!-- TntGroupBox2 -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Subtitles list : " />
+              <Canvas>
+                <TextBox x:Name="EditSubListFont" Canvas.Left="16" Canvas.Top="24" Width="651" Height="41" VerticalContentAlignment="Center" IsReadOnly="True" Text="ABCabc 123" />
+                <Button x:Name="bttSubListFont" Canvas.Left="674" Canvas.Top="24" Width="33" Height="25" Padding="0" Content="..." Click="OnSubListFont" />
+              </Canvas>
+            </Grid>
+            <Border DockPanel.Dock="Top" Height="4" />
+            <Grid DockPanel.Dock="Top" Height="100">  <!-- TntGroupBox3 -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Subtitles text : " />
+              <Canvas>
+                <TextBox x:Name="EditSubTextFont" Canvas.Left="16" Canvas.Top="24" Width="657" Height="41" VerticalContentAlignment="Center" IsReadOnly="True" Text="ABCabc 123" />
+                <Button x:Name="bttSubTextFont" Canvas.Left="680" Canvas.Top="24" Width="33" Height="25" Padding="0" Content="..." Click="OnSubTextFont" />
+              </Canvas>
+            </Grid>
+            <Grid IsEnabled="False">  <!-- TntGroupBox10 -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Subtitles video : " />
+              <Canvas>
+                <TextBlock Canvas.Left="16" Canvas.Top="128" Text="Outline" />
+                <TextBlock Canvas.Left="16" Canvas.Top="173" Text="Shadow" />
+                <Rectangle Canvas.Left="139" Canvas.Top="126" Width="17" Height="17" Stroke="Black" Fill="White" ToolTip="Set outline color" />
+                <Rectangle Canvas.Left="139" Canvas.Top="171" Width="17" Height="17" Stroke="Black" Fill="White" ToolTip="Set shadow color" />
+                <TextBlock Canvas.Left="16" Canvas.Top="82" Text="Transparency" />
+                <TextBox Canvas.Left="16" Canvas.Top="24" Width="657" Height="52" VerticalContentAlignment="Center" IsReadOnly="True" IsEnabled="False" Text="ABCabc 123" />
+                <Button Canvas.Left="680" Canvas.Top="24" Width="33" Height="25" Padding="0" IsEnabled="False" Content="..." />
+                <ctl:UpDownEdit Canvas.Left="89" Canvas.Top="124" Width="38" Height="21" Minimum="0" Maximum="9" Increment="1" Thousands="False" Text="3" IsEnabled="False" ToolTip="Outline" />
+                <ctl:UpDownEdit Canvas.Left="89" Canvas.Top="169" Width="38" Height="21" Minimum="0" Maximum="9" Increment="1" Thousands="False" Text="4" IsEnabled="False" ToolTip="Shadow" />
+                <Button Canvas.Left="592" Canvas.Top="88" Width="75" Height="25" Padding="0" IsEnabled="False" Content="Default" />
+                <Slider Canvas.Left="82" Canvas.Top="76" Width="150" Height="30" IsEnabled="False" ToolTip="Set subtitle video transparency" />
+                <Slider Canvas.Left="166" Canvas.Top="122" Width="150" Height="30" IsEnabled="False" ToolTip="Set outline transparency" />
+                <Slider Canvas.Left="166" Canvas.Top="169" Width="150" Height="30" IsEnabled="False" ToolTip="Set shadow transparency" />
+              </Canvas>
+            </Grid>
+          </DockPanel>
+        </Grid>
+      </TabItem>
+      <TabItem x:Name="tsTimingMode" Header="Timing mode">
+        <Grid Margin="4">
+          <DockPanel LastChildFill="True">
+            <Grid>  <!-- TntGroupBox4 -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <Canvas>
+                <CheckBox x:Name="chkEnableSubCreationWithSpaceKey" Canvas.Left="16" Canvas.Top="56" Width="385" Height="17" Content="Enable subtitle creation with space key (toggle) in timing mode" />
+                <CheckBox x:Name="chkSpaceKeyModifyTiming" Canvas.Left="48" Canvas.Top="73" Width="217" Height="17" Content="Space key modify existing subtitles timing" />
+                <CheckBox x:Name="chkDisableSubEditionInTimingMode" Canvas.Left="16" Canvas.Top="24" Width="385" Height="17" Content="Disable subtitle edition in timing mode" />
+              </Canvas>
+            </Grid>
+          </DockPanel>
+        </Grid>
+      </TabItem>
+      <TabItem x:Name="tsWAVDisplay" Header="WAV display">
+        <Grid Margin="4">
+          <DockPanel LastChildFill="True">
+            <Grid DockPanel.Dock="Top" Height="121">  <!-- TntGroupBox5 -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Scene change : " />
+              <Canvas>
+                <TextBlock Canvas.Left="16" Canvas.Top="54" Text="Safety zone offsets :" />
+                <TextBlock Canvas.Left="24" Canvas.Top="76" Text="Start" />
+                <TextBlock Canvas.Left="134" Canvas.Top="76" Text="Stop" />
+                <TextBlock Canvas.Left="256" Canvas.Top="54" Text="Filter inside subtitle :" />
+                <CheckBox x:Name="chkSceneChange" Canvas.Left="16" Canvas.Top="24" Width="121" Height="17" Content="Show scene change" />
+                <ctl:UpDownEdit x:Name="EditSCStartOffset" Canvas.Left="51" Canvas.Top="72" Width="72" Height="21" Minimum="0" Maximum="2000" Increment="10" Thousands="False" Text="130" ToolTip="Start offset in ms" />
+                <ctl:UpDownEdit x:Name="EditSCStopOffset" Canvas.Left="161" Canvas.Top="72" Width="72" Height="21" Minimum="0" Maximum="2000" Increment="10" Thousands="False" Text="130" ToolTip="Stop offset in ms" />
+                <ctl:UpDownEdit x:Name="EditSCFilterOffset" Canvas.Left="256" Canvas.Top="72" Width="72" Height="21" Minimum="0" Maximum="2000" Increment="10" Thousands="False" Text="250" ToolTip="Offset from start and stop in ms (0 to disable)" />
+              </Canvas>
+            </Grid>
+            <Border DockPanel.Dock="Top" Height="4" />
+            <Grid DockPanel.Dock="Top" Height="116">  <!-- TntGroupBox6 -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Misc : " />
+              <Canvas>
+                <CheckBox x:Name="chkShowTextInWAVDisplay" Canvas.Left="16" Canvas.Top="24" Width="113" Height="17" Content="Show subtitle text" />
+                <CheckBox Canvas.Left="16" Canvas.Top="44" Width="217" Height="17" IsEnabled="False" Content="Do not show VO text also when available" />
+                <CheckBox Canvas.Left="16" Canvas.Top="64" Width="177" Height="17" IsEnabled="False" Content="Show special tags subtitles text" ToolTip="The special tags subtitles contains the character { } with tags inside and starts with the first one." />
+                <CheckBox Canvas.Left="16" Canvas.Top="84" Width="217" Height="17" IsEnabled="False" Content="Swap Subtitles\\VO on wav display" />
+                <CheckBox Canvas.Left="264" Canvas.Top="24" Width="240" Height="17" IsEnabled="False" Content="Enable show video (default for new project)" />
+                <CheckBox Canvas.Left="264" Canvas.Top="44" Width="240" Height="17" IsEnabled="False" Content="Enable detach video (default for new project)" />
+              </Canvas>
+            </Grid>
+            <Border DockPanel.Dock="Top" Height="4" />
+            <Grid IsEnabled="False">  <!-- TntGroupBox9 -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text="WavDisplayer Colors" />
+              <Canvas>
+                <TextBlock Canvas.Left="20" Canvas.Top="25" Width="80" Height="13" Text="Wave:" />
+                <Rectangle Canvas.Left="105" Canvas.Top="23" Width="17" Height="17" Stroke="Black" Fill="White" />
+                <TextBlock Canvas.Left="20" Canvas.Top="45" Width="80" Height="13" Text="Background:" />
+                <Rectangle Canvas.Left="105" Canvas.Top="43" Width="17" Height="17" Stroke="Black" Fill="White" />
+                <TextBlock Canvas.Left="20" Canvas.Top="65" Width="80" Height="13" Text="Cursor:" />
+                <Rectangle Canvas.Left="105" Canvas.Top="63" Width="17" Height="17" Stroke="Black" Fill="White" />
+                <TextBlock Canvas.Left="164" Canvas.Top="25" Width="80" Height="13" Text="Subtitle 1:" />
+                <Rectangle Canvas.Left="249" Canvas.Top="23" Width="17" Height="17" Stroke="Black" Fill="White" />
+                <TextBlock Canvas.Left="164" Canvas.Top="45" Width="80" Height="13" Text="Subtitle 2:" />
+                <Rectangle Canvas.Left="249" Canvas.Top="43" Width="17" Height="17" Stroke="Black" Fill="White" />
+                <TextBlock Canvas.Left="164" Canvas.Top="65" Width="80" Height="13" Text="Subtitle VO:" />
+                <Rectangle Canvas.Left="249" Canvas.Top="63" Width="17" Height="17" Stroke="Black" Fill="White" />
+                <TextBlock Canvas.Left="20" Canvas.Top="85" Width="80" Height="14" Text="Scene-change:" />
+                <Rectangle Canvas.Left="105" Canvas.Top="83" Width="17" Height="17" Stroke="Black" Fill="White" />
+                <Button Canvas.Left="344" Canvas.Top="24" Width="75" Height="25" Padding="0" IsEnabled="False" Content="Default" />
+              </Canvas>
+            </Grid>
+          </DockPanel>
+        </Grid>
+      </TabItem>
+      <TabItem x:Name="tsDesynchTools" Header="Desynch Tools">
+        <Grid Margin="4" IsEnabled="False">
+          <DockPanel LastChildFill="True">
+            <Grid>  <!-- TntGroupBox7 -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <Canvas>
+                <CheckBox Canvas.Left="8" Canvas.Top="25" Width="234" Height="17" Content="Auto-Reset" />
+                <CheckBox Canvas.Left="8" Canvas.Top="49" Width="234" Height="17" Content="Use colors for desynch checkpoint zones" />
+                <CheckBox Canvas.Left="8" Canvas.Top="73" Width="234" Height="17" Content="Use icons for checkpoints" />
+                <CheckBox Canvas.Left="8" Canvas.Top="97" Width="234" Height="17" Content="Assume first subtitle as synched" />
+                <CheckBox Canvas.Left="8" Canvas.Top="121" Width="234" Height="17" Content="Log" />
+              </Canvas>
+            </Grid>
+          </DockPanel>
+        </Grid>
+      </TabItem>
+      <TabItem x:Name="tsDictionary" Header="Dictionary">
+        <Grid Margin="4" IsEnabled="False">
+          <DockPanel LastChildFill="True">
+            <Grid DockPanel.Dock="Top" Height="193">  <!-- TntGroupBoxOnlineDictSearch -->
+              <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+              <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text="Online dictionary search" />
+              <Canvas>
+                <CheckBox Canvas.Left="15" Canvas.Top="67" Width="141" Height="20" Content="Include Word Reference" />
+                <CheckBox Canvas.Left="15" Canvas.Top="92" Width="171" Height="20" Content="Include WordNet" />
+                <CheckBox Canvas.Left="15" Canvas.Top="116" Width="171" Height="20" Content="Include Urban Dictionary" />
+                <CheckBox Canvas.Left="15" Canvas.Top="17" Width="171" Height="17" Content="Enable online dictionary search" />
+                <CheckBox Canvas.Left="15" Canvas.Top="42" Width="171" Height="17" Content="Exclude search in text pipe" />
+                <ComboBox Canvas.Left="161" Canvas.Top="67" Width="136" Height="21">
+                  <ComboBoxItem Content="ENIT (English-Italian)" />
+                  <ComboBoxItem Content="ENAR (English-Arabic)" />
+                  <ComboBoxItem Content="ENZH (English-Chinese)" />
+                  <ComboBoxItem Content="ENCZ (English-Czech)" />
+                  <ComboBoxItem Content="ENFR (English-French)" />
+                  <ComboBoxItem Content="ENGR (English-Greek)" />
+                  <ComboBoxItem Content="ENJA (English-Japanese)" />
+                  <ComboBoxItem Content="ENKO (English-Korean)" />
+                  <ComboBoxItem Content="ENPL (English-Polish)" />
+                  <ComboBoxItem Content="ENPT (English-Portuguese)" />
+                  <ComboBoxItem Content="ENRO (English-Romanian)" />
+                  <ComboBoxItem Content="ENES (English-Spanish)" />
+                  <ComboBoxItem Content="ENTR (English-Turkish)" />
+                </ComboBox>
+              </Canvas>
+            </Grid>
+            <Canvas />
+          </DockPanel>
+          <Canvas>
+            <TextBlock Canvas.Left="2" Canvas.Top="203" Text="Link to additional dictionaries" />
+            <TextBox Canvas.Left="2" Canvas.Top="219" Width="210" Height="21" VerticalContentAlignment="Center" />
+          </Canvas>
+        </Grid>
+      </TabItem>
+    </TabControl>
+  </DockPanel>
+</Window>

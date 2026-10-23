@@ -1,0 +1,147 @@
+<Window x:Class="VisualSubSync.App.Views.StyleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SSA/ASS Style Editor"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+        FontFamily="Microsoft Sans Serif" FontSize="11"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True" SnapsToDevicePixels="True"
+        PreviewKeyDown="OnPreviewKeyDown">
+  <!-- TStyleForm (docs/enhanced/TSTYLEFORM.txt). ClientWidth 587, ClientHeight 377, BorderWidth 4. -->
+  <Window.Resources>
+    <!-- Os títulos de seção: fundo clWindowText, texto clWindow em negrito, centralizado. -->
+    <Style x:Key="SectionLabel" TargetType="TextBlock">
+      <Setter Property="Height" Value="13" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="TextAlignment" Value="Center" />
+      <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+      <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+    </Style>
+    <!-- Os painéis de cor (TTntStaticText com BevelKind = bkTile). -->
+    <Style x:Key="ColorPanel" TargetType="Border">
+      <Setter Property="Width" Value="73" />
+      <Setter Property="Height" Value="25" />
+      <Setter Property="BorderThickness" Value="2" />
+      <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
+      <Setter Property="Background" Value="Black" />
+    </Style>
+    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+      <Setter Property="Height" Value="21" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+  </Window.Resources>
+  <Border Padding="4">
+    <Canvas Width="587" Height="377">
+      <ListBox x:Name="lstStyles" Canvas.Left="0" Canvas.Top="0" Width="185" Height="345" TabIndex="0"
+               SelectionChanged="OnStyleClick" />
+
+      <TextBlock Canvas.Left="192" Canvas.Top="4" Text="Style name :" />
+      <TextBox x:Name="edStyleName" Canvas.Left="264" Canvas.Top="0" Width="321" TabIndex="16" TextChanged="OnFieldChanged" />
+
+      <TextBlock Canvas.Left="192" Canvas.Top="32" Width="393" Style="{StaticResource SectionLabel}" Text="Font" />
+      <Border Canvas.Left="192" Canvas.Top="48" Width="313" Height="41" BorderThickness="1" ClipToBounds="True"
+              BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
+        <TextBlock x:Name="stFontPreview" Margin="1,0,0,0" FontFamily="Arial" Foreground="Black" />
+      </Border>
+      <Button x:Name="bttFont" Canvas.Left="512" Canvas.Top="48" Width="75" Height="25" Content="Font" TabIndex="2" Click="OnFont" />
+
+      <TextBlock Canvas.Left="192" Canvas.Top="96" Width="209" Style="{StaticResource SectionLabel}" Text="Horizontal" />
+      <TextBlock Canvas.Left="408" Canvas.Top="96" Width="177" Style="{StaticResource SectionLabel}" Text="Vertical" />
+
+      <!-- rgHAlignment e rgVAlignment: TRadioGroup com Columns = 3. -->
+      <Grid x:Name="rgHAlignment" Canvas.Left="192" Canvas.Top="112" Width="209" Height="41">
+        <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+        <TextBlock Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Alignment : " />
+        <Canvas>
+          <RadioButton x:Name="rbLeft" Canvas.Left="8" Canvas.Top="18" Width="64" Height="17" Content="Left" GroupName="H" TabIndex="5" Checked="OnFieldChanged" />
+          <RadioButton x:Name="rbCenter" Canvas.Left="72" Canvas.Top="18" Width="64" Height="17" Content="Center" GroupName="H" Checked="OnFieldChanged" />
+          <RadioButton x:Name="rbRight" Canvas.Left="136" Canvas.Top="18" Width="64" Height="17" Content="Right" GroupName="H" Checked="OnFieldChanged" />
+        </Canvas>
+      </Grid>
+      <Grid x:Name="rgVAlignment" Canvas.Left="408" Canvas.Top="112" Width="177" Height="41">
+        <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+        <TextBlock Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Alignment : " />
+        <Canvas>
+          <RadioButton x:Name="rbTop" Canvas.Left="8" Canvas.Top="18" Width="53" Height="17" Content="Top" GroupName="V" TabIndex="3" Checked="OnFieldChanged" />
+          <RadioButton x:Name="rbMiddle" Canvas.Left="61" Canvas.Top="18" Width="53" Height="17" Content="Middle" GroupName="V" Checked="OnFieldChanged" />
+          <RadioButton x:Name="rbBottom" Canvas.Left="114" Canvas.Top="18" Width="53" Height="17" Content="Bottom" GroupName="V" Checked="OnFieldChanged" />
+        </Canvas>
+      </Grid>
+
+      <Grid Canvas.Left="192" Canvas.Top="160" Width="65" Height="49">
+        <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+        <TextBlock Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Margin L : " />
+        <TextBox x:Name="edLMargin" Margin="8,20,0,0" Width="49" HorizontalAlignment="Left" VerticalAlignment="Top" TabIndex="4" TextChanged="OnFieldChanged" />
+      </Grid>
+      <Grid Canvas.Left="264" Canvas.Top="160" Width="65" Height="49">
+        <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+        <TextBlock Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Margin R : " />
+        <TextBox x:Name="edRMargin" Margin="8,20,0,0" Width="49" HorizontalAlignment="Left" VerticalAlignment="Top" TabIndex="27" TextChanged="OnFieldChanged" />
+      </Grid>
+      <Grid Canvas.Left="336" Canvas.Top="160" Width="65" Height="49">
+        <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+        <TextBlock x:Name="lblScaleX" Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Scale X* : " />
+        <TextBox x:Name="edScaleX" Margin="8,20,0,0" Width="49" HorizontalAlignment="Left" VerticalAlignment="Top" TabIndex="20" TextChanged="OnFieldChanged" />
+      </Grid>
+      <Grid Canvas.Left="408" Canvas.Top="160" Width="81" Height="49">
+        <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+        <TextBlock Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Margin V : " />
+        <TextBox x:Name="edVMargin" Margin="8,20,0,0" Width="65" HorizontalAlignment="Left" VerticalAlignment="Top" TabIndex="6" TextChanged="OnFieldChanged" />
+      </Grid>
+      <Grid Canvas.Left="504" Canvas.Top="160" Width="81" Height="49">
+        <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
+        <TextBlock Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Scale Y* : " />
+        <TextBox x:Name="edScaleY" Margin="8,20,0,0" Width="65" HorizontalAlignment="Left" VerticalAlignment="Top" TabIndex="21" TextChanged="OnFieldChanged" />
+      </Grid>
+
+      <TextBlock Canvas.Left="192" Canvas.Top="216" Width="393" Style="{StaticResource SectionLabel}" Text="Colors" />
+      <TextBlock Canvas.Left="192" Canvas.Top="232" Text="Primary :" />
+      <TextBlock Canvas.Left="272" Canvas.Top="232" Text="Secondary :" />
+      <TextBlock Canvas.Left="352" Canvas.Top="232" Text="Tertiary :" />
+      <TextBlock Canvas.Left="432" Canvas.Top="232" Text="Back :" />
+      <Border x:Name="pnlPrimaryColor" Canvas.Left="192" Canvas.Top="248" Style="{StaticResource ColorPanel}" Tag="0" MouseLeftButtonUp="OnColorClick" />
+      <Border x:Name="pnlSecondaryColor" Canvas.Left="272" Canvas.Top="248" Style="{StaticResource ColorPanel}" Tag="1" MouseLeftButtonUp="OnColorClick" />
+      <Border x:Name="pnlOutlineColor" Canvas.Left="352" Canvas.Top="248" Style="{StaticResource ColorPanel}" Tag="2" MouseLeftButtonUp="OnColorClick" />
+      <Border x:Name="pnlBackColor" Canvas.Left="432" Canvas.Top="248" Style="{StaticResource ColorPanel}" Tag="3" MouseLeftButtonUp="OnColorClick" />
+      <Button x:Name="bttHValue" Canvas.Left="536" Canvas.Top="232" Width="49" Height="17" Padding="0" Content="H=0" ToolTip="Hue" Tag="0" TabIndex="24" Click="OnHslButton" />
+      <Button x:Name="bttSValue" Canvas.Left="536" Canvas.Top="248" Width="49" Height="17" Padding="0" Content="S=0" ToolTip="Saturation" Tag="1" TabIndex="25" Click="OnHslButton" />
+      <Button x:Name="bttLValue" Canvas.Left="536" Canvas.Top="264" Width="49" Height="17" Padding="0" Content="L=0" ToolTip="Lightness" Tag="2" TabIndex="26" Click="OnHslButton" />
+
+      <TextBlock Canvas.Left="192" Canvas.Top="288" Width="89" Style="{StaticResource SectionLabel}" Text="Outline" />
+      <TextBlock Canvas.Left="288" Canvas.Top="288" Width="89" Style="{StaticResource SectionLabel}" Text="Shadow" />
+      <TextBlock Canvas.Left="384" Canvas.Top="288" Width="97" Style="{StaticResource SectionLabel}" Text="Spacing*" />
+      <TextBlock Canvas.Left="488" Canvas.Top="288" Width="97" Style="{StaticResource SectionLabel}" Text="Angle*" />
+      <TextBox x:Name="edOutline" Canvas.Left="192" Canvas.Top="304" Width="89" TabIndex="7" TextChanged="OnFieldChanged" />
+      <TextBox x:Name="edShadow" Canvas.Left="288" Canvas.Top="304" Width="89" TabIndex="17" TextChanged="OnFieldChanged" />
+      <TextBox x:Name="edSpacing" Canvas.Left="384" Canvas.Top="304" Width="97" TabIndex="22" TextChanged="OnFieldChanged" />
+      <TextBox x:Name="edAngle" Canvas.Left="488" Canvas.Top="304" Width="97" TabIndex="23" TextChanged="OnFieldChanged" />
+      <TextBlock Canvas.Left="192" Canvas.Top="328" Width="169" Text="* available with ASS format only" />
+
+      <Button x:Name="bttNew" Canvas.Left="0" Canvas.Top="352" Width="41" Height="25" Padding="0" Content="New" TabIndex="8" Click="OnNew" />
+      <Button x:Name="bttCopy" Canvas.Left="48" Canvas.Top="352" Width="41" Height="25" Padding="0" Content="Copy" TabIndex="15" Click="OnCopy" />
+      <Button x:Name="bttDelete" Canvas.Left="96" Canvas.Top="352" Width="41" Height="25" Padding="0" Content="Delete" TabIndex="9" Click="OnDelete" />
+      <Button x:Name="bttApply" Canvas.Left="192" Canvas.Top="352" Width="75" Height="25" Content="Apply" TabIndex="18" Click="OnApply" />
+      <Button x:Name="bttReset" Canvas.Left="272" Canvas.Top="352" Width="75" Height="25" Content="Reset" TabIndex="19" Click="OnReset" />
+      <Button x:Name="bttClose" Canvas.Left="512" Canvas.Top="352" Width="75" Height="25" Content="Close" TabIndex="10" Click="OnClose" />
+
+      <!-- FPopupTrackbar: barra que abre à direita do botão H/S/L, 200 px de largura. -->
+      <Popup x:Name="PopupTrackbar" Placement="Right" AllowsTransparency="False" StaysOpen="True">
+        <Grid x:Name="TrackbarPanel" Width="200" Height="17" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+              MouseMove="OnTrackbarMouseMove" MouseLeftButtonDown="OnTrackbarMouseDown" MouseRightButtonDown="OnTrackbarMouseDown">
+          <Border BorderThickness="1,1,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
+          <Border BorderThickness="0,0,1,1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" />
+          <TextBlock x:Name="TrackbarText" HorizontalAlignment="Center" VerticalAlignment="Center" />
+          <Grid x:Name="TrackbarHighlight" HorizontalAlignment="Left" ClipToBounds="True"
+                Background="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}">
+            <TextBlock x:Name="TrackbarHighlightText" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Center"
+                       Foreground="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
+          </Grid>
+        </Grid>
+      </Popup>
+    </Canvas>
+  </Border>
+</Window>

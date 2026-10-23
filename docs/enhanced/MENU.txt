@@ -1,0 +1,156 @@
+MenuItemFile | 'File' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemNewProject | 'New Project...' |act= ActionNewProject |sc= 16462 |img= 16 |chk= None   |vis= 
+  MenuItemOpenProject | 'Open Project...' |act= ActionOpenProject |sc= 16463 |img= 18 |chk= None   |vis= 
+  MenuItemOpenRecentRoot | 'Open Recent' |act= None |sc= None |img= None |chk= None   |vis= 
+  Reload1 | 'Reload' |act= ActionReload |sc= None |img= None |chk= None   |vis= 
+  MenuItemClose | 'Close' |act= ActionClose |sc= None |img= 13 |chk= None   |vis= 
+  N1 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemProjectProperties | 'Project Properties...' |act= ActionProjectProperties |sc= None |img= 23 |chk= None   |vis= 
+  MenuItemOpenProjectFolder | 'Open Project Folder' |act= ActionOpenProjectFolder |sc= None |img= None |chk= None   |vis= 
+  N4 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemSave | 'Save' |act= ActionSave |sc= 16467 |img= 15 |chk= None   |vis= 
+  MenuItemSaveAs | 'Save As...' |act= ActionSaveAs |sc= None |img= 14 |chk= None   |vis= 
+  tntmntmZipSubtitle1 | 'Zip Subtitle...' |act= ActionZipSubtitle |sc= None |img= None |chk= None   |vis= 
+  MenuItemTranslationTemplate | 'Translate...' |act= ActionTranslationTemplate |sc= None |img= None |chk= None   |vis= 
+  MenuItemExportToWAV | 'Export to WAV...' |act= ActionExportToWAV |sc= None |img= None |chk= None   |vis= 
+  N20 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemLoadPresets | 'Load presets...' |act= None |sc= None |img= None |chk= None   |vis= 
+  N2 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemExit | 'Exit' |act= ActionExit |sc= None |img= 17 |chk= None   |vis= 
+MenuItemEdit | 'Edit' |act= None |sc= None |img= None |chk= None   |vis= 
+  Undo2 | 'Undo' |act= ActionUndo |sc= 16474 |img= 31 |chk= None   |vis= 
+  Redo1 | 'Redo' |act= ActionRedo |sc= 16473 |img= 44 |chk= None   |vis= 
+  N17 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemFind | 'Find...' |act= ActionFind |sc= 16454 |img= 11 |chk= None   |vis= 
+  MenuItemFindNext | 'Find next' |act= ActionFindNext |sc= 114 |img= 10 |chk= None   |vis= 
+  Goto1 | 'Goto' |act= ActionGoto |sc= 16455 |img= 9 |chk= None   |vis= 
+  N11 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  Inserttextfile1 | 'Insert file' |act= ActionInsertTextFile |sc= None |img= 33 |chk= None   |vis= 
+  MenuItemTextPipe | 'Text pipe' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemShowHideTextPipe | 'Show/Hide Text Pipe' |act= ActionShowHideTextPipe |sc= None |img= None |chk= None   |vis= 
+    MenuItemLoadTextFileInPipe | 'Load text pipe...' |act= ActionLoadTextPipe |sc= None |img= None |chk= None   |vis= 
+    MenuItemSaveTextPipe | 'Save text pipe as...' |act= ActionSaveTextPipeAs |sc= None |img= None |chk= None   |vis= 
+    MenuItemClearTextPipe | 'Clear text pipe' |act= ActionClearTextPipe |sc= None |img= None |chk= None   |vis= 
+  DiffFile | 'Show Text<->VO/Other diffs' |act= ActionDiffSubFiles |sc= None |img= 27 |chk= None   |vis= 
+  N6 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  SubMenuItemErrorChecking | 'Error checking' |act= None |sc= None |img= 27 |chk= None   |vis= 
+    Checkerrors1 | 'Check errors' |act= ActionCheckErrors |sc= None |img= 19 |chk= None   |vis= 
+    MenuItemShowErrorReport | 'Show error report' |act= ActionShowErrorReport |sc= None |img= 24 |chk= None   |vis= 
+    MenuItemErrorCheckingPreferences | 'Preferences...' |act= ActionErrorPreferences |sc= None |img= 22 |chk= None   |vis= 
+    N33 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemRemoveTextForHi | 'Remove text for hearing impareid' |act= ActionRemoveTextForHi |sc= None |img= 22 |chk= None   |vis= 
+    MenuItemFixCommonErrors | 'Fix common errors' |act= ActionFixCommonErrors |sc= None |img= 22 |chk= None   |vis= 
+    MenuItemSEFix | 'All fix options above' |act= None |sc= None |img= 22 |chk= None   |vis= 
+  SubMenuItemSpellcheck | 'Spell check' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemSpellcheck | 'Spell check...' |act= ActionSpellCheck |sc= None |img= None |chk= None   |vis= 
+    MenuItemLiveSpellcheck | 'Live spell check' |act= ActionLiveSpellCheck |sc= None |img= None |chk= True   |vis= 
+    N22 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+    N32 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+    SubMenuCustomDictionary | 'Custom dictionary' |act= None |sc= None |img= None |chk= None   |vis= 
+      MenuCustomDictionaryCopyToClipboard | 'Copy to clipboard' |act= None |sc= None |img= None |chk= None   |vis= 
+      MenuCustomDictionaryPasteFromClipboard | 'Paste from clipboard' |act= None |sc= None |img= None |chk= None   |vis= 
+      MenuCustomDictionaryAppendFromClipboard | 'Append from clipboard' |act= None |sc= None |img= None |chk= None   |vis= 
+    N23 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemGetMoreDictionaries | 'Get more dictionaries' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemDelay | 'Delay' |act= ActionDelay |sc= 16452 |img= 20 |chk= None   |vis= 
+  MenuItemQuickSmartDelay | 'Quick && Smart Delay' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemSynchToCursor | 'Shift all subtitles from current to cursor' |act= ActionDelaySynchToCursor |sc= None |img= 20 |chk= None   |vis= 
+    N26 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+    Movecurrentsubtitleby200Ms1 | 'Shift all subtitles from current by -200 Ms' |act= ActionDelayMoveNegative200 |sc= None |img= 46 |chk= None   |vis= 
+    Movecurrentsubtitleby100Ms1 | 'Shift all subtitles from current by -100 Ms' |act= ActionDelayMoveNegative100 |sc= None |img= 46 |chk= None   |vis= 
+    Movecurrentsubtitleby50Ms1 | 'Shift all subtitles from current by -50 Ms' |act= ActionDelayMoveNegative50 |sc= None |img= 45 |chk= None   |vis= 
+    Movecurrentsubtitleby10Ms1 | 'Shift all subtitles from current by -10 Ms' |act= ActionDelayMoveNegative10 |sc= None |img= 45 |chk= None   |vis= 
+    N27 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+    Movecurrentsubtitleby10Ms2 | 'Shift all subtitles from current by +10 Ms' |act= ActionDelayMovePositive10 |sc= None |img= 47 |chk= None   |vis= 
+    Movecurrentsubtitleby50Ms2 | 'Shift all subtitles from current by +50 Ms' |act= ActionDelayMovePositive50 |sc= None |img= 47 |chk= None   |vis= 
+    Movecurrentsubtitleby100Ms2 | 'Shift all subtitles from current by +100 Ms' |act= ActionDelayMovePositive100 |sc= None |img= 48 |chk= None   |vis= 
+    Movecurrentsubtitleby200Ms2 | 'Shift all subtitles from current by +200 Ms' |act= ActionDelayMovePositive200 |sc= None |img= 48 |chk= None   |vis= 
+  MenuItemSmartDesynch | 'Smart desynch tool' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemRTNew | 'Insert a new desynch tool checkpoint' |act= ActionResynchToolsSetPos |sc= None |img= 49 |chk= None   |vis= 
+    MenuItemRTDelete | 'Delete a desynch tool checkpoint' |act= ActionResynchToolsDelPos |sc= None |img= 50 |chk= None   |vis= 
+    MenuItemRTReset | 'Reset all desynch tool checkpoints' |act= ActionResynchToolsReset |sc= None |img= 51 |chk= None   |vis= 
+    tntmntmResynchShowHide | 'Show/Hide deysnch tool window' |act= ActionResynchShowHide |sc= None |img= 22 |chk= None   |vis= 
+  MenuItemFpsAdaptation | 'Fps adaptation tool' |act= None |sc= None |img= None |chk= None   |vis= 
+    ChangeFpsTrueCinemaToCinema | 'Fps Adaptation - 24 fps (True cinema) to 23,976 fps (Cinema)' |act= None |sc= None |img= None |chk= None   |vis= 
+    ChangeFpsPalToCinema | 'Fps Adaptation - 25 fps (Pal) to 23,976 fps (Cinema)' |act= None |sc= None |img= None |chk= None   |vis= 
+    ChangeFpsNtscToCinema | 'Fps Adaptation - 29,97 fps (Ntsc) to 23,976 fps (Cinema)' |act= None |sc= None |img= None |chk= None   |vis= 
+    ChangeFpsCinemaToTrueCinema | 'Fps Adaptation - 23,976 fps (Cinema) to 24 fps (True cinema)' |act= None |sc= None |img= None |chk= None   |vis= 
+    ChangeFpsPalToTrueCinema | 'Fps Adaptation - 25 fps (Pal) to 24 fps (True cinema)' |act= None |sc= None |img= None |chk= None   |vis= 
+    ChangeFpsNtscToTrueCinema | 'Fps Adaptation - 29,97 fps (Ntsc) to 24 fps (True cinema)' |act= None |sc= None |img= None |chk= None   |vis= 
+    ChangeFpsCinemaToPal | 'Fps Adaptation - 23,976 fps (Cinema) to 25 fps (Pal)' |act= None |sc= None |img= None |chk= None   |vis= 
+    ChangeFpsTrueCinemaToPal | 'Fps Adaptation - 24 fps (True cinema) to 25 fps (Pal)' |act= None |sc= None |img= None |chk= None   |vis= 
+    ChangeFpsNtscToPal | 'Fps Adaptation - 29,97 fps (Ntsc) to 25 fps (Pal)' |act= None |sc= None |img= None |chk= None   |vis= 
+    ChangeFpsCinemaToNtsc | 'Fps Adaptation - 23,976 fps (Cinema) to 29,97 fps (Ntsc)' |act= None |sc= None |img= None |chk= None   |vis= 
+    ChangeFpsTrueCinemaToNtsc | 'Fps Adaptation - 24 fps (True cinema) to 29,97 fps (Ntsc)' |act= None |sc= None |img= None |chk= None   |vis= 
+    ChangeFpsPalToNtsc | 'Fps Adaptation - 25 fps (Pal) to 29,97 fps (Ntsc)' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemKeepDurationIntact | 'Keep subtitles length' |act= None |sc= None |img= None |chk= True   |vis= 
+  N5 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  Styles1 | 'Styles' |act= ActionStyles |sc= None |img= None |chk= None   |vis= 
+  SubMenuItemWebServer | 'Web server' |act= None |sc= None |img= 25 |chk= None   |vis= 
+    MenuItemStartWebServer | 'Start' |act= None |sc= None |img= None |chk= None True  |vis= 
+    MenuItemStopWebServer | 'Stop' |act= None |sc= None |img= None |chk= True True  |vis= 
+    N7 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemShowSuggestions | 'Show suggestions' |act= ActionShowSuggestions |sc= None |img= 24 |chk= None   |vis= 
+  MenuItemPreferences | 'Preferences...' |act= ActionPreferences |sc= None |img= 22 |chk= None   |vis= 
+MenuItemView | 'View' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemZoomIn | 'Zoom In' |act= ActionZoomIn |sc= None |img= 0 |chk= None   |vis= 
+  MenuItemZoomOut | 'Zoom Out' |act= ActionZoomOut |sc= None |img= 1 |chk= None   |vis= 
+  MenuItemZoomSelection | 'Zoom Selection' |act= ActionZoomSelection |sc= None |img= 2 |chk= None   |vis= 
+  MenuItemZoomAll | 'Zoom All' |act= ActionZoomAll |sc= None |img= 3 |chk= None   |vis= 
+  MenuItemVerticalScaling | 'Zoom Vertical' |act= ActionZoomVertical |sc= None |img= 36 |chk= None   |vis= 
+  N25 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemShowHideReferenceVO | 'Show/Hide Reference VO' |act= ActionToggleVO |sc= None |img= None |chk= None   |vis= 
+  N3 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemShowHideVideo | 'Show/Hide Video' |act= ActionShowHideVideo |sc= 115 |img= 21 |chk= None   |vis= 
+  MenuItemSetVideoResolution | 'Set Video Resolution' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemSetVideoResolutionAdd50Perc | 'Full resolution + 50%' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemSetVideoResolutionAdd25Perc | 'Full resolution + 25%' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemSetVideoResolutionNormal | 'Full resolution' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemSetVideoResolutionTo75Perc | 'Resolution to 75% than original' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemSetVideoResolutionTo50Perc | 'Resolution to 50% than original' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemSetVideoResolutionTo33Perc | 'Resolution to 33% than original' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemSetVideoResolutionTo25Perc | 'Resolution to 25% than original' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemShowHideSceneChange | 'Show/Hide scene change' |act= ActionShowHideSceneChange |sc= None |img= None |chk= None   |vis= 
+  MenuShowHideSubtitles | 'Show/Hide subtitles' |act= ActionShowHideSubs |sc= None |img= None |chk= None   |vis= 
+  MenuItemDetachVideoWindow | 'Detach video window' |act= ActionDetachVideo |sc= None |img= None |chk= None   |vis= 
+  MenuItemShowFrameAtCursor | 'Show frame at cursor' |act= ActionShowFrameAtCursor |sc= None |img= 43 |chk= None   |vis= 
+  MenuItemShowStartFrame | 'Show start frame' |act= ActionShowStartFrame |sc= None |img= 41 |chk= None   |vis= 
+  MenuItemShowStopFrame | 'Show stop frame' |act= ActionShowStopFrame |sc= None |img= 42 |chk= None   |vis= 
+  N21 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  Showsilentzones1 | 'Show silent zones' |act= ActionShowSilentZones |sc= None |img= None |chk= None   |vis= 
+  N14 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  ShowHidelogs1 | 'Show/Hide Logs' |act= ActionShowHideLogs |sc= None |img= None |chk= None   |vis= 
+MenuItemPlayback | 'Playback' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemPlay | 'Play' |act= ActionPlay |sc= 112 |img= 4 |chk= None   |vis= 
+  MenuItemStop | 'Stop' |act= ActionStop |sc= 27 |img= 5 |chk= None   |vis= 
+  MenuItemPause | 'Pause' |act= ActionPause |sc= None |img= 40 |chk= None   |vis= 
+  MenuItemLoop | 'Loop' |act= ActionLoop |sc= 113 |img= 6 |chk= None   |vis= 
+  NextSub1 | 'Next subtitle' |act= ActionNextSub |sc= 117 |img= 7 |chk= None   |vis= 
+  PreviousSub1 | 'Previous subtitle' |act= ActionPreviousSub |sc= 116 |img= 8 |chk= None   |vis= 
+  Loopselectionstart1 | 'Loop selection start' |act= ActionLoopSelStart |sc= None |img= 35 |chk= None   |vis= 
+  Loopselectionend1 | 'Loop selection end' |act= ActionLoopSelEnd |sc= None |img= 34 |chk= None   |vis= 
+  Playselectionstart1 | 'Play selection start' |act= ActionPlaySelStart |sc= None |img= 37 |chk= None   |vis= 
+  Playselectionend1 | 'Play selection end' |act= ActionPlaySelEnd |sc= None |img= 38 |chk= None   |vis= 
+  MenuItemPlayToEnd | 'Play to end' |act= ActionPlayToEnd |sc= None |img= 39 |chk= None   |vis= 
+  N12 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  Rate1 | 'Playback Rate' |act= None |sc= None |img= None |chk= None   |vis= 
+    Setplaybackrateat1001 | 'Set playback rate at 100%' |act= ActionSetPlaybackRate100 |sc= None |img= None |chk= None   |vis= 
+    Setplaybackrateat901 | 'Set playback rate at 90%' |act= ActionSetPlaybackRate90 |sc= None |img= None |chk= None   |vis= 
+    Setplaybackrateat801 | 'Set playback rate at 80%' |act= ActionSetPlaybackRate80 |sc= None |img= None |chk= None   |vis= 
+    Setplaybackrateat701 | 'Set playback rate at 70%' |act= ActionSetPlaybackRate70 |sc= None |img= None |chk= None   |vis= 
+    Setplaybackrateat601 | 'Set playback rate at 60%' |act= ActionSetPlaybackRate60 |sc= None |img= None |chk= None   |vis= 
+  MenuItemsWaveCorrection | 'Wave form correction' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemActionShiftForwardWaveForm | 'Shift wave form forward from cursor' |act= ActionShiftForwardWaveForm |sc= 24646 |img= None |chk= None   |vis= 
+    MenuItemActionShiftBackwardWaveForm | 'Shift wave form backward to the cursor' |act= ActionShiftBackwardWaveForm |sc= 24642 |img= None |chk= None   |vis= 
+MenuItemJSTools | 'JS Tools' |act= None |sc= None |img= None |chk= None   |vis= 
+MenuItemHelpRoot | '?' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemHelp | 'Help' |act= None |sc= None |img= 26 |chk= None   |vis= 
+    MenuItemHelpIndex | 'Index' |act= None |sc= None |img= None |chk= None   |vis= 
+    MenuItemHelpIndexWAVDisplayControl | 'WAV Display Control' |act= None |sc= None |img= None |chk= None   |vis= 
+  N8 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemCheckUpdates | 'Check for updates' |act= None |sc= None |img= 64 |chk= None   |vis= 
+  MenuItemRecentChanges | 'Recent changes' |act= None |sc= None |img= 54 |chk= None   |vis= 
+  N29 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemGooglePage | 'Google+ page' |act= None |sc= None |img= 53 |chk= None   |vis= 
+  N31 | '-' |act= None |sc= None |img= None |chk= None   |vis= 
+  MenuItemAbout | 'About' |act= None |sc= None |img= None |chk= None   |vis= 

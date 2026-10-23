@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>VisualSubSync.Media</RootNamespace>
+    <!-- FFmpeg.AutoGen expõe ponteiros; a extração de áudio e quadros-chave usa interop direto. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../VisualSubSync.Core/VisualSubSync.Core.csproj" />
+  </ItemGroup>
+  <!-- win-x64 também vale fora do Windows, para publicar o executável a partir do Linux. -->
+  <ItemGroup Condition="'$(OS)' == 'Windows_NT' Or '$(RuntimeIdentifier)' == 'win-x64'">
+    <PackageReference Include="FFmpeg.AutoGen" />
+    <!-- DLLs do FFmpeg 7.1 para Windows x64 (avcodec-61, avformat-61, avutil-59, swresample-5). -->
+    <PackageReference Include="Sdcb.FFmpeg.runtime.windows-x64" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(OS)' != 'Windows_NT' And '$(RuntimeIdentifier)' != 'win-x64'">
+    <!-- Só para testes em Linux com o FFmpeg 6.1 do sistema. -->
+    <PackageReference Include="FFmpeg.AutoGen" VersionOverride="6.1.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- libmpv-2.dll vem de poc\obter-libmpv.ps1. Vai para a saída e para a publicação. -->
+    <None Include="$(MSBuildThisFileDirectory)../../poc/lib/libmpv-2.dll"
+          Condition="Exists('$(MSBuildThisFileDirectory)../../poc/lib/libmpv-2.dll')"
+          Link="libmpv-2.dll"
+          CopyToOutputDirectory="PreserveNewest"
+          CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

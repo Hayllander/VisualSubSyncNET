@@ -1,0 +1,136 @@
+<Window x:Class="VisualSubSync.App.Views.ProjectFormWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="New Project"
+        Width="714" Height="624"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+        FontFamily="Microsoft Sans Serif" FontSize="11"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True" SnapsToDevicePixels="True">
+  <!-- TProjectForm do VisualSubSync Enhanced (docs/enhanced/TPROJECTFORM.txt). Coordenadas do .dfm. -->
+  <Window.Resources>
+    <Style x:Key="BrowseButton" TargetType="Button">
+      <Setter Property="Focusable" Value="False" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="FontFamily" Value="Microsoft Sans Serif" />
+      <Setter Property="FontSize" Value="11" />
+    </Style>
+    <Style x:Key="Edit21" TargetType="TextBox">
+      <Setter Property="Height" Value="21" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+  </Window.Resources>
+
+  <Canvas Width="714" Height="624">
+
+    <!-- gbVideoFile : " Video source file (optional) : " -->
+    <Border Canvas.Left="6" Canvas.Top="4" Width="695" Height="269" Style="{StaticResource VssGroupFrame}" />
+    <TextBlock Canvas.Left="14" Canvas.Top="-3" Height="14" Style="{StaticResource VssGroupCaption}"
+               Text=" Video source file (optional) : " />
+    <TextBox x:Name="VideoFileEdit" Canvas.Left="14" Canvas.Top="21" Width="634" Style="{StaticResource Edit21}" />
+    <Button x:Name="BrowseVideoButton" Canvas.Left="661" Canvas.Top="20" Width="23" Height="22"
+            Style="{StaticResource BrowseButton}" Content="..." Click="OnBrowseVideo" />
+
+    <!-- gbVideoSourceOperation: manter os controles do Enhanced no lugar; o fluxo de áudio/picos usa a extração legada. -->
+    <Border Canvas.Left="14" Canvas.Top="46" Width="636" Height="183" Style="{StaticResource VssGroupFrame}" />
+    <TextBlock Canvas.Left="22" Canvas.Top="39" Height="14" Style="{StaticResource VssGroupCaption}"
+               Text="Available operations on video source file" />
+    <Canvas>
+      <RadioButton x:Name="VideoSourceOperationNone" Canvas.Left="21" Canvas.Top="64" Width="66" Height="17" Content="None"
+                   Checked="OnVideoSourceOperationChanged"
+                   ToolTip="Generate audio waveform / Peak file (using FFMpeg / tnk to Zeranoe FFmpeg project)" />
+      <RadioButton x:Name="VideoSourceOperationGeneratePeakFile" Canvas.Left="21" Canvas.Top="88" Width="162" Height="17" Content="Audio waveform / peak file"
+                   Checked="OnVideoSourceOperationChanged"
+                   ToolTip="Generate audio waveform / Peak file (using FFMpeg / tnk to Zeranoe FFmpeg project)" />
+      <ComboBox x:Name="VideoSourceOperationAudioTracks" Canvas.Left="184" Canvas.Top="86" Width="303" Height="21"
+                Visibility="Collapsed" SelectionChanged="OnVideoSourceOperationChanged" />
+      <CheckBox x:Name="VideoSourceOperationAudioTracksOnlyCenter" Canvas.Left="500" Canvas.Top="88" Width="137" Height="17"
+                Content="Only dialog channel (FC)" Visibility="Collapsed" IsEnabled="False"
+                ToolTip="Include only center/dialog channel (FC), when avaiable" />
+      <RadioButton Canvas.Left="21" Canvas.Top="112" Width="67" Height="17" Content="Remux" IsEnabled="False"
+                   ToolTip="Remux a new Mkv video source file (using Mkvmerge / tnk to MKVToolNix project)" />
+      <RadioButton Canvas.Left="80" Canvas.Top="112" Width="219" Height="17" Content="Encode with audio (Pcm G.711 / mono)" IsEnabled="False"
+                   ToolTip="Create a new video source file (mkv) + convert audio to Pcm G.711 / mono (using FFMpeg / tnk to Zeranoe FFmpeg project)" />
+      <RadioButton Canvas.Left="291" Canvas.Top="112" Width="183" Height="17" Content="Encode with audio (Pcm / stereo)" IsEnabled="False"
+                   ToolTip="Create a new video source file (mkv) + convert audio to Pcm / stereo (using FFMpeg / tnk to Zeranoe FFmpeg project)" />
+      <RadioButton Canvas.Left="477" Canvas.Top="112" Width="162" Height="17" Content="Calculate the MD5 checksum" IsEnabled="False"
+                   ToolTip="Calculate the MD5 checksum of the video source file" />
+      <RadioButton Canvas.Left="21" Canvas.Top="138" Width="120" Height="17" Content="Extract subtitle track" IsEnabled="False"
+                   ToolTip="Extract subtitle track as Subtitle file (using FFMpeg / tnk to Zeranoe FFmpeg project)" />
+      <RadioButton Canvas.Left="155" Canvas.Top="138" Width="160" Height="17" Content="Extract subtitle track Ref. VO" IsEnabled="False"
+                   ToolTip="Extract subtitle track as Reference VO/Other (using FFMpeg / tnk to Zeranoe FFmpeg project)" />
+      <RadioButton Canvas.Left="21" Canvas.Top="162" Width="170" Height="17" Content="Extract precise scene change" IsEnabled="False"
+                   ToolTip="Extract precise scene change based on video analisys" />
+      <Button x:Name="VideoSourceOperationExecute" Canvas.Left="24" Canvas.Top="190" Width="619" Height="24"
+              Content="Start selected operation on video source file" Click="OnVideoSourceOperationExecute" />
+    </Canvas>
+
+    <Button x:Name="ExtractWavButton" Canvas.Left="23" Canvas.Top="237" Width="621" Height="24"
+            Content="Extract WAV/Peak file from video (legacy)" Click="OnExtractWav" />
+
+    <!-- gbWAVFile : " Audio waveform / Audio only preview (optional) : " -->
+    <Border Canvas.Left="6" Canvas.Top="288" Width="695" Height="107" Style="{StaticResource VssGroupFrame}" />
+    <TextBlock Canvas.Left="14" Canvas.Top="281" Height="14" Style="{StaticResource VssGroupCaption}"
+               Text=" Audio waveform / Audio only preview (optional) : " />
+    <!-- Ordem de tabulação do DFM: EditWAVFilename, rbExternal, rbPeakOnly, EditPeakFilename, rbNoWaveform. -->
+    <TextBox x:Name="WavFileEdit" Canvas.Left="88" Canvas.Top="362" Width="561" Style="{StaticResource Edit21}"
+             TextChanged="OnWavTextChanged" GotFocus="OnPlaceholderGotFocus" LostFocus="OnPlaceholderLostFocus" />
+    <Button x:Name="BrowseWavButton" Canvas.Left="661" Canvas.Top="361" Width="23" Height="22"
+            Style="{StaticResource BrowseButton}" Content="..." Click="OnBrowseWav" />
+    <RadioButton x:Name="ExternalRadio" Canvas.Left="14" Canvas.Top="364" Width="73" Height="17" Content="WAV file :"
+                 ToolTip="Use an external or extracted WAV file for waveform and audio only preview."
+                 Checked="OnWaveModeChanged" />
+    <RadioButton x:Name="PeakOnlyRadio" Canvas.Left="14" Canvas.Top="336" Width="73" Height="17" Content="Peak file :"
+                 ToolTip="Use the video file for audio preview and a created peak file for the waveform display."
+                 Checked="OnWaveModeChanged" />
+    <TextBox x:Name="PeakFileEdit" Canvas.Left="88" Canvas.Top="334" Width="561" Style="{StaticResource Edit21}"
+             TextChanged="OnPeakTextChanged" GotFocus="OnPlaceholderGotFocus" LostFocus="OnPlaceholderLostFocus" />
+    <Button x:Name="BrowsePeakButton" Canvas.Left="661" Canvas.Top="333" Width="23" Height="22"
+            Style="{StaticResource BrowseButton}" Content="..." Click="OnBrowsePeak" />
+    <RadioButton x:Name="NoWaveformRadio" Canvas.Left="14" Canvas.Top="312" Width="129" Height="17"
+                 Content="No waveform display"
+                 ToolTip="If available the audio track of the video file will be used for preview but no waveform is displayed."
+                 Checked="OnWaveModeChanged" />
+
+    <!-- gbSubtitleFile : " Subtitle file : " -->
+    <Border Canvas.Left="6" Canvas.Top="405" Width="695" Height="67" Style="{StaticResource VssGroupFrame}" />
+    <TextBlock Canvas.Left="14" Canvas.Top="398" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Subtitle file : " />
+    <TextBox x:Name="SubtitleFileEdit" Canvas.Left="15" Canvas.Top="422" Width="554" Style="{StaticResource Edit21}" />
+    <Button x:Name="BrowseSubtitleButton" Canvas.Left="661" Canvas.Top="421" Width="23" Height="22"
+            Style="{StaticResource BrowseButton}" Content="..." Click="OnBrowseSubtitle" />
+    <ComboBox x:Name="SubtitleFormatCombo" Canvas.Left="575" Canvas.Top="421" Width="73" Height="21"
+              ToolTip="Subtitle file format" SelectedIndex="0" SelectionChanged="OnSubtitleFormatChanged">
+      <ComboBoxItem Content="SRT" />
+      <ComboBoxItem Content="SSA" />
+      <ComboBoxItem Content="ASS" />
+    </ComboBox>
+    <CheckBox x:Name="SaveAsUtf8Check" Canvas.Left="14" Canvas.Top="444" Width="92" Height="22" Content="Save as UTF8" />
+    <CheckBox Canvas.Left="124" Canvas.Top="444" Width="183" Height="21" IsEnabled="False"
+              Content="Select translate mode on creation" />
+
+    <!-- gbVO : " Reference VO/Other : " -->
+    <Border Canvas.Left="6" Canvas.Top="476" Width="695" Height="51" Style="{StaticResource VssGroupFrame}" />
+    <TextBlock Canvas.Left="14" Canvas.Top="469" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Reference VO/Other : " />
+    <TextBox x:Name="SubtitleVOEdit" Canvas.Left="15" Canvas.Top="492" Width="628" Style="{StaticResource Edit21}" />
+    <Button x:Name="BrowseVOButton" Canvas.Left="661" Canvas.Top="492" Width="23" Height="22"
+            Style="{StaticResource BrowseButton}" Content="..." Click="OnBrowseVO" />
+
+    <!-- gbProjectFile : " Project file : " -->
+    <Border Canvas.Left="6" Canvas.Top="531" Width="695" Height="51" Style="{StaticResource VssGroupFrame}" />
+    <TextBlock Canvas.Left="14" Canvas.Top="524" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Project file : " />
+    <TextBox x:Name="ProjectFileEdit" Canvas.Left="16" Canvas.Top="548" Width="625" Style="{StaticResource Edit21}" />
+    <Button x:Name="BrowseProjectButton" Canvas.Left="661" Canvas.Top="547" Width="23" Height="22"
+            Style="{StaticResource BrowseButton}" Content="..." Click="OnBrowseProject" />
+
+    <Button x:Name="CreateButton" Canvas.Left="489" Canvas.Top="586" Width="131" Height="27"
+            Content="Create new project" Click="OnCreateOrOk" />
+    <Button x:Name="OkButton" Canvas.Left="546" Canvas.Top="586" Width="75" Height="27"
+            Content="OK" Visibility="Collapsed" Click="OnCreateOrOk" />
+    <!-- IsCancel também responde ao Esc, como o FormKeyDown do legado. -->
+    <Button Canvas.Left="625" Canvas.Top="586" Width="75" Height="27" Content="Cancel" IsCancel="True" />
+  </Canvas>
+</Window>

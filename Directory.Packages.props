@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+    <!-- Motor JavaScript dos plugins (no lugar do SpiderMonkey 1.5 do original). -->
+    <PackageVersion Include="Jint" Version="4.17.0" />
+    <!-- Verificação ortográfica com os dicionários Hunspell (no lugar da libhunspell.dll do original). -->
+    <PackageVersion Include="WeCantSpell.Hunspell" Version="7.0.1" />
+    <!-- Prova de conceito de mídia. FFmpeg.AutoGen deve acompanhar a versão maior das DLLs (7.1). -->
+    <PackageVersion Include="FFmpeg.AutoGen" Version="7.1.1" />
+    <PackageVersion Include="Sdcb.FFmpeg.runtime.windows-x64" Version="7.1.0" />
+  </ItemGroup>
+</Project>

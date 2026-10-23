@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VisualSubSync.NET</title>
+  <meta name="description" content="VisualSubSync.NET is a faithful .NET migration of VisualSubSync, focused on waveform-based subtitle synchronization for Windows.">
+  <link rel="icon" href="favicon.ico">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f3f6fb;
+      --panel: #ffffff;
+      --line: #d7e0ee;
+      --text: #19324d;
+      --muted: #56708c;
+      --brand: #0d5cab;
+      --brand-dark: #083d72;
+      --accent: #dff0ff;
+      --success: #e7f7ea;
+      --shadow: 0 10px 30px rgba(17, 41, 72, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #eef4fb 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    a {
+      color: var(--brand);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .wrap {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .topbar .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--brand-dark);
+    }
+
+    .brand img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 14px;
+    }
+
+    .hero {
+      padding: 56px 0 34px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .hero-card,
+    .panel,
+    .feature,
+    .callout {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: 28px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--brand-dark);
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(34px, 6vw, 56px);
+      line-height: 1.06;
+      color: var(--brand-dark);
+    }
+
+    .subtitle {
+      margin: 0 0 20px;
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 52ch;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--brand);
+      background: var(--brand);
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .button.secondary {
+      background: #fff;
+      color: var(--brand);
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .meta li {
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+    }
+
+    .status-card {
+      padding: 24px;
+    }
+
+    .status-card h2,
+    section h2 {
+      margin: 0 0 14px;
+      font-size: 26px;
+      color: var(--brand-dark);
+    }
+
+    .status-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .status-list li {
+      padding: 14px;
+      border-radius: 10px;
+      background: #f9fbfe;
+      border: 1px solid var(--line);
+    }
+
+    .status-list strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    section {
+      padding: 18px 0 8px;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .feature {
+      padding: 20px;
+    }
+
+    .feature h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: var(--brand-dark);
+    }
+
+    .panel {
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .panel p:last-child,
+    .feature p:last-child {
+      margin-bottom: 0;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .callout {
+      padding: 20px 24px;
+      background: linear-gradient(180deg, var(--success) 0%, #ffffff 100%);
+    }
+
+    .footer {
+      margin-top: 28px;
+      padding: 24px 0 40px;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 880px) {
+      .hero-grid,
+      .section-grid,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar .wrap {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <img src="favicon.ico" alt="VisualSubSync.NET icon">
+        <span>VisualSubSync.NET</span>
+      </div>
+      <nav class="nav" aria-label="Primary">
+        <a href="#presentation">Presentation</a>
+        <a href="#download">Download</a>
+        <a href="#features">Features</a>
+        <a href="#tutorials">Tutorials</a>
+        <a href="#help">Help</a>
+        <a href="#contact">Contact</a>
+        <a href="https://github.com/Hayllander/TudoMKV" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <article class="hero-card">
+          <span class="eyebrow">Faithful Windows Migration</span>
+          <h1>Waveform-based subtitle synchronization, rebuilt for .NET.</h1>
+          <p class="subtitle">
+            VisualSubSync.NET is a faithful migration of the original 2013 VisualSubSync,
+            bringing the classic workflow to a modern .NET / WPF codebase while preserving
+            the interface, timing logic, and day-to-day editing feel.
+          </p>
+          <div class="actions">
+            <a class="button" href="#download">View Download Section</a>
+            <a class="button secondary" href="#presentation">Read the Project Overview</a>
+          </div>
+          <ul class="meta">
+            <li>Current version: 2.0.0-alpha.2</li>
+            <li>Windows 10 / 11</li>
+            <li>SRT + SSA/ASS</li>
+            <li>libmpv + FFmpeg</li>
+          </ul>
+        </article>
+
+        <aside class="status-card hero-card">
+          <h2>Current Status</h2>
+          <ul class="status-list">
+            <li>
+              <strong>Migration implemented in code</strong>
+              Main milestones M0-M9 are already present in the .NET application.
+            </li>
+            <li>
+              <strong>Automated validation</strong>
+              Current working build is clean and automated tests are passing.
+            </li>
+            <li>
+              <strong>Runtime validation in progress</strong>
+              Real-world synchronization, playback, layout parity, and installer validation are being finalized.
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section id="presentation">
+      <div class="wrap">
+        <div class="panel">
+          <h2>Presentation</h2>
+          <p>
+            VisualSubSync.NET keeps the original VisualSubSync idea intact: subtitle work centered
+            around the audio waveform, precise timing, and a workflow that is fast for real subtitle editing.
+          </p>
+          <p>
+            The project supports SRT and SSA/ASS subtitles, project files, waveform and scene change data,
+            subtitle styling, spell checking, JavaScript plugins, VO/reference subtitles, translation helpers,
+            and the classic VisualSubSync editing flow that experienced users already know.
+          </p>
+          <p>
+            The original VisualSubSync 1.0.1 source is treated as the behavioral specification, while the
+            Enhanced release is used as the primary visual reference for layout and interface parity.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <h2>Core Features</h2>
+        <div class="section-grid">
+          <article class="feature">
+            <h3>Waveform Editing</h3>
+            <p>
+              Precision subtitle timing with waveform display, selection tools, zoom controls,
+              scene changes, and timing-oriented playback.
+            </p>
+          </article>
+          <article class="feature">
+            <h3>Classic Workflow</h3>
+            <p>
+              The interface and behavior follow the original application closely, including
+              editing flow, shortcuts, project handling, and subtitle timing logic.
+            </p>
+          </article>
+          <article class="feature">
+            <h3>Modern Backend</h3>
+            <p>
+              Playback uses libmpv and waveform/keyframe extraction uses FFmpeg, replacing legacy
+              dependencies while keeping user-visible behavior aligned with VisualSubSync.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="download">
+      <div class="wrap two-col">
+        <div class="panel">
+          <h2>Download</h2>
+          <p>
+            This page is ready for a future public site at <strong>visualsubsyncNET.com</strong>.
+            Download links can be updated here when the public release packages are ready.
+          </p>
+          <p>
+            Planned distribution formats:
+          </p>
+          <ul>
+            <li>Portable self-contained build</li>
+            <li>Windows installer package</li>
+          </ul>
+          <p>
+            Source code is hosted on GitHub:
+            <a href="https://github.com/Hayllander/TudoMKV" target="_blank" rel="noopener">github.com/Hayllander/TudoMKV</a>
+          </p>
+        </div>
+
+        <div class="callout">
+          <h2>Release Note</h2>
+          <p>
+            The current branch is in active validation. The best next step for this page is to replace
+            the placeholder download links with the final installer and portable package URLs once the
+            public release is published.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="tutorials">
+      <div class="wrap two-col">
+        <div class="panel">
+          <h2>Tutorials</h2>
+          <p>
+            The classic tutorial structure can be reused here:
+          </p>
+          <ul>
+            <li>Making a transcript</li>
+            <li>Synchronizing an already made transcript</li>
+            <li>Installing media dependencies</li>
+          </ul>
+          <p>
+            This local page keeps those sections visible so the future site can grow naturally from the original VisualSubSync structure.
+          </p>
+        </div>
+
+        <div class="panel">
+          <h2>Compatibility</h2>
+          <p>
+            VisualSubSync.NET targets Windows 10 and 11, preserving the desktop editing experience while using a
+            newer application stack. The project is intentionally static-site friendly, so the public homepage can remain simple and easy to host.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="help">
+      <div class="wrap">
+        <div class="panel">
+          <h2>Help</h2>
+          <p>
+            Help pages can cover waveform controls, playback controls, subtitle timing workflow,
+            plugins, dictionaries, project files, and migration differences that are intentionally documented.
+          </p>
+          <p>
+            A good structure for the public site is:
+            Home, Download, Changelog, Tutorials, Help, and Contact.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap">
+        <div class="panel">
+          <h2>Contact</h2>
+          <p>
+            This local draft is meant to become the homepage for <strong>visualsubsyncNET.com</strong>.
+          </p>
+          <p>
+            Suggested public contact items for the live site:
+          </p>
+          <ul>
+            <li>Project homepage URL</li>
+            <li>Download page URL</li>
+            <li>Changelog URL</li>
+            <li>Support / feedback e-mail or form</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <p>
+        VisualSubSync.NET local homepage draft. Inspired by the original VisualSubSync 2013 website structure,
+        rebuilt as a standalone static HTML page for future publication.
+      </p>
+      <p>
+        Source code: <a href="https://github.com/Hayllander/TudoMKV" target="_blank" rel="noopener">github.com/Hayllander/TudoMKV</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<Application x:Class="VisualSubSync.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Application.Resources>
+    <!-- Diálogos do VCL: fundo, fonte e caixas de grupo desenhadas como o TGroupBox.
+         As janelas posicionam os filhos em um Canvas com as coordenadas do .dfm. -->
+
+    <!-- Molduras das caixas de grupo: linha de 1 px em volta, com a legenda sobre a linha de cima. -->
+    <Style x:Key="VssGroupFrame" TargetType="Border">
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
+      <Setter Property="CornerRadius" Value="0" />
+    </Style>
+
+    <Style x:Key="VssGroupCaption" TargetType="TextBlock">
+      <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+      <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+      <Setter Property="Padding" Value="3,0" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+  </Application.Resources>
+</Application>

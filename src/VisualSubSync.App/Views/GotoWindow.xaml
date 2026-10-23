@@ -1,0 +1,37 @@
+<Window x:Class="VisualSubSync.App.Views.GotoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctl="clr-namespace:VisualSubSync.App.Controls"
+        Title="Go to"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="CanMinimize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+        FontFamily="Microsoft Sans Serif" FontSize="11"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True" SnapsToDevicePixels="True"
+        FocusManager.FocusedElement="{Binding ElementName=EditLine}"
+        PreviewKeyDown="OnPreviewKeyDown">
+  <!-- TGotoForm (docs/enhanced/TGOTOFORM.txt). ClientWidth 217, ClientHeight 121, BorderWidth 4. -->
+  <Border Padding="4">
+    <Canvas Width="217" Height="121">
+      <!-- Panel1: BevelOuter = bvLowered. -->
+      <Border Canvas.Left="0" Canvas.Top="0" Width="217" Height="89" BorderThickness="1,1,0,0"
+              BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
+        <Border BorderThickness="0,0,1,1" Margin="-1,-1,0,0"
+                BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" />
+      </Border>
+      <RadioButton x:Name="rbGotoLine" Canvas.Left="16" Canvas.Top="18" Width="57" Height="17"
+                   Content="Line :" IsChecked="True" TabIndex="0" />
+      <TextBox x:Name="EditLine" Canvas.Left="80" Canvas.Top="16" Width="121" Height="21" Text="1"
+               VerticalContentAlignment="Center" TabIndex="1" TextChanged="OnLineChanged" />
+      <RadioButton x:Name="rbGotoTime" Canvas.Left="16" Canvas.Top="50" Width="57" Height="17"
+                   Content="Time :" TabIndex="2" />
+      <ctl:MaskTimeEdit x:Name="MaskEditTime" Canvas.Left="80" Canvas.Top="48" Width="120" Height="21"
+                        VerticalContentAlignment="Center" TabIndex="3" TextChanged="OnTimeChanged" />
+      <Button Canvas.Left="16" Canvas.Top="96" Width="89" Height="25" Content="Go" TabIndex="4" Click="OnGo" />
+      <Button Canvas.Left="120" Canvas.Top="96" Width="83" Height="25" Content="Cancel" TabIndex="5" Click="OnCancel" />
+    </Canvas>
+  </Border>
+</Window>

@@ -1,0 +1,898 @@
+<Window x:Class="VisualSubSync.App.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:VisualSubSync.App.ViewModels"
+        xmlns:conv="clr-namespace:VisualSubSync.App.Converters"
+        xmlns:ctl="clr-namespace:VisualSubSync.App.Controls"
+        xmlns:wave="clr-namespace:VisualSubSync.Waveform;assembly=VisualSubSync.Waveform"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+        Title="{Binding WindowTitle}"
+        Icon="/Assets/VSS.ico"
+        Width="1083" Height="755"
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+        FontFamily="Microsoft Sans Serif" FontSize="11"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True" SnapsToDevicePixels="True">
+  <!-- Layout do TMainForm do VisualSubSync Enhanced (docs/enhanced/TMAINFORM.txt). Posições e tamanhos em pixels. -->
+  <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    <conv:BindingProxy x:Key="Proxy" Data="{Binding}" />
+
+    <!-- TPanel com BevelOuter = bvLowered: sombra em cima/esquerda, realce embaixo/direita. -->
+    <Style x:Key="LoweredPanel" TargetType="ContentControl">
+      <Setter Property="Focusable" Value="False" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ContentControl">
+            <Border BorderThickness="1,1,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Background="{TemplateBinding Background}">
+              <Border BorderThickness="0,0,1,1" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}">
+                <ContentPresenter />
+              </Border>
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <!-- TSpeedButton: não recebe foco; o glifo fica centrado. -->
+    <Style x:Key="SpeedButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+      <Setter Property="Focusable" Value="False" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+    </Style>
+
+    <Style x:Key="ReadOnlyEdit" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+      <Setter Property="IsReadOnly" Value="True" />
+      <Setter Property="Width" Value="73" />
+      <Setter Property="Height" Value="21" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="IsEnabled" Value="{Binding IsProjectOpen}" />
+    </Style>
+
+    <!-- Rótulos Begin/End/Length do PanelTimeSelView no Enhanced: negrito, sublinhado, azul-marinho. -->
+    <Style x:Key="SelLabel" TargetType="TextBlock">
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="TextDecorations" Value="Underline" />
+      <Setter Property="Foreground" Value="Navy" />
+      <Setter Property="IsEnabled" Value="{Binding IsProjectOpen}" />
+      <Style.Triggers>
+        <Trigger Property="IsEnabled" Value="False">
+          <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+
+    <!-- Cabeçalho do TPageControl do Enhanced: faixa de 24 px. O painel de abas do WPF ocupa
+         3 px a mais que o TabItem, por isso 21 e não 24. Só a aba principal; as abas
+         aninhadas dos painéis novos têm altura própria, definida no DFM. -->
+    <Style x:Key="MainTabItem" TargetType="TabItem">
+      <Setter Property="Height" Value="21" />
+    </Style>
+
+    <!-- Cabeçalho do TVirtualStringTree: plano, fonte MS Sans Serif 8. -->
+    <Style x:Key="SubListHeader" TargetType="DataGridColumnHeader">
+      <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" />
+      <Setter Property="BorderThickness" Value="0,0,1,1" />
+      <Setter Property="Padding" Value="4,0" />
+      <Setter Property="FontFamily" Value="Microsoft Sans Serif" />
+      <Setter Property="FontSize" Value="11" />
+      <Setter Property="FontWeight" Value="Normal" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <!-- Seleção "blended" em linha inteira, como toUseBlendedSelection + toFullRowSelect. -->
+    <Style x:Key="SubListCell" TargetType="DataGridCell">
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="4,0" />
+      <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="DataGridCell">
+            <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+              <ContentPresenter VerticalAlignment="Center" />
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+      <Style.Triggers>
+        <Trigger Property="IsSelected" Value="True">
+          <Setter Property="Background" Value="Transparent" />
+          <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+    <Style x:Key="SubListRow" TargetType="DataGridRow">
+      <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+      <Style.Triggers>
+        <Trigger Property="IsSelected" Value="True">
+          <Setter Property="Background">
+            <Setter.Value>
+              <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightColorKey}}" Opacity="0.5" />
+            </Setter.Value>
+          </Setter>
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+  </Window.Resources>
+  <Window.InputBindings>
+    <KeyBinding Gesture="Ctrl+N" Command="{Binding NewProjectCommand}" />
+    <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenProjectCommand}" />
+    <!-- As ações com Tag = 1 usam a tabela [Hotkeys] (Normal/Timing), em MainWindow.Hotkeys.cs. -->
+  </Window.InputBindings>
+  <DockPanel>
+    <!-- TntMainMenu do Enhanced ocupa 20 px (medido no executável de referência). -->
+    <Menu x:Name="MainMenu" DockPanel.Dock="Top" Height="20">
+
+      <Menu.Resources>
+        <Style TargetType="Image">
+          <Setter Property="Width" Value="16" />
+          <Setter Property="Height" Value="16" />
+          <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Property="Opacity" Value="0.4" />
+            </Trigger>
+          </Style.Triggers>
+        </Style>
+      </Menu.Resources>
+      <MenuItem Header="File">
+        <MenuItem Header="New Project..." Command="{Binding NewProjectCommand}" InputGestureText="Ctrl+N">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_16.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Open Project..." Command="{Binding OpenProjectCommand}" InputGestureText="Ctrl+O">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_18.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem x:Name="MenuItemOpenRecentRoot" Header="Open Recent" />
+        <MenuItem Header="Reload" Tag="ActionReload" Command="{Binding ReloadCommand}" />
+        <MenuItem Header="Close" Command="{Binding CloseCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_13.png" /></MenuItem.Icon>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="Project Properties..." Command="{Binding ProjectPropertiesCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_23.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Open Project Folder" Tag="ActionOpenProjectFolder" Command="{Binding OpenProjectFolderCommand}" />
+        <Separator />
+        <MenuItem Header="Save" Command="{Binding SaveCommand}" InputGestureText="Ctrl+S">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_15.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Save As..." Command="{Binding SaveAsCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_14.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Zip Subtitle..." IsEnabled="False" />
+        <MenuItem Header="Translate..." Command="{Binding TranslateCommand}" />
+        <MenuItem Header="Export to WAV..." Command="{Binding ExportToWavCommand}" />
+        <Separator />
+        <MenuItem x:Name="MenuItemLoadPresets" Header="Load presets..." />
+        <Separator />
+        <MenuItem Header="Exit" Command="{Binding ExitCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_17.png" /></MenuItem.Icon>
+        </MenuItem>
+      </MenuItem>
+      <MenuItem Header="Edit">
+        <MenuItem Header="Undo" Tag="ActionUndo" Command="{Binding UndoCommand}" InputGestureText="Ctrl+Z">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_31.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Redo" Tag="ActionRedo" Command="{Binding RedoCommand}" InputGestureText="Ctrl+Y">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_44.png" /></MenuItem.Icon>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="Find..." Tag="ActionFind" Command="{Binding FindCommand}" InputGestureText="Ctrl+F">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_11.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Find next" Tag="ActionFindNext" Command="{Binding FindNextCommand}" InputGestureText="F3">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_10.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Goto" Tag="ActionGoto" Command="{Binding GotoCommand}" InputGestureText="Ctrl+G">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_09.png" /></MenuItem.Icon>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="Insert file" Tag="ActionInsertTextFile" Command="{Binding InsertTextFileCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_33.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Text pipe">
+          <MenuItem Header="Show/Hide Text Pipe" Tag="ActionShowHideTextPipe" Command="{Binding ShowHideTextPipeCommand}" />
+          <MenuItem Header="Load text pipe..." Tag="ActionLoadTextPipe" Command="{Binding LoadTextPipeCommand}" />
+          <MenuItem Header="Save text pipe as..." Command="{Binding SaveTextPipeAsCommand}" />
+          <MenuItem Header="Clear text pipe" Tag="ActionClearTextPipe" Command="{Binding ClearTextPipeCommand}" />
+        </MenuItem>
+        <MenuItem Header="Show Text&lt;-&gt;VO/Other diffs" IsEnabled="False">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_27.png" /></MenuItem.Icon>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="Error checking">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_27.png" /></MenuItem.Icon>
+          <MenuItem Header="Check errors" Tag="ActionCheckErrors" Command="{Binding CheckErrorsCommand}">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_19.png" /></MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="Show error report" Tag="ActionShowErrorReport" Command="{Binding ShowErrorReportCommand}">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_24.png" /></MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="Preferences..." Command="{Binding ErrorPreferencesCommand}">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_22.png" /></MenuItem.Icon>
+          </MenuItem>
+          <Separator />
+          <MenuItem Header="Remove text for hearing impareid" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_22.png" /></MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="Fix common errors" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_22.png" /></MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="All fix options above" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_22.png" /></MenuItem.Icon>
+          </MenuItem>
+        </MenuItem>
+        <MenuItem x:Name="SubMenuItemSpellcheck" Header="Spell check">
+          <MenuItem Header="Spell check..." Tag="ActionSpellCheck" Command="{Binding SpellCheckCommand}" />
+          <MenuItem x:Name="MenuItemLiveSpellcheck" Header="Live spell check" Command="{Binding ToggleLiveSpellCheckCommand}" IsChecked="{Binding IsLiveSpellCheck, Mode=OneWay}" />
+          <Separator />
+          <Separator />
+          <MenuItem Header="Custom dictionary">
+            <MenuItem Header="Copy to clipboard" IsEnabled="False" />
+            <MenuItem Header="Paste from clipboard" IsEnabled="False" />
+            <MenuItem Header="Append from clipboard" IsEnabled="False" />
+          </MenuItem>
+          <Separator />
+          <MenuItem Header="Get more dictionaries" Command="{Binding GetMoreDictionariesCommand}" />
+        </MenuItem>
+        <MenuItem Header="Delay" Tag="ActionDelay" Command="{Binding DelayCommand}" InputGestureText="Ctrl+D">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_20.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Quick &amp; Smart Delay">
+          <MenuItem Header="Shift all subtitles from current to cursor" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_20.png" /></MenuItem.Icon>
+          </MenuItem>
+          <Separator />
+          <MenuItem Header="Shift all subtitles from current by -200 Ms" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_46.png" /></MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="Shift all subtitles from current by -100 Ms" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_46.png" /></MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="Shift all subtitles from current by -50 Ms" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_45.png" /></MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="Shift all subtitles from current by -10 Ms" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_45.png" /></MenuItem.Icon>
+          </MenuItem>
+          <Separator />
+          <MenuItem Header="Shift all subtitles from current by +10 Ms" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_47.png" /></MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="Shift all subtitles from current by +50 Ms" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_47.png" /></MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="Shift all subtitles from current by +100 Ms" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_48.png" /></MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="Shift all subtitles from current by +200 Ms" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_48.png" /></MenuItem.Icon>
+          </MenuItem>
+        </MenuItem>
+        <MenuItem Header="Smart desynch tool">
+          <MenuItem Header="Insert a new desynch tool checkpoint" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_49.png" /></MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="Delete a desynch tool checkpoint" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_50.png" /></MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="Reset all desynch tool checkpoints" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_51.png" /></MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="Show/Hide deysnch tool window" IsEnabled="False">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_22.png" /></MenuItem.Icon>
+          </MenuItem>
+        </MenuItem>
+        <MenuItem Header="Fps adaptation tool">
+          <MenuItem Header="Fps Adaptation - 24 fps (True cinema) to 23,976 fps (Cinema)" IsEnabled="False" />
+          <MenuItem Header="Fps Adaptation - 25 fps (Pal) to 23,976 fps (Cinema)" IsEnabled="False" />
+          <MenuItem Header="Fps Adaptation - 29,97 fps (Ntsc) to 23,976 fps (Cinema)" IsEnabled="False" />
+          <MenuItem Header="Fps Adaptation - 23,976 fps (Cinema) to 24 fps (True cinema)" IsEnabled="False" />
+          <MenuItem Header="Fps Adaptation - 25 fps (Pal) to 24 fps (True cinema)" IsEnabled="False" />
+          <MenuItem Header="Fps Adaptation - 29,97 fps (Ntsc) to 24 fps (True cinema)" IsEnabled="False" />
+          <MenuItem Header="Fps Adaptation - 23,976 fps (Cinema) to 25 fps (Pal)" IsEnabled="False" />
+          <MenuItem Header="Fps Adaptation - 24 fps (True cinema) to 25 fps (Pal)" IsEnabled="False" />
+          <MenuItem Header="Fps Adaptation - 29,97 fps (Ntsc) to 25 fps (Pal)" IsEnabled="False" />
+          <MenuItem Header="Fps Adaptation - 23,976 fps (Cinema) to 29,97 fps (Ntsc)" IsEnabled="False" />
+          <MenuItem Header="Fps Adaptation - 24 fps (True cinema) to 29,97 fps (Ntsc)" IsEnabled="False" />
+          <MenuItem Header="Fps Adaptation - 25 fps (Pal) to 29,97 fps (Ntsc)" IsEnabled="False" />
+          <MenuItem Header="Keep subtitles length" IsEnabled="False" IsChecked="True" />
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="Styles" Tag="ActionStyles" Command="{Binding StylesCommand}" />
+        <MenuItem Header="Web server">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_25.png" /></MenuItem.Icon>
+          <MenuItem Header="Start" Command="{Binding StartWebServerCommand}" IsChecked="{Binding IsWebServerRunning, Mode=OneWay}" />
+          <MenuItem Header="Stop" Command="{Binding StopWebServerCommand}" IsChecked="{Binding IsWebServerStopped, Mode=OneWay}" />
+          <Separator />
+          <MenuItem Header="Show suggestions" Command="{Binding ShowSuggestionsCommand}">
+            <MenuItem.Icon><Image Source="/Assets/Menu/il_24.png" /></MenuItem.Icon>
+          </MenuItem>
+        </MenuItem>
+        <MenuItem Header="Preferences..." Tag="ActionPreferences" Command="{Binding PreferencesCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_22.png" /></MenuItem.Icon>
+        </MenuItem>
+      </MenuItem>
+      <MenuItem Header="View">
+        <MenuItem Header="Zoom In" Command="{Binding ZoomInCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_00.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Zoom Out" Command="{Binding ZoomOutCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_01.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Zoom Selection" Command="{Binding ZoomSelectionCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_02.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Zoom All" Command="{Binding ZoomAllCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_03.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Zoom Vertical" Tag="ActionZoomVertical" Command="{Binding ZoomVerticalCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_36.png" /></MenuItem.Icon>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="Show/Hide Reference VO" Tag="ActionToggleVO" Command="{Binding ToggleVOCommand}" />
+        <Separator />
+        <MenuItem Header="Show/Hide Video" Command="{Binding ShowHideVideoCommand}" InputGestureText="F4">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_21.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Set Video Resolution">
+          <MenuItem Header="Full resolution + 50%" IsEnabled="False" />
+          <MenuItem Header="Full resolution + 25%" IsEnabled="False" />
+          <MenuItem Header="Full resolution" IsEnabled="False" />
+          <MenuItem Header="Resolution to 75% than original" IsEnabled="False" />
+          <MenuItem Header="Resolution to 50% than original" IsEnabled="False" />
+          <MenuItem Header="Resolution to 33% than original" IsEnabled="False" />
+          <MenuItem Header="Resolution to 25% than original" IsEnabled="False" />
+        </MenuItem>
+        <MenuItem Header="Show/Hide scene change" Command="{Binding ShowHideSceneChangeCommand}" IsCheckable="True" IsChecked="{Binding ShowSceneChange, Mode=OneWay}" />
+        <MenuItem Header="Show/Hide subtitles" Tag="ActionShowHideSubs" Command="{Binding ShowHideSubsCommand}" IsChecked="{Binding ShowingSubs, Mode=OneWay}" />
+        <MenuItem Header="Detach video window" Command="{Binding DetachVideoCommand}" IsChecked="{Binding IsVideoDetached, Mode=OneWay}" />
+        <MenuItem Header="Show frame at cursor" Command="{Binding ShowFrameAtCursorCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_43.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Show start frame" Command="{Binding ShowStartFrameCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_41.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Show stop frame" Command="{Binding ShowStopFrameCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_42.png" /></MenuItem.Icon>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="Show silent zones" Tag="ActionShowSilentZones" Command="{Binding ShowSilentZonesCommand}" />
+        <Separator />
+        <MenuItem Header="Show/Hide Logs" Tag="ActionShowHideLogs" Command="{Binding ShowHideLogsCommand}" />
+      </MenuItem>
+      <MenuItem Header="Playback">
+        <MenuItem Header="Play" Command="{Binding PlayCommand}" InputGestureText="F1">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_04.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Stop" Command="{Binding StopCommand}" InputGestureText="Esc">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_05.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Pause" Command="{Binding PauseCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_40.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Loop" Command="{Binding LoopCommand}" InputGestureText="F2">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_06.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Next subtitle" Command="{Binding NextSubCommand}" InputGestureText="F6">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_07.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Previous subtitle" Command="{Binding PreviousSubCommand}" InputGestureText="F5">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_08.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Loop selection start" Command="{Binding LoopSelectionStartCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_35.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Loop selection end" Command="{Binding LoopSelectionEndCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_34.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Play selection start" Command="{Binding PlaySelectionStartCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_37.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Play selection end" Command="{Binding PlaySelectionEndCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_38.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Play to end" Command="{Binding PlayToEndCommand}">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_39.png" /></MenuItem.Icon>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="Playback Rate">
+          <MenuItem Header="Set playback rate at 100%" Command="{Binding SetPlaybackRateCommand}" CommandParameter="100" />
+          <MenuItem Header="Set playback rate at 90%" Command="{Binding SetPlaybackRateCommand}" CommandParameter="90" />
+          <MenuItem Header="Set playback rate at 80%" Command="{Binding SetPlaybackRateCommand}" CommandParameter="80" />
+          <MenuItem Header="Set playback rate at 70%" Command="{Binding SetPlaybackRateCommand}" CommandParameter="70" />
+          <MenuItem Header="Set playback rate at 60%" Command="{Binding SetPlaybackRateCommand}" CommandParameter="60" />
+        </MenuItem>
+        <MenuItem Header="Wave form correction">
+          <MenuItem Header="Shift wave form forward from cursor" IsEnabled="False" InputGestureText="Ctrl+Shift+F" />
+          <MenuItem Header="Shift wave form backward to the cursor" IsEnabled="False" InputGestureText="Ctrl+Shift+B" />
+        </MenuItem>
+      </MenuItem>
+      <MenuItem x:Name="MenuItemJSTools" Header="JS Tools" />
+      <MenuItem Header="?">
+        <MenuItem Header="Help">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_26.png" /></MenuItem.Icon>
+          <MenuItem Header="Index" Command="{Binding HelpIndexCommand}" />
+          <MenuItem Header="WAV Display Control" Command="{Binding HelpWavDisplayControlCommand}" />
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="Check for updates" IsEnabled="False">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_64.png" /></MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="Recent changes" IsEnabled="False">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_54.png" /></MenuItem.Icon>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="Google+ page" IsEnabled="False">
+          <MenuItem.Icon><Image Source="/Assets/Menu/il_53.png" /></MenuItem.Icon>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="About" Command="{Binding AboutCommand}" />
+      </MenuItem>
+    </Menu>
+
+    <!-- StatusBarMainPanel: dois TPanel rebaixados, o primeiro com 250 px. -->
+    <Grid DockPanel.Dock="Bottom" Height="19">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="250" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <ContentControl Style="{StaticResource LoweredPanel}">
+        <TextBlock Text="{Binding EditorStatusText}" Margin="3,0" VerticalAlignment="Center" />
+      </ContentControl>
+      <ContentControl Grid.Column="1" Style="{StaticResource LoweredPanel}">
+        <TextBlock Text="{Binding StatusText}" Margin="3,0" VerticalAlignment="Center" />
+      </ContentControl>
+    </Grid>
+
+    <Grid x:Name="MainGrid">
+      <Grid.RowDefinitions>
+        <RowDefinition x:Name="TopRow" Height="225" MinHeight="40" />
+        <RowDefinition Height="4" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <!-- PanelTop: forma de onda e, à direita, o splitter e o vídeo (só aparecem com o motor de mídia). -->
+      <ContentControl Grid.Row="0" Style="{StaticResource LoweredPanel}">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <!-- MemoTextPipe (250 px, alLeft) e SplitterMemoTextPipe (4 px, clSilver, MinSize 50): largura 0 enquanto escondidos. -->
+            <ColumnDefinition x:Name="TextPipeColumn" Width="0" />
+            <ColumnDefinition x:Name="TextPipeSplitterColumn" Width="0" />
+            <ColumnDefinition Width="*" />
+            <!-- SplitterWAVDisplay_Video: 4 px, clGray; fica com largura 0 enquanto o vídeo está escondido. -->
+            <ColumnDefinition x:Name="VideoSplitterColumn" Width="0" />
+            <!-- PanelVideo: 201 px por padrão; a largura salva no projeto tem prioridade (UpdateVideoRendererWindow). -->
+            <ColumnDefinition x:Name="VideoColumn" Width="0" />
+          </Grid.ColumnDefinitions>
+          <RichTextBox x:Name="MemoTextPipe" Grid.Column="0" Visibility="Collapsed"
+                       VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled"
+                       AcceptsTab="False" IsUndoEnabled="False" IsInactiveSelectionHighlightEnabled="True"
+                       BorderThickness="0" ContextMenuOpening="MemoTextPipe_ContextMenuOpening">
+            <RichTextBox.Resources>
+              <Style TargetType="Paragraph">
+                <Setter Property="Margin" Value="0" />
+              </Style>
+            </RichTextBox.Resources>
+            <!-- MemoTextPipePopupMenu (layout do Enhanced). -->
+            <RichTextBox.ContextMenu>
+              <ContextMenu>
+                <MenuItem x:Name="pmiAddAsSubtitle" Header="Add subtitle from pipe" Tag="ActionAddSubFromPipe" Command="{Binding AddSubFromPipeCommand}" />
+                <MenuItem x:Name="pmiReplaceSubtitleFromPipe" Header="Replace subtitle from pipe" Tag="ActionReplaceFromPipe" Command="{Binding ReplaceFromPipeCommand}" />
+                <MenuItem Header="Load text pipe..." Tag="ActionLoadTextPipe" Command="{Binding LoadTextPipeCommand}" />
+                <Separator />
+                <MenuItem x:Name="pmiAutoColorizeText" Header="Auto-colorize text" Click="TextPipeAutoOption_Click" />
+                <MenuItem x:Name="pmiAutoDeleteText" Header="Auto-delete text" Click="TextPipeAutoOption_Click" />
+                <MenuItem x:Name="pmiAutoDeleteAllTextBefore" Header="Auto-delete all text before" Click="TextPipeAutoOption_Click" />
+                <Separator />
+                <MenuItem Header="Cut" Command="ApplicationCommands.Cut" InputGestureText="Ctrl+X" />
+                <MenuItem Header="Copy" Command="ApplicationCommands.Copy" InputGestureText="Ctrl+C" />
+                <MenuItem Header="Paste" Command="ApplicationCommands.Paste" InputGestureText="Ctrl+V" />
+                <MenuItem Header="Delete" Command="EditingCommands.Delete" InputGestureText="Del" />
+                <MenuItem Header="Undo" IsEnabled="False" InputGestureText="Ctrl+Z" />
+                <Separator />
+                <MenuItem Header="Select All" Command="ApplicationCommands.SelectAll" InputGestureText="Ctrl+A" />
+                <Separator />
+                <MenuItem Header="Hide Text Pipe" Tag="ActionShowHideTextPipe" Command="{Binding ShowHideTextPipeCommand}" />
+              </ContextMenu>
+            </RichTextBox.ContextMenu>
+          </RichTextBox>
+          <GridSplitter x:Name="SplitterMemoTextPipe" Grid.Column="1" Visibility="Collapsed"
+                        Width="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Background="Silver" ResizeBehavior="PreviousAndNext" />
+          <wave:WaveformControl x:Name="WAVDisplayer"
+                                Grid.Column="2"
+                                Peaks="{Binding Peaks}"
+                                Ranges="{Binding Ranges}"
+                                VoRanges="{Binding VoRanges, Mode=OneWay}"
+                                ShowVO="{Binding IsVoVisible, Mode=OneWay}"
+                                LengthMs="{Binding LengthMs}"
+                                PositionMs="{Binding PositionMs}"
+                                PageSizeMs="{Binding PageSizeMs}"
+                                VerticalScaling="{Binding VerticalScaling}"
+                                CursorMs="{Binding CursorMs}"
+                                PlayCursorMs="{Binding PlayCursorMs}"
+                                IsPlaying="{Binding IsPlaying}"
+                                SelectionStartMs="{Binding SelectionStartMs}"
+                                SelectionStopMs="{Binding SelectionStopMs}"
+                                ShowText="{Binding ShowTextInWavDisplay}"
+                                SelectionMode="{Binding WaveformSelectionMode, Mode=OneWay}"
+                                SnappingEnabled="{Binding Settings.EnableMouseSnapping}"
+                                AntiOverlapping="{Binding Settings.EnableMouseAntiOverlapping}"
+                                MinimumBlankMs="{Binding Settings.SpaceKeyBlankBetweenSubtitles}"
+                                SceneChanges="{Binding SceneChanges}"
+                                SceneChangeEnabled="{Binding ShowSceneChange}"
+                                SceneChangeStartOffset="{Binding Settings.SceneChangeStartOffset}"
+                                SceneChangeStopOffset="{Binding Settings.SceneChangeStopOffset}"
+                                SceneChangeFilterOffset="{Binding Settings.SceneChangeFilterOffset}"
+                                IsEnabled="{Binding IsProjectOpen}"
+                                ContextMenuOpening="WAVDisplayer_ContextMenuOpening">
+            <!-- WAVDisplayPopupMenu (sem imagens, como no original). -->
+            <wave:WaveformControl.ContextMenu>
+              <ContextMenu>
+                <MenuItem x:Name="pmiWAVDispAddSubtitle" Header="Add subtitle" Tag="ActionAddSubtitle" Command="{Binding AddSubtitleCommand}" />
+                <MenuItem x:Name="pmiWAVDispDeleteRange" Header="Delete subtitle" Command="{Binding DeleteSubtitleAtCursorCommand}" />
+                <MenuItem x:Name="pmiWAVDispSplitAtCursor" Header="Split at cursor" Tag="ActionSplitAtCursor" Command="{Binding SplitAtCursorCommand}" />
+                <MenuItem x:Name="pmiWAVDispSetSubtitleTime" Header="Set subtitle time" Tag="ActionSetSubtitleTime" Command="{Binding SetFocusedSubtitleTimeCommand}" />
+                <MenuItem Header="Paste at cursor" Tag="ActionPasteAtCursor" Click="PasteAtCursor_Click" />
+                <MenuItem Header="Create from VO" IsEnabled="False" />
+                <MenuItem Header="Wrap around Scenechange" Tag="ActionWrapAroundSC" IsEnabled="False" />
+                <Separator />
+                <MenuItem x:Name="pmiInsertSC" Header="Insert scene change" Tag="ActionInsertSceneChange" Command="{Binding InsertSceneChangeAtCursorCommand}" />
+                <MenuItem x:Name="pmiDeleteSC" Header="Delete scene change" Tag="ActionDeleteSceneChange" Command="{Binding DeleteSceneChangesInSelectionCommand}" />
+                <MenuItem x:Name="pmiInsertKaraokeMarker" Header="Insert karaoke marker" Tag="ActionInsertKaraokeMarker" Command="{Binding InsertKaraokeMarkerCommand}" />
+              </ContextMenu>
+            </wave:WaveformControl.ContextMenu>
+          </wave:WaveformControl>
+          <GridSplitter x:Name="SplitterWAVDisplayVideo" Grid.Column="3" Visibility="Collapsed"
+                        Width="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Background="Gray" ResizeBehavior="PreviousAndNext" />
+          <!-- A janela nativa do mpv desenha aqui; por causa do "airspace" do WPF, nada em WPF fica por cima. -->
+          <Border x:Name="PanelVideo" Grid.Column="4" Background="Black">
+            <ctl:VideoHost x:Name="Video" />
+          </Border>
+        </Grid>
+      </ContentControl>
+
+      <!-- Splitter2 (clSilver). -->
+      <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Silver" ResizeBehavior="PreviousAndNext" />
+
+      <!-- PageControlMain: só a aba "Subtitle" fica visível; as de dicionário on-line aparecem com as preferências. -->
+      <TabControl Grid.Row="2" Padding="0" Margin="0" ItemContainerStyle="{StaticResource MainTabItem}">
+        <TabItem Header="Subtitle" IsSelected="True">
+          <!-- Recuo de 4 px que o TPageControl deixa em volta do TTabSheet. -->
+          <Border Margin="3,0,3,3">
+          <Grid x:Name="SubGrid">
+            <Grid.RowDefinitions>
+              <RowDefinition x:Name="MiddleRow" Height="*" MinHeight="88" />
+              <RowDefinition Height="4" />
+              <RowDefinition x:Name="BottomRow" Height="104" MinHeight="40" />
+            </Grid.RowDefinitions>
+
+            <!-- PanelMiddle: PanelPlaybackControl (88 px) e a lista (ou o editor, com SwapSubtitlesList). -->
+            <DockPanel Grid.Row="0">
+              <Canvas x:Name="PanelPlaybackControl" DockPanel.Dock="Top" Height="88" ClipToBounds="True">
+                <Button Canvas.Left="4" Canvas.Top="0" Width="25" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding PlayCommand}" ToolTip="Play">
+                  <ctl:Glyph NameKey="Play" />
+                </Button>
+                <Button Canvas.Left="28" Canvas.Top="0" Width="24" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding StopCommand}" ToolTip="Stop">
+                  <ctl:Glyph NameKey="Stop" />
+                </Button>
+                <Button Canvas.Left="52" Canvas.Top="0" Width="25" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding PauseCommand}" ToolTip="Pause">
+                  <ctl:Glyph NameKey="Pause" />
+                </Button>
+                <Button Canvas.Left="76" Canvas.Top="0" Width="25" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding LoopCommand}" ToolTip="Loop">
+                  <ctl:Glyph NameKey="Loop" />
+                </Button>
+                <Button Canvas.Left="4" Canvas.Top="24" Width="33" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding PreviousSubCommand}" ToolTip="Play previous subtitle">
+                  <ctl:Glyph NameKey="PreviousSub" />
+                </Button>
+                <Button Canvas.Left="36" Canvas.Top="24" Width="33" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding NextSubCommand}" ToolTip="Play next subtitle">
+                  <ctl:Glyph NameKey="NextSub" />
+                </Button>
+                <Button Canvas.Left="68" Canvas.Top="24" Width="33" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding PlayToEndCommand}" ToolTip="Play to end">
+                  <ctl:Glyph NameKey="PlayToEnd" />
+                </Button>
+                <TextBlock Canvas.Left="4" Canvas.Top="50" Width="39" Text="Volume" IsEnabled="{Binding IsProjectOpen}" />
+                <Slider Canvas.Left="-4" Canvas.Top="61" Width="109" Height="25" Minimum="0" Maximum="100"
+                        SmallChange="1" LargeChange="10" Focusable="False" ToolTip="Volume"
+                        Value="{Binding Volume}" IsEnabled="{Binding IsProjectOpen}" />
+
+                <ContentControl Canvas.Left="104" Canvas.Top="0" Width="90" Height="53" Style="{StaticResource LoweredPanel}">
+                  <Canvas IsEnabled="{Binding IsProjectOpen}">
+                    <TextBlock Canvas.Left="6" Canvas.Top="2" Width="81" Text="Auto-scroll :" />
+                    <CheckBox Canvas.Left="5" Canvas.Top="16" Width="84" Height="17" Content="WAV display" IsChecked="{Binding AutoScrollWavDisplay}" />
+                    <CheckBox Canvas.Left="5" Canvas.Top="33" Width="84" Height="17" Content="Subtitles" IsChecked="{Binding AutoScrollSubtitles}" />
+                  </Canvas>
+                </ContentControl>
+                <!-- bttWorkingMode: "Normal", ou "Timing" em vermelho e afundado (GroupIndex 1, AllowAllUp); habilitado com ActionPlay. -->
+                <ToggleButton Canvas.Left="120" Canvas.Top="54" Width="49" Height="25" Focusable="False"
+                              IsEnabled="{Binding IsMediaOpen}" IsChecked="{Binding IsTimingMode}"
+                              Content="{Binding WorkingModeCaption}" FontWeight="Bold" Padding="0"
+                              ToolTip="Choose between &quot;Normal&quot; or &quot;Timing&quot; mode" ToolTipService.ShowOnDisabled="True">
+                  <ToggleButton.Style>
+                    <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsTimingMode}" Value="True">
+                          <Setter Property="Foreground" Value="Red" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </ToggleButton.Style>
+                </ToggleButton>
+
+                <Button Canvas.Left="201" Canvas.Top="8" Width="23" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding ZoomInCommand}" ToolTip="Zoom In">
+                  <ctl:Glyph NameKey="ZoomIn" />
+                </Button>
+                <Button Canvas.Left="223" Canvas.Top="8" Width="23" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding ZoomOutCommand}" ToolTip="Zoom Out">
+                  <ctl:Glyph NameKey="ZoomOut" />
+                </Button>
+                <Button Canvas.Left="245" Canvas.Top="8" Width="23" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding ZoomSelectionCommand}" ToolTip="Zoom Selection">
+                  <ctl:Glyph NameKey="ZoomSel" />
+                </Button>
+                <Button Canvas.Left="267" Canvas.Top="8" Width="23" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding ZoomAllCommand}" ToolTip="Zoom All">
+                  <ctl:Glyph NameKey="ZoomAll" />
+                </Button>
+                <Button Canvas.Left="289" Canvas.Top="8" Width="23" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding ZoomVerticalCommand}" ToolTip="Zoom Vertical">
+                  <ctl:Glyph NameKey="ZoomVertical" />
+                </Button>
+                <Button Canvas.Left="324" Canvas.Top="8" Width="23" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding ShowHideVideoCommand}" ToolTip="Show/Hide Video">
+                  <ctl:Glyph NameKey="ShowHideVideo" />
+                </Button>
+
+                <ContentControl Canvas.Left="197" Canvas.Top="43" Width="150" Height="42" Style="{StaticResource LoweredPanel}" ToolTip="Cursor position">
+                  <TextBlock Text="{Binding CursorText}" FontFamily="Arial" FontSize="24" FontWeight="Bold"
+                             HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </ContentControl>
+
+                <!-- PanelTimeSelView: no Enhanced, Begin/End/Length são rótulos em negrito sublinhado (azul-marinho). -->
+                <ContentControl Canvas.Left="352" Canvas.Top="0" Width="260" Height="85" Style="{StaticResource LoweredPanel}">
+                  <Canvas>
+                    <TextBlock Canvas.Left="31" Canvas.Top="3" Style="{StaticResource SelLabel}" Text="Begin" ToolTip="Double click to update begin timing" />
+                    <TextBlock Canvas.Left="107" Canvas.Top="3" Style="{StaticResource SelLabel}" Text="End" />
+                    <TextBlock Canvas.Left="183" Canvas.Top="3" Style="{StaticResource SelLabel}" Text="Length" />
+                    <TextBlock Canvas.Left="5" Canvas.Top="27" Width="20" TextAlignment="Right" Text="Sel" />
+                    <TextBlock Canvas.Left="2" Canvas.Top="55" Width="23" TextAlignment="Right" Text="View" />
+                    <TextBox Canvas.Left="31" Canvas.Top="23" Style="{StaticResource ReadOnlyEdit}" IsEnabled="{Binding IsProjectOpen}" Text="{Binding SelBeginText, Mode=OneWay}" ToolTip="Selection start position" />
+                    <TextBox Canvas.Left="107" Canvas.Top="23" Style="{StaticResource ReadOnlyEdit}" IsEnabled="{Binding IsProjectOpen}" Text="{Binding SelEndText, Mode=OneWay}" ToolTip="Selection end position" />
+                    <TextBox Canvas.Left="183" Canvas.Top="23" Style="{StaticResource ReadOnlyEdit}" IsEnabled="{Binding IsProjectOpen}" Text="{Binding SelLengthText, Mode=OneWay}" ToolTip="Selection length" />
+                    <TextBox Canvas.Left="31" Canvas.Top="52" Style="{StaticResource ReadOnlyEdit}" IsEnabled="{Binding IsProjectOpen}" Text="{Binding ViewBeginText, Mode=OneWay}" ToolTip="View start position" />
+                    <TextBox Canvas.Left="107" Canvas.Top="52" Style="{StaticResource ReadOnlyEdit}" IsEnabled="{Binding IsProjectOpen}" Text="{Binding ViewEndText, Mode=OneWay}" ToolTip="View end position" />
+                    <TextBox Canvas.Left="183" Canvas.Top="52" Style="{StaticResource ReadOnlyEdit}" IsEnabled="{Binding IsProjectOpen}" Text="{Binding ViewLengthText, Mode=OneWay}" ToolTip="View length" />
+                  </Canvas>
+                </ContentControl>
+
+                <Button Canvas.Left="623" Canvas.Top="10" Width="25" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding CheckErrorsCommand}" ToolTip="Check errors">
+                  <ctl:Glyph NameKey="CheckErrors" />
+                </Button>
+                <Button Canvas.Left="647" Canvas.Top="10" Width="25" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding ShowSuggestionsCommand}" ToolTip="Show network suggestions">
+                  <ctl:Glyph NameKey="ShowSuggestions" />
+                </Button>
+                <Button Canvas.Left="671" Canvas.Top="10" Width="25" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding PreferencesCommand}" ToolTip="Preferences">
+                  <ctl:Glyph NameKey="ShowPreferences" />
+                </Button>
+                <Button Canvas.Left="695" Canvas.Top="10" Width="25" Height="25" Style="{StaticResource SpeedButton}" Command="{Binding ProjectPropertiesCommand}" ToolTip="Project Properties">
+                  <ctl:Glyph NameKey="ShowProjectProperties" />
+                </Button>
+                <Button Canvas.Left="616" Canvas.Top="52" Width="39" Height="25" Content="Styles" Padding="0" Command="{Binding StylesCommand}" />
+                <ComboBox Canvas.Left="658" Canvas.Top="54" Width="89" Height="21" ItemsSource="{Binding StyleNames}"
+                          SelectedIndex="{Binding SelectedStyleIndex}" IsEnabled="{Binding IsStyleEnabled}" />
+
+                <!-- PageQuickSmartSilentZonePanels ([Misc] QuickSmartSilentZonePanels). -->
+                <TabControl Canvas.Left="749" Canvas.Top="0" Width="273" Height="87" Padding="2"
+                            Visibility="{Binding Settings.QuickSmartSilentZonePanels, Converter={StaticResource BoolToVisibility}}">
+                  <TabItem Header="Quick &amp; Smart Delay" IsSelected="True">
+                    <Canvas IsEnabled="False">
+                      <TextBlock Canvas.Left="0" Canvas.Top="-1" Text="Negative shift delay" />
+                      <TextBlock Canvas.Left="163" Canvas.Top="-1" Text="Positive shift delay" />
+                      <Button Canvas.Left="0" Canvas.Top="13" Width="48" Height="19" Style="{StaticResource SpeedButton}" ToolTip="Shift all subtitles from current by -200 Ms">
+                        <ctl:GlyphCaption NameKey="FastLess200ms" Caption="200" />
+                      </Button>
+                      <Button Canvas.Left="50" Canvas.Top="13" Width="48" Height="19" Style="{StaticResource SpeedButton}" ToolTip="Shift all subtitles from current by -100 Ms">
+                        <ctl:GlyphCaption NameKey="FastLess100ms" Caption="100" />
+                      </Button>
+                      <Button Canvas.Left="0" Canvas.Top="35" Width="48" Height="19" Style="{StaticResource SpeedButton}" ToolTip="Shift all subtitles from current by -50 Ms">
+                        <ctl:GlyphCaption NameKey="FastLess50ms" Caption="50" />
+                      </Button>
+                      <Button Canvas.Left="50" Canvas.Top="35" Width="48" Height="19" Style="{StaticResource SpeedButton}" ToolTip="Shift all subtitles from current by -10 Ms">
+                        <ctl:GlyphCaption NameKey="FastLess10ms" Caption="10" />
+                      </Button>
+                      <Button Canvas.Left="108" Canvas.Top="2" Width="48" Height="29" Style="{StaticResource SpeedButton}"
+                              ToolTip="Align entries to the cursor from the selected subtitles&#10;to the last one (if ´All subs´ is unchecked)&#10;for all subtitles (if ´All subs´ is checked)">
+                        <ctl:GlyphCaption NameKey="FastSmartWavCursor" Caption="." />
+                      </Button>
+                      <CheckBox Canvas.Left="104" Canvas.Top="35" Width="56" Height="19" Content="All subs" />
+                      <Button Canvas.Left="163" Canvas.Top="13" Width="48" Height="19" Style="{StaticResource SpeedButton}" ToolTip="Shift all subtitles from current by +100 Ms">
+                        <ctl:GlyphCaption NameKey="FastMore100ms" Caption="100" />
+                      </Button>
+                      <Button Canvas.Left="217" Canvas.Top="13" Width="48" Height="19" Style="{StaticResource SpeedButton}" ToolTip="Shift all subtitles from current by +200 Ms">
+                        <ctl:GlyphCaption NameKey="FastMore200ms" Caption="200" />
+                      </Button>
+                      <Button Canvas.Left="163" Canvas.Top="35" Width="48" Height="19" Style="{StaticResource SpeedButton}" ToolTip="Shift all subtitles from current by +50 Ms">
+                        <ctl:GlyphCaption NameKey="FastMore50ms" Caption="50" />
+                      </Button>
+                      <Button Canvas.Left="217" Canvas.Top="35" Width="48" Height="19" Style="{StaticResource SpeedButton}" ToolTip="Shift all subtitles from current by +10 Ms">
+                        <ctl:GlyphCaption NameKey="FastMore10ms" Caption="10" />
+                      </Button>
+                    </Canvas>
+                  </TabItem>
+                  <TabItem Header="Silent Zone">
+                    <Canvas IsEnabled="False">
+                      <TextBlock Canvas.Left="0" Canvas.Top="5" Text="Thr:" />
+                      <TextBlock Canvas.Left="81" Canvas.Top="5" Text="Dur:" />
+                      <TextBlock Canvas.Left="159" Canvas.Top="5" Text="Min:" />
+                      <ctl:UpDownEdit Canvas.Left="25" Canvas.Top="1" Width="49" Height="21" Text="100" ToolTip="Threshold between 0 and 32767" />
+                      <ctl:UpDownEdit Canvas.Left="106" Canvas.Top="1" Width="49" Height="21" Text="500" ToolTip="Minimum duration of the silent zone in ms (100..9999)" />
+                      <ctl:UpDownEdit Canvas.Left="184" Canvas.Top="1" Width="46" Height="21" Text="30" ToolTip="Minimum delay between zones in sec. (0..600)" />
+                      <Button Canvas.Left="232" Canvas.Top="2" Width="24" Height="19" Style="{StaticResource SpeedButton}" ToolTip="Update silent zones">
+                        <ctl:Glyph NameKey="UpQuickSilentZone" />
+                      </Button>
+                      <ComboBox Canvas.Left="1" Canvas.Top="26" Width="230" Height="21" />
+                      <Button Canvas.Left="232" Canvas.Top="26" Width="24" Height="19" Style="{StaticResource SpeedButton}" ToolTip="Move cursor to selected silent zone">
+                        <ctl:Glyph NameKey="GoCurrentSilentZone" />
+                      </Button>
+                    </Canvas>
+                  </TabItem>
+                  <TabItem Header="Smart Desynch">
+                    <Canvas IsEnabled="False">
+                      <Button Canvas.Left="0" Canvas.Top="-1" Width="226" Height="20" Style="{StaticResource SpeedButton}">
+                        <ctl:GlyphCaption NameKey="ResynchToolsSetPos" Caption="Insert a new desynch tool checkpoint" />
+                      </Button>
+                      <Button Canvas.Left="0" Canvas.Top="19" Width="226" Height="20" Style="{StaticResource SpeedButton}">
+                        <ctl:GlyphCaption NameKey="ResynchToolsDelPos" Caption="Delete a desynch tool checkpoint" />
+                      </Button>
+                      <Button Canvas.Left="0" Canvas.Top="39" Width="226" Height="20" Style="{StaticResource SpeedButton}">
+                        <ctl:GlyphCaption NameKey="ResynchToolsReset" Caption="Reset all desynch tool checkpoints" />
+                      </Button>
+                      <Button Canvas.Left="232" Canvas.Top="1" Width="32" Height="58" Style="{StaticResource SpeedButton}" ToolTip="Show/Hide deysnch tool window">
+                        <ctl:Glyph NameKey="ResynchShowHide" />
+                      </Button>
+                    </Canvas>
+                  </TabItem>
+                </TabControl>
+              </Canvas>
+              <Border x:Name="MiddleHost">
+                <DataGrid x:Name="vtvSubsList"
+                          ItemsSource="{Binding Subtitles}"
+                          SelectedItem="{Binding SelectedSubtitle}"
+                          IsEnabled="{Binding IsProjectOpen}"
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          SelectionMode="Extended" SelectionUnit="FullRow" HeadersVisibility="Column"
+                          CanUserSortColumns="False" CanUserReorderColumns="True" CanUserResizeRows="False"
+                          GridLinesVisibility="All"
+                          HorizontalGridLinesBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                          VerticalGridLinesBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                          Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                          BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                          ColumnHeaderStyle="{StaticResource SubListHeader}"
+                          CellStyle="{StaticResource SubListCell}"
+                          RowStyle="{StaticResource SubListRow}"
+                          EnableRowVirtualization="True"
+                          VirtualizingPanel.VirtualizationMode="Recycling"
+                          CanUserDeleteRows="False" CanUserAddRows="False"
+                          SelectionChanged="SubsList_SelectionChanged"
+                          ContextMenuOpening="SubsList_ContextMenuOpening"
+                          MouseDoubleClick="SubsList_MouseDoubleClick">
+                  <DataGrid.InputBindings>
+                    <KeyBinding Key="Delete" Command="{Binding DeleteSelectedSubtitlesCommand}" />
+                  </DataGrid.InputBindings>
+                  <!-- SubListPopupMenu (sem imagens, como no original). -->
+                  <DataGrid.ContextMenu>
+                    <ContextMenu>
+                      <MenuItem x:Name="pmiSubListDelete" Header="Delete" InputGestureText="Del" Command="{Binding DeleteSelectedSubtitlesCommand}" />
+                      <MenuItem x:Name="pmiSubListMerge" Header="Merge" Tag="ActionMerge" Command="{Binding MergeCommand}" />
+                      <MenuItem x:Name="pmiSubListMergeDialog" Header="Merge dialog" Tag="ActionMergeDialog" Command="{Binding MergeDialogCommand}" />
+                      <MenuItem Header="Delay" Tag="ActionDelay" Command="{Binding DelayCommand}" />
+                      <MenuItem x:Name="pmiFixError" Header="Fix errors" Tag="ActionFixErrorMain" Click="pmiFixError_Click" />
+                      <Separator />
+                      <MenuItem Header="Text in italic" Tag="ActionTextItalic" Command="{Binding TextItalicCommand}" />
+                      <MenuItem Header="Other styles">
+                        <MenuItem Header="Text in bold" Tag="ActionTextBold" Command="{Binding TextBoldCommand}" />
+                        <MenuItem Header="Text in underline" Tag="ActionTextUnderline" Command="{Binding TextUnderlineCommand}" />
+                        <MenuItem Header="Text color" Tag="ActionTextColor" Command="{Binding TextColorCommand}" />
+                        <MenuItem Header="Text size" Tag="ActionTextSize" Command="{Binding TextSizeCommand}" />
+                        <Separator />
+                        <MenuItem Header="Text to top left" Tag="ActionTextTopLeft" IsEnabled="False" />
+                        <MenuItem Header="Text to top middle" Tag="ActionTextTopMiddle" IsEnabled="False" />
+                        <MenuItem Header="Text to top right" Tag="ActionTextTopRight" IsEnabled="False" />
+                        <MenuItem Header="Text to bottom left" Tag="ActionTextBottomLeft" IsEnabled="False" />
+                        <MenuItem Header="Text to bottom middle (default)" Tag="ActionTextBottomMiddle" IsEnabled="False" />
+                        <MenuItem Header="Text to bottom right" Tag="ActionTextBottomRight" IsEnabled="False" />
+                        <MenuItem Header="Text to middle left" Tag="ActionTextMiddleLeft" IsEnabled="False" />
+                        <MenuItem Header="Text to middle middle" Tag="ActionTextMiddleMiddle" IsEnabled="False" />
+                        <MenuItem Header="Text to middle right" Tag="ActionTextMiddleRight" IsEnabled="False" />
+                        <Separator />
+                        <MenuItem Header="lowercase" IsEnabled="False" />
+                        <MenuItem Header="UPPERCASE" IsEnabled="False" />
+                        <MenuItem Header="Capitalize every word" IsEnabled="False" />
+                      </MenuItem>
+                      <MenuItem Header="Strip tags" Tag="ActionStripTags" Command="{Binding StripTagsCommand}" />
+                      <Separator />
+                      <MenuItem Header="Create Karaoke" Command="{Binding CreateKaraokeCommand}" />
+                      <MenuItem Header="Clear Karaoke" Command="{Binding ClearKaraokeCommand}" />
+                      <Separator />
+                      <MenuItem Header="Save selected As" Tag="ActionSaveSelectedAs" IsEnabled="False" />
+                    </ContextMenu>
+                  </DataGrid.ContextMenu>
+                  <DataGrid.Columns>
+                    <DataGridTextColumn Header="#" Binding="{Binding Index}" Width="50" MinWidth="25" />
+                    <DataGridTextColumn Header="Start" Binding="{Binding Start}" Width="100" MinWidth="50" />
+                    <DataGridTextColumn Header="Stop" Binding="{Binding Stop}" Width="100" MinWidth="50" />
+                    <DataGridTextColumn Header="Style" Binding="{Binding Style}" Width="100" MinWidth="60" />
+                    <DataGridTextColumn Header="Text" Binding="{Binding SingleLineText}" Width="500" MinWidth="100" />
+                    <DataGridTextColumn x:Name="VOColumn" Header="VO" Width="500" MinWidth="100" Visibility="Collapsed" />
+                  </DataGrid.Columns>
+                </DataGrid>
+              </Border>
+            </DockPanel>
+
+            <!-- Splitter1 (clSilver). -->
+            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Silver" ResizeBehavior="PreviousAndNext" />
+
+            <!-- PanelBottom: contador de caracteres por linha e o editor (ou a lista, com SwapSubtitlesList). -->
+            <Border x:Name="BottomHost" Grid.Row="2">
+              <DockPanel x:Name="EditorPanel">
+                <TextBox x:Name="MemoLinesCounter" DockPanel.Dock="Left" Width="35"
+                         IsReadOnly="True" IsTabStop="False" Focusable="False" TextAlignment="Right"
+                         VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
+                         Text="{Binding LinesCounterText, Mode=OneWay}"
+                         IsEnabled="{Binding IsProjectOpen}" />
+                <!-- MemoSubtitleVO (alRight, só leitura) e SplitterSubtitleVO (4 px), escondidos sem VO. -->
+                <RichTextBox x:Name="MemoSubtitleVO" DockPanel.Dock="Right" Width="400" Visibility="Collapsed"
+                             IsReadOnly="True" IsReadOnlyCaretVisible="False" IsTabStop="False"
+                             VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled"
+                             IsEnabled="{Binding IsSubtitleEditionEnabled}">
+                  <!-- MemoSubtitleVOPopupMenu do Enhanced; a cópia do VO é só do Enhanced e fica desabilitada. -->
+                  <RichTextBox.ContextMenu>
+                    <ContextMenu x:Name="MemoSubtitleVOPopupMenu">
+                      <MenuItem x:Name="pmiMemoSubtitleCopyVOToSubtitleText" Header="Copy VO to subtitlle text" IsEnabled="False" />
+                    </ContextMenu>
+                  </RichTextBox.ContextMenu>
+                </RichTextBox>
+                <Thumb x:Name="SplitterSubtitleVO" DockPanel.Dock="Right" Width="4" Visibility="Collapsed" Cursor="SizeWE"
+                       DragDelta="SplitterSubtitleVO_DragDelta">
+                  <Thumb.Template>
+                    <ControlTemplate TargetType="Thumb"><Border Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" /></ControlTemplate>
+                  </Thumb.Template>
+                </Thumb>
+                <TextBox x:Name="MemoSubtitleText"
+                         Text="{Binding SelectedSubtitle.Text, UpdateSourceTrigger=PropertyChanged}"
+                         IsEnabled="{Binding IsSubtitleEditionEnabled}" IsUndoEnabled="False" IsInactiveSelectionHighlightEnabled="True"
+                         AcceptsReturn="True" AcceptsTab="False" TextWrapping="NoWrap"
+                         VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden"
+                         SelectionChanged="MemoSubtitleText_Changed" TextChanged="MemoSubtitleText_Changed"
+                         ScrollViewer.ScrollChanged="MemoSubtitleText_Changed">
+                  <!-- MemoSubPopupMenu (layout do Enhanced); as sugestões do corretor entram acima de Undo. -->
+                  <TextBox.ContextMenu>
+                    <ContextMenu x:Name="MemoSubPopupMenu">
+                      <MenuItem x:Name="MenuItemMemoSubUndo" Header="Undo" Tag="ActionUndo" Command="{Binding UndoCommand}"><MenuItem.Icon><Image Source="/Assets/Menu/il_31.png" /></MenuItem.Icon></MenuItem>
+                      <Separator />
+                      <MenuItem Header="Cut" Command="ApplicationCommands.Cut" InputGestureText="Ctrl+X"><MenuItem.Icon><Image Source="/Assets/Menu/il_28.png" /></MenuItem.Icon></MenuItem>
+                      <MenuItem Header="Copy" Command="ApplicationCommands.Copy" InputGestureText="Ctrl+C"><MenuItem.Icon><Image Source="/Assets/Menu/il_29.png" /></MenuItem.Icon></MenuItem>
+                      <MenuItem Header="Paste" Command="ApplicationCommands.Paste" InputGestureText="Ctrl+V"><MenuItem.Icon><Image Source="/Assets/Menu/il_30.png" /></MenuItem.Icon></MenuItem>
+                      <MenuItem Header="Delete" Command="EditingCommands.Delete" InputGestureText="Del"><MenuItem.Icon><Image Source="/Assets/Menu/il_32.png" /></MenuItem.Icon></MenuItem>
+                      <Separator />
+                      <MenuItem Header="Select All" Command="ApplicationCommands.SelectAll" InputGestureText="Ctrl+A" />
+                      <Separator />
+                      <MenuItem Header="Text in italic" Tag="ActionTextItalic" Command="{Binding TextItalicCommand}"><MenuItem.Icon><Image Source="/Assets/Menu/il_62.png" /></MenuItem.Icon></MenuItem>
+                      <MenuItem Header="Other styles">
+                        <MenuItem Header="Text in bold" Tag="ActionTextBold" Command="{Binding TextBoldCommand}"><MenuItem.Icon><Image Source="/Assets/Menu/il_58.png" /></MenuItem.Icon></MenuItem>
+                        <MenuItem Header="Text in underline" Tag="ActionTextUnderline" Command="{Binding TextUnderlineCommand}"><MenuItem.Icon><Image Source="/Assets/Menu/il_59.png" /></MenuItem.Icon></MenuItem>
+                        <MenuItem Header="Text color" Tag="ActionTextColor" Command="{Binding TextColorCommand}"><MenuItem.Icon><Image Source="/Assets/Menu/il_60.png" /></MenuItem.Icon></MenuItem>
+                        <MenuItem Header="Text size" Tag="ActionTextSize" Command="{Binding TextSizeCommand}"><MenuItem.Icon><Image Source="/Assets/Menu/il_61.png" /></MenuItem.Icon></MenuItem>
+                      </MenuItem>
+                    </ContextMenu>
+                  </TextBox.ContextMenu>
+                </TextBox>
+              </DockPanel>
+            </Border>
+          </Grid>
+          </Border>
+        </TabItem>
+      </TabControl>
+    </Grid>
+  </DockPanel>
+</Window>

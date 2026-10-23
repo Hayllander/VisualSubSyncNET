@@ -1,0 +1,3026 @@
+object MainForm: TMainForm
+  Left = 414
+  Top = 83
+  Width = 1083
+  Height = 755
+  Caption = 'VisualSubSync'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Microsoft Sans Serif'
+  Font.Style = []
+  Menu = TntMainMenu1
+  OldCreateOrder = False
+  Position = poDefault
+  OnActivate = TntFormActivate
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = TntFormKeyDown
+  OnKeyUp = TntFormKeyUp
+  OnMouseWheel = FormMouseWheel
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Splitter2: TSplitter
+    Left = 0
+    Top = 225
+    Width = 1067
+    Height = 4
+    Cursor = crVSplit
+    Align = alTop
+    AutoSnap = False
+    Color = clSilver
+    MinSize = 40
+    ParentColor = False
+    ResizeStyle = rsUpdate
+  end
+  object PanelTop: TPanel
+    Left = 0
+    Top = 0
+    Width = 1067
+    Height = 225
+    Align = alTop
+    BevelOuter = bvLowered
+    Caption = 'PanelWAV_Video'
+    DockSite = True
+    FullRepaint = False
+    TabOrder = 0
+    object SplitterWAVDisplay_Video: TSplitter
+      Left = 861
+      Top = 1
+      Width = 4
+      Height = 223
+      Align = alRight
+      AutoSnap = False
+      Color = clGray
+      MinSize = 50
+      ParentColor = False
+      ResizeStyle = rsUpdate
+      Visible = False
+    end
+    object SplitterMemoTextPipe: TSplitter
+      Left = 251
+      Top = 1
+      Width = 4
+      Height = 223
+      AutoSnap = False
+      Color = clSilver
+      MinSize = 50
+      ParentColor = False
+      ResizeStyle = rsUpdate
+      Visible = False
+    end
+    object PanelVideo: TPanel
+      Left = 865
+      Top = 1
+      Width = 201
+      Height = 223
+      Align = alRight
+      BevelOuter = bvNone
+      Caption = 'PanelVideo'
+      Color = clBlack
+      Enabled = False
+      FullRepaint = False
+      ParentBackground = False
+      TabOrder = 0
+      Visible = False
+      OnDblClick = PanelVideoDblClick
+      OnResize = PanelVideoResize
+    end
+    object PanelWAVDisplay: TPanel
+      Left = 255
+      Top = 1
+      Width = 606
+      Height = 223
+      Align = alClient
+      BevelOuter = bvNone
+      FullRepaint = False
+      TabOrder = 1
+    end
+    object MemoTextPipe: TTntRichEdit
+      Left = 1
+      Top = 1
+      Width = 250
+      Height = 223
+      Align = alLeft
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = '@Arial Unicode MS'
+      Font.Style = []
+      HideSelection = False
+      ParentFont = False
+      ParentShowHint = False
+      PopupMenu = MemoTextPipePopupMenu
+      ScrollBars = ssVertical
+      ShowHint = False
+      TabOrder = 2
+      Visible = False
+      OnEnter = MemoTextPipeEnter
+      OnMouseDown = MemoTextPipeMouseDown
+      OnMouseUp = MemoTextPipeMouseUp
+      OnSelectionChange = MemoTextPipeSelectionChange
+    end
+  end
+  object StatusBarMainPanel: TPanel
+    Left = 0
+    Top = 677
+    Width = 1067
+    Height = 19
+    Align = alBottom
+    BevelOuter = bvNone
+    TabOrder = 1
+    object StatusBarPanel1: TTntPanel
+      Left = 0
+      Top = 0
+      Width = 250
+      Height = 19
+      Align = alLeft
+      Alignment = taLeftJustify
+      BevelOuter = bvLowered
+      TabOrder = 0
+    end
+    object StatusBarPanel2: TTntPanel
+      Left = 250
+      Top = 0
+      Width = 817
+      Height = 19
+      Align = alClient
+      Alignment = taLeftJustify
+      BevelOuter = bvLowered
+      TabOrder = 1
+    end
+  end
+  object PageControlMain: TPageControl
+    Left = 0
+    Top = 229
+    Width = 1067
+    Height = 448
+    ActivePage = TabSheetSub
+    Align = alClient
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Microsoft Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 2
+    OnChange = PageControlMainChange
+    object TabSheetSub: TTabSheet
+      Caption = 'Subtitle'
+      object Splitter1: TSplitter
+        Left = 0
+        Top = 312
+        Width = 1059
+        Height = 4
+        Cursor = crVSplit
+        Align = alBottom
+        AutoSnap = False
+        Color = clSilver
+        MinSize = 40
+        ParentColor = False
+        ResizeStyle = rsUpdate
+        OnCanResize = Splitter1CanResize
+      end
+      object PanelMiddle: TPanel
+        Left = 0
+        Top = 0
+        Width = 1059
+        Height = 312
+        Align = alClient
+        BevelOuter = bvNone
+        FullRepaint = False
+        TabOrder = 0
+        object vtvSubsList: TVirtualStringTree
+          Left = 0
+          Top = 88
+          Width = 1059
+          Height = 224
+          Align = alClient
+          Colors.UnfocusedSelectionColor = clGradientInactiveCaption
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Header.AutoSizeIndex = -1
+          Header.Font.Charset = DEFAULT_CHARSET
+          Header.Font.Color = clWindowText
+          Header.Font.Height = -11
+          Header.Font.Name = 'Microsoft Sans Serif'
+          Header.Font.Style = []
+          Header.MainColumn = -1
+          Header.Options = [hoColumnResize, hoDrag]
+          Header.PopupMenu = SubListHeaderPopupMenu
+          ParentFont = False
+          PopupMenu = SubListPopupMenu
+          TabOrder = 0
+          OnBeforeCellPaint = vtvSubsListBeforeCellPaint
+          OnCompareNodes = vtvSubsListCompareNodes
+          OnDblClick = vtvSubsListDblClick
+          OnFocusChanged = vtvSubsListFocusChanged
+          OnPaintText = vtvSubsListPaintText
+          OnHeaderDragged = vtvSubsListHeaderDragged
+          Columns = <
+>
+        end
+        object PanelPlaybackControl: TPanel
+          Left = 0
+          Top = 0
+          Width = 1059
+          Height = 88
+          Align = alTop
+          BevelOuter = bvNone
+          FullRepaint = False
+          TabOrder = 1
+          object bttPlay: TSpeedButton
+            Left = 4
+            Top = 0
+            Width = 25
+            Height = 25
+            Action = ActionPlay
+            Glyph.Data = {binary 778 -> bttPlay.Glyph.Data.bin}
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttStop: TSpeedButton
+            Left = 28
+            Top = 0
+            Width = 24
+            Height = 25
+            Action = ActionStop
+            Glyph.Data = {binary 778 -> bttStop.Glyph.Data.bin}
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttPause: TSpeedButton
+            Left = 52
+            Top = 0
+            Width = 25
+            Height = 25
+            Action = ActionPause
+            Glyph.Data = {binary 826 -> bttPause.Glyph.Data.bin}
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttLoop: TSpeedButton
+            Left = 76
+            Top = 0
+            Width = 25
+            Height = 25
+            Action = ActionLoop
+            Glyph.Data = {binary 778 -> bttLoop.Glyph.Data.bin}
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttZoomIn: TSpeedButton
+            Left = 201
+            Top = 8
+            Width = 23
+            Height = 25
+            Action = ActionZoomIn
+            Glyph.Data = {binary 1858 -> bttZoomIn.Glyph.Data.bin}
+            NumGlyphs = 2
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttZoomOut: TSpeedButton
+            Left = 223
+            Top = 8
+            Width = 23
+            Height = 25
+            Action = ActionZoomOut
+            Glyph.Data = {binary 1858 -> bttZoomOut.Glyph.Data.bin}
+            NumGlyphs = 2
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttShowHideVideo: TSpeedButton
+            Left = 324
+            Top = 8
+            Width = 23
+            Height = 25
+            Action = ActionShowHideVideo
+            Glyph.Data = {binary 1082 -> bttShowHideVideo.Glyph.Data.bin}
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttCheckErrors: TSpeedButton
+            Left = 623
+            Top = 10
+            Width = 25
+            Height = 25
+            Action = ActionCheckErrors
+            Glyph.Data = {binary 1082 -> bttCheckErrors.Glyph.Data.bin}
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttPreviousSub: TSpeedButton
+            Left = 4
+            Top = 24
+            Width = 33
+            Height = 25
+            Action = ActionPreviousSub
+            Glyph.Data = {binary 1082 -> bttPreviousSub.Glyph.Data.bin}
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttNextSub: TSpeedButton
+            Left = 36
+            Top = 24
+            Width = 33
+            Height = 25
+            Action = ActionNextSub
+            Glyph.Data = {binary 1082 -> bttNextSub.Glyph.Data.bin}
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttZoomSel: TSpeedButton
+            Left = 245
+            Top = 8
+            Width = 23
+            Height = 25
+            Action = ActionZoomSelection
+            Glyph.Data = {binary 1858 -> bttZoomSel.Glyph.Data.bin}
+            NumGlyphs = 2
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttZoomAll: TSpeedButton
+            Left = 267
+            Top = 8
+            Width = 23
+            Height = 25
+            Action = ActionZoomAll
+            Glyph.Data = {binary 1858 -> bttZoomAll.Glyph.Data.bin}
+            NumGlyphs = 2
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttShowSuggestions: TSpeedButton
+            Left = 647
+            Top = 10
+            Width = 25
+            Height = 25
+            Action = ActionShowSuggestions
+            Glyph.Data = {binary 1082 -> bttShowSuggestions.Glyph.Data.bin}
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttWorkingMode: TTntSpeedButton
+            Left = 120
+            Top = 54
+            Width = 49
+            Height = 25
+            Hint = 'Choose between "Normal" or "Timing" mode'
+            AllowAllUp = True
+            GroupIndex = 1
+            Caption = 'Normal'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Microsoft Sans Serif'
+            Font.Style = [fsBold]
+            ParentFont = False
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = bttWorkingModeClick
+          end
+          object bttZoomVertical: TSpeedButton
+            Left = 289
+            Top = 8
+            Width = 23
+            Height = 25
+            Action = ActionZoomVertical
+            Glyph.Data = {binary 1438 -> bttZoomVertical.Glyph.Data.bin}
+            NumGlyphs = 2
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttPlayToEnd: TSpeedButton
+            Left = 68
+            Top = 24
+            Width = 33
+            Height = 25
+            Action = ActionPlayToEnd
+            Glyph.Data = {binary 778 -> bttPlayToEnd.Glyph.Data.bin}
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object bttShowPreferences: TSpeedButton
+            Left = 671
+            Top = 10
+            Width = 25
+            Height = 25
+            Action = ActionPreferences
+            Glyph.Data = {binary 826 -> bttShowPreferences.Glyph.Data.bin}
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object lblVolume: TTntLabel
+            Left = 4
+            Top = 50
+            Width = 39
+            Height = 13
+            AutoSize = False
+            Caption = 'Volume'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Microsoft Sans Serif'
+            Font.Style = []
+            ParentFont = False
+          end
+          object bttShowProjectProperties: TSpeedButton
+            Left = 695
+            Top = 10
+            Width = 25
+            Height = 25
+            Hint = 'Project Properties'
+            Action = ActionProjectProperties
+            Glyph.Data = {binary 326 -> bttShowProjectProperties.Glyph.Data.bin}
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object tbVolume: TTntTrackBar
+            Left = -4
+            Top = 61
+            Width = 109
+            Height = 25
+            Hint = 'Volume'
+            Max = 100
+            ParentShowHint = False
+            PageSize = 10
+            Frequency = 10
+            Position = 100
+            ShowHint = True
+            TabOrder = 5
+            ThumbLength = 25
+            TickStyle = tsNone
+            OnChange = tbVolumeChange
+          end
+          object Panel1: TPanel
+            Left = 104
+            Top = 0
+            Width = 90
+            Height = 53
+            BevelOuter = bvLowered
+            TabOrder = 0
+            object lbAutoScroll: TTntLabel
+              Left = 7
+              Top = 3
+              Width = 81
+              Height = 13
+              AutoSize = False
+              Caption = 'Auto-scroll :'
+              Color = clBtnFace
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'Microsoft Sans Serif'
+              Font.Style = []
+              ParentColor = False
+              ParentFont = False
+            end
+            object chkAutoScrollSub: TCheckBox
+              Left = 6
+              Top = 34
+              Width = 84
+              Height = 17
+              Caption = 'Subtitles'
+              TabOrder = 0
+              OnClick = chkAutoScrollSubClick
+            end
+            object chkAutoScrollWAVDisp: TTntCheckBox
+              Left = 6
+              Top = 17
+              Width = 84
+              Height = 17
+              Caption = 'WAV display'
+              TabOrder = 1
+              OnClick = chkAutoScrollWAVDispClick
+            end
+          end
+          object plCursorPos: TPanel
+            Left = 197
+            Top = 43
+            Width = 150
+            Height = 42
+            Hint = 'Cursor position'
+            BevelOuter = bvLowered
+            Caption = '00:00:00.000'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -24
+            Font.Name = 'Arial'
+            Font.Style = [fsBold]
+            ParentFont = False
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 1
+          end
+          object PanelTimeSelView: TPanel
+            Left = 352
+            Top = 0
+            Width = 260
+            Height = 85
+            BevelOuter = bvLowered
+            TabOrder = 2
+            object Label1: TLabel
+              Left = 6
+              Top = 28
+              Width = 20
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Sel'
+            end
+            object LabelSelLenght: TLabel
+              Left = 184
+              Top = 4
+              Width = 39
+              Height = 13
+              Caption = 'Length'
+              Enabled = False
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clNavy
+              Font.Height = -11
+              Font.Name = 'Microsoft Sans Serif'
+              Font.Style = [fsBold, fsUnderline]
+              ParentFont = False
+              OnClick = LabelSelLenghtClick
+            end
+            object LabelSelEnd: TLabel
+              Left = 108
+              Top = 4
+              Width = 22
+              Height = 13
+              Caption = 'End'
+              Enabled = False
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clNavy
+              Font.Height = -11
+              Font.Name = 'Microsoft Sans Serif'
+              Font.Style = [fsBold, fsUnderline]
+              ParentFont = False
+              OnClick = LabelSelEndClick
+            end
+            object LabelSelBegin: TLabel
+              Left = 32
+              Top = 4
+              Width = 32
+              Height = 13
+              Hint = 'Double click to update begin timing'
+              Caption = 'Begin'
+              Enabled = False
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clNavy
+              Font.Height = -11
+              Font.Name = 'Microsoft Sans Serif'
+              Font.Style = [fsBold, fsUnderline]
+              ParentFont = False
+              OnClick = LabelSelBeginClick
+            end
+            object Label5: TLabel
+              Left = 3
+              Top = 56
+              Width = 23
+              Height = 13
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'View'
+            end
+            object edSelLength: TEdit
+              Left = 184
+              Top = 24
+              Width = 73
+              Height = 21
+              Hint = 'Selection length'
+              TabStop = False
+              ParentShowHint = False
+              ReadOnly = True
+              ShowHint = True
+              TabOrder = 0
+            end
+            object edSelEnd: TEdit
+              Left = 108
+              Top = 24
+              Width = 73
+              Height = 21
+              Hint = 'Selection end position'
+              TabStop = False
+              ParentShowHint = False
+              ReadOnly = True
+              ShowHint = True
+              TabOrder = 1
+            end
+            object edViewBegin: TEdit
+              Left = 32
+              Top = 53
+              Width = 73
+              Height = 21
+              Hint = 'View start position'
+              TabStop = False
+              ParentShowHint = False
+              ReadOnly = True
+              ShowHint = True
+              TabOrder = 2
+            end
+            object edViewEnd: TEdit
+              Left = 108
+              Top = 53
+              Width = 73
+              Height = 21
+              Hint = 'View end position'
+              TabStop = False
+              ParentShowHint = False
+              ReadOnly = True
+              ShowHint = True
+              TabOrder = 3
+            end
+            object edViewLength: TEdit
+              Left = 184
+              Top = 53
+              Width = 73
+              Height = 21
+              Hint = 'View length'
+              TabStop = False
+              ParentShowHint = False
+              ReadOnly = True
+              ShowHint = True
+              TabOrder = 4
+            end
+            object edSelBegin: TEdit
+              Left = 32
+              Top = 24
+              Width = 73
+              Height = 21
+              Hint = 'Selection start position'
+              TabOrder = 5
+            end
+          end
+          object bttStyles: TTntButton
+            Left = 616
+            Top = 52
+            Width = 39
+            Height = 25
+            Action = ActionStyles
+            TabOrder = 3
+          end
+          object cbStyles: TTntComboBox
+            Left = 658
+            Top = 54
+            Width = 89
+            Height = 21
+            Style = csDropDownList
+            ItemHeight = 13
+            TabOrder = 4
+            OnSelect = cbStylesSelect
+          end
+          object PageQuickSmartSilentZonePanels: TPageControl
+            Left = 749
+            Top = 0
+            Width = 273
+            Height = 87
+            ActivePage = TabSheetQuickDelay
+            TabOrder = 6
+            Visible = False
+            OnChange = PageQuickSmartSilentZonePanelsChange
+            object TabSheetQuickDelay: TTabSheet
+              Caption = 'Quick && Smart Delay'
+              object LabelFastShiftDelayNegative: TLabel
+                Left = 0
+                Top = -1
+                Width = 93
+                Height = 13
+                Caption = 'Negative shift delay'
+                Transparent = True
+              end
+              object bttFastLess200ms: TSpeedButton
+                Left = 0
+                Top = 13
+                Width = 48
+                Height = 19
+                Action = ActionDelayMoveNegative200
+                Caption = '200'
+                Glyph.Data = {binary 314 -> bttFastLess200ms.Glyph.Data.bin}
+                ParentShowHint = False
+                ShowHint = True
+              end
+              object bttFastLess100ms: TSpeedButton
+                Left = 50
+                Top = 13
+                Width = 48
+                Height = 19
+                Action = ActionDelayMoveNegative100
+                Caption = '100'
+                Glyph.Data = {binary 314 -> bttFastLess100ms.Glyph.Data.bin}
+                ParentShowHint = False
+                ShowHint = True
+              end
+              object bttFastLess50ms: TSpeedButton
+                Left = 0
+                Top = 35
+                Width = 48
+                Height = 19
+                Action = ActionDelayMoveNegative50
+                Caption = '50'
+                Glyph.Data = {binary 250 -> bttFastLess50ms.Glyph.Data.bin}
+                ParentShowHint = False
+                ShowHint = True
+              end
+              object bttFastLess10ms: TSpeedButton
+                Left = 50
+                Top = 35
+                Width = 48
+                Height = 19
+                Action = ActionDelayMoveNegative10
+                Caption = '10'
+                Glyph.Data = {binary 250 -> bttFastLess10ms.Glyph.Data.bin}
+                ParentShowHint = False
+                ShowHint = True
+              end
+              object bttFastSmartWavCursor: TSpeedButton
+                Left = 108
+                Top = 2
+                Width = 48
+                Height = 29
+                Action = ActionDelaySynchToCursor
+                Caption = '.'
+                Glyph.Data = {binary 1082 -> bttFastSmartWavCursor.Glyph.Data.bin}
+                ParentShowHint = False
+                ShowHint = True
+              end
+              object bttFastMore50ms: TSpeedButton
+                Left = 163
+                Top = 35
+                Width = 48
+                Height = 19
+                Action = ActionDelayMovePositive50
+                Caption = '50'
+                Glyph.Data = {binary 250 -> bttFastMore50ms.Glyph.Data.bin}
+                ParentShowHint = False
+                ShowHint = True
+              end
+              object bttFastMore100ms: TSpeedButton
+                Left = 163
+                Top = 13
+                Width = 48
+                Height = 19
+                Action = ActionDelayMovePositive100
+                Caption = '100'
+                Glyph.Data = {binary 314 -> bttFastMore100ms.Glyph.Data.bin}
+                ParentShowHint = False
+                ShowHint = True
+              end
+              object bttFastMore200ms: TSpeedButton
+                Left = 217
+                Top = 13
+                Width = 48
+                Height = 19
+                Action = ActionDelayMovePositive200
+                Caption = '200'
+                Glyph.Data = {binary 314 -> bttFastMore200ms.Glyph.Data.bin}
+                ParentShowHint = False
+                ShowHint = True
+              end
+              object bttFastMore10ms: TSpeedButton
+                Left = 217
+                Top = 35
+                Width = 48
+                Height = 19
+                Action = ActionDelayMovePositive10
+                Caption = '10'
+                Glyph.Data = {binary 250 -> bttFastMore10ms.Glyph.Data.bin}
+                ParentShowHint = False
+                ShowHint = True
+              end
+              object LabelFastShiftDelayPositive: TLabel
+                Left = 163
+                Top = -1
+                Width = 87
+                Height = 13
+                Caption = 'Positive shift delay'
+                Transparent = True
+              end
+              object chkFastSmartWavCursor: TTntCheckBox
+                Left = 104
+                Top = 35
+                Width = 56
+                Height = 19
+                Caption = 'All subs'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'Microsoft Sans Serif'
+                Font.Style = []
+                ParentFont = False
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 0
+              end
+            end
+            object TabSheetSilentZone: TTabSheet
+              Caption = 'Silent Zone'
+              ImageIndex = 1
+              object TntLabel1: TTntLabel
+                Left = 0
+                Top = 5
+                Width = 19
+                Height = 13
+                Caption = 'Thr:'
+              end
+              object TntLabel2: TTntLabel
+                Left = 81
+                Top = 5
+                Width = 20
+                Height = 13
+                Caption = 'Dur:'
+              end
+              object SpeedButtonUpQuickSilentZone: TSpeedButton
+                Left = 232
+                Top = 2
+                Width = 24
+                Height = 19
+                Hint = 'Update silent zones'
+                Glyph.Data = {binary 778 -> SpeedButtonUpQuickSilentZone.Glyph.Data.bin}
+                ParentShowHint = False
+                ShowHint = True
+                OnClick = SpeedButtonUpQuickSilentZoneClick
+              end
+              object SpeedButtonGoCurrentSilentZone: TSpeedButton
+                Left = 232
+                Top = 26
+                Width = 24
+                Height = 19
+                Hint = 'Move cursor to selected silent zone'
+                Glyph.Data = {binary 778 -> SpeedButtonGoCurrentSilentZone.Glyph.Data.bin}
+                ParentShowHint = False
+                ShowHint = True
+                OnClick = SpeedButtonGoCurrentSilentZoneClick
+              end
+              object TntLabel3: TTntLabel
+                Left = 159
+                Top = 5
+                Width = 20
+                Height = 13
+                Caption = 'Min:'
+              end
+              object edThreshold: TTntEdit
+                Left = 25
+                Top = 1
+                Width = 33
+                Height = 21
+                Hint = 'Threshold between 0 and 32767'
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 0
+                Text = '100'
+                OnChange = edThresholdChange
+              end
+              object udThreshold: TTntUpDown
+                Left = 58
+                Top = 1
+                Width = 16
+                Height = 21
+                Associate = edThreshold
+                Max = 32767
+                Increment = 10
+                Position = 100
+                TabOrder = 1
+              end
+              object edDuration: TTntEdit
+                Left = 106
+                Top = 1
+                Width = 33
+                Height = 21
+                Hint = 'Minimum duration of the silent zone in ms (100..9999)'
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 2
+                Text = '500'
+                OnChange = edDurationChange
+              end
+              object udDuration: TTntUpDown
+                Left = 139
+                Top = 1
+                Width = 16
+                Height = 21
+                Associate = edDuration
+                Min = 100
+                Max = 9999
+                Increment = 100
+                Position = 500
+                TabOrder = 3
+                Thousands = False
+              end
+              object ComboBoxSilentZone: TComboBox
+                Left = 1
+                Top = 26
+                Width = 230
+                Height = 21
+                Style = csDropDownList
+                ItemHeight = 0
+                TabOrder = 6
+                OnSelect = ComboBoxSilentZoneSelect
+              end
+              object edMinimunBetweenZones: TTntEdit
+                Left = 184
+                Top = 1
+                Width = 30
+                Height = 21
+                Hint = 'Minimum delay between zones in sec. (0..600)'
+                ParentShowHint = False
+                ShowHint = True
+                TabOrder = 4
+                Text = '30'
+                OnChange = edMinimunBetweenZonesChange
+              end
+              object udMinimunBetweenZones: TTntUpDown
+                Left = 214
+                Top = 1
+                Width = 16
+                Height = 21
+                Associate = edMinimunBetweenZones
+                Max = 600
+                Increment = 10
+                Position = 30
+                TabOrder = 5
+              end
+            end
+            object TabSheetSmartDesynch: TTabSheet
+              Caption = 'Smart Desynch'
+              ImageIndex = 2
+              object TntSpeedButtonResynchToolsSetPos: TTntSpeedButton
+                Left = 0
+                Top = -1
+                Width = 226
+                Height = 20
+                Action = ActionResynchToolsSetPos
+                Glyph.Data = {binary 1082 -> TntSpeedButtonResynchToolsSetPos.Glyph.Data.bin}
+              end
+              object TntSpeedButtonResynchToolsDelPos: TTntSpeedButton
+                Left = 0
+                Top = 19
+                Width = 226
+                Height = 20
+                Action = ActionResynchToolsDelPos
+                Glyph.Data = {binary 1082 -> TntSpeedButtonResynchToolsDelPos.Glyph.Data.bin}
+              end
+              object TntSpeedButtonResynchToolsReset: TTntSpeedButton
+                Left = 0
+                Top = 39
+                Width = 226
+                Height = 20
+                Action = ActionResynchToolsReset
+                Glyph.Data = {binary 1082 -> TntSpeedButtonResynchToolsReset.Glyph.Data.bin}
+              end
+              object TntSpeedButtonResynchShowHide: TTntSpeedButton
+                Left = 232
+                Top = 1
+                Width = 32
+                Height = 58
+                Hint = 'Show/Hide deysnch tool window'
+                Action = ActionResynchShowHide
+                Glyph.Data = {binary 1082 -> TntSpeedButtonResynchShowHide.Glyph.Data.bin}
+                ParentShowHint = False
+                ShowHint = True
+              end
+            end
+          end
+        end
+      end
+      object PanelBottom: TPanel
+        Left = 0
+        Top = 316
+        Width = 1059
+        Height = 104
+        Align = alBottom
+        BevelOuter = bvNone
+        Caption = 'PanelBottom'
+        FullRepaint = False
+        TabOrder = 1
+        object SplitterSubtitleVO: TTntSplitter
+          Left = 655
+          Top = 0
+          Width = 4
+          Height = 104
+          Align = alRight
+          AutoSnap = False
+          Color = clSilver
+          ParentColor = False
+          ResizeStyle = rsUpdate
+          Visible = False
+        end
+        object MemoSubtitleText: TTntRichEdit
+          Left = 35
+          Top = 0
+          Width = 620
+          Height = 104
+          Align = alClient
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Microsoft Sans Serif'
+          Font.Style = []
+          HideSelection = False
+          ParentFont = False
+          ParentShowHint = False
+          PopupMenu = MemoSubPopupMenu
+          ScrollBars = ssVertical
+          ShowHint = False
+          TabOrder = 1
+          OnChange = MemoSubtitleTextChange
+          OnMouseDown = MemoSubtitleTextMouseDown
+          OnSelectionChange = MemoSubtitleTextSelectionChange
+        end
+        object MemoLinesCounter: TTntRichEdit
+          Left = 0
+          Top = 0
+          Width = 35
+          Height = 104
+          TabStop = False
+          Align = alLeft
+          Alignment = taRightJustify
+          ReadOnly = True
+          TabOrder = 0
+        end
+        object MemoSubtitleVO: TTntRichEdit
+          Left = 659
+          Top = 0
+          Width = 400
+          Height = 104
+          Align = alRight
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Microsoft Sans Serif'
+          Font.Style = []
+          HideSelection = False
+          ParentFont = False
+          ParentShowHint = False
+          PopupMenu = MemoSubtitleVOPopupMenu
+          ReadOnly = True
+          ScrollBars = ssVertical
+          ShowHint = False
+          TabOrder = 2
+          Visible = False
+          OnEnter = MemoSubtitleVOEnter
+          OnMouseDown = MemoSubtitleVOMouseDown
+          OnMouseUp = MemoSubtitleVOMouseUp
+          OnSelectionChange = MemoSubtitleVOSelectionChange
+        end
+      end
+    end
+    object TabSheetWordReference: TTabSheet
+      Caption = 'Word Reference'
+      ImageIndex = 6
+      TabVisible = False
+      object WebBrowserWordReferenceThesaurus: TWebBrowser
+        Left = 418
+        Top = 0
+        Width = 473
+        Height = 420
+        Align = alLeft
+        TabOrder = 0
+        ControlData = {binary 156 -> WebBrowserWordReferenceThesaurus.ControlData.bin}
+      end
+      object WebBrowserWordReference: TWebBrowser
+        Left = 0
+        Top = 0
+        Width = 418
+        Height = 420
+        Align = alLeft
+        TabOrder = 1
+        ControlData = {binary 156 -> WebBrowserWordReference.ControlData.bin}
+      end
+    end
+    object TabSheetTheFreeDictionary: TTabSheet
+      Caption = 'TheFreeDictionary'
+      ImageIndex = 5
+      TabVisible = False
+      object WebBrowserTheFreeDictionary: TWebBrowser
+        Left = 0
+        Top = 0
+        Width = 1059
+        Height = 420
+        Align = alClient
+        TabOrder = 0
+        ControlData = {binary 156 -> WebBrowserTheFreeDictionary.ControlData.bin}
+      end
+    end
+    object TabSheetWordNet: TTabSheet
+      Caption = 'WordNet'
+      ImageIndex = 5
+      TabVisible = False
+      object WebBrowserWordNet: TWebBrowser
+        Left = 0
+        Top = 0
+        Width = 1059
+        Height = 420
+        Align = alClient
+        TabOrder = 0
+        ControlData = {binary 156 -> WebBrowserWordNet.ControlData.bin}
+      end
+    end
+    object TabSheetUrbanDictionary: TTabSheet
+      Caption = 'Urban dictionary'
+      ImageIndex = 1
+      TabVisible = False
+      object RichEditUrbanDictionary: TTntRichEdit
+        Left = 0
+        Top = 0
+        Width = 1059
+        Height = 421
+        Align = alClient
+        ReadOnly = True
+        ScrollBars = ssVertical
+        TabOrder = 0
+      end
+    end
+    object TabSheetOneLook: TTabSheet
+      Caption = 'Onelook'
+      ImageIndex = 7
+      TabVisible = False
+      object WebBrowserOneLook: TWebBrowser
+        Left = 0
+        Top = 0
+        Width = 1059
+        Height = 420
+        Align = alClient
+        TabOrder = 0
+        ControlData = {binary 156 -> WebBrowserOneLook.ControlData.bin}
+      end
+    end
+  end
+  object TntMainMenu1: TTntMainMenu
+    Left = 8
+    Top = 8
+    object MenuItemFile: TTntMenuItem
+      Caption = 'File'
+      SubMenuImages = ImageList1
+      object MenuItemNewProject: TTntMenuItem
+        Action = ActionNewProject
+        Caption = 'New Project...'
+      end
+      object MenuItemOpenProject: TTntMenuItem
+        Action = ActionOpenProject
+        Caption = 'Open Project...'
+      end
+      object MenuItemOpenRecentRoot: TTntMenuItem
+        AutoHotkeys = maManual
+        Caption = 'Open Recent'
+      end
+      object Reload1: TTntMenuItem
+        Action = ActionReload
+      end
+      object MenuItemClose: TTntMenuItem
+        Action = ActionClose
+      end
+      object N1: TTntMenuItem
+        Caption = '-'
+      end
+      object MenuItemProjectProperties: TTntMenuItem
+        Action = ActionProjectProperties
+        Caption = 'Project Properties...'
+      end
+      object MenuItemOpenProjectFolder: TTntMenuItem
+        Action = ActionOpenProjectFolder
+      end
+      object N4: TTntMenuItem
+        Caption = '-'
+      end
+      object MenuItemSave: TTntMenuItem
+        Action = ActionSave
+      end
+      object MenuItemSaveAs: TTntMenuItem
+        Action = ActionSaveAs
+        Caption = 'Save As...'
+      end
+      object tntmntmZipSubtitle1: TTntMenuItem
+        Action = ActionZipSubtitle
+      end
+      object MenuItemTranslationTemplate: TTntMenuItem
+        Action = ActionTranslationTemplate
+        Caption = 'Translate...'
+      end
+      object MenuItemExportToWAV: TTntMenuItem
+        Action = ActionExportToWAV
+        Caption = 'Export to WAV...'
+      end
+      object N20: TTntMenuItem
+        Caption = '-'
+      end
+      object MenuItemLoadPresets: TTntMenuItem
+        Caption = 'Load presets...'
+      end
+      object N2: TTntMenuItem
+        Caption = '-'
+      end
+      object MenuItemExit: TTntMenuItem
+        Action = ActionExit
+      end
+    end
+    object MenuItemEdit: TTntMenuItem
+      Caption = 'Edit'
+      SubMenuImages = ImageList1
+      object Undo2: TTntMenuItem
+        Action = ActionUndo
+      end
+      object Redo1: TTntMenuItem
+        Action = ActionRedo
+      end
+      object N17: TTntMenuItem
+        Caption = '-'
+      end
+      object MenuItemFind: TTntMenuItem
+        Action = ActionFind
+        Caption = 'Find...'
+      end
+      object MenuItemFindNext: TTntMenuItem
+        Action = ActionFindNext
+      end
+      object Goto1: TTntMenuItem
+        Action = ActionGoto
+      end
+      object N11: TTntMenuItem
+        Caption = '-'
+      end
+      object Inserttextfile1: TTntMenuItem
+        Action = ActionInsertTextFile
+      end
+      object MenuItemTextPipe: TTntMenuItem
+        Caption = 'Text pipe'
+        object MenuItemShowHideTextPipe: TTntMenuItem
+          Action = ActionShowHideTextPipe
+        end
+        object MenuItemLoadTextFileInPipe: TTntMenuItem
+          Action = ActionLoadTextPipe
+        end
+        object MenuItemSaveTextPipe: TTntMenuItem
+          Action = ActionSaveTextPipeAs
+        end
+        object MenuItemClearTextPipe: TTntMenuItem
+          Action = ActionClearTextPipe
+        end
+      end
+      object DiffFile: TTntMenuItem
+        Action = ActionDiffSubFiles
+      end
+      object N6: TTntMenuItem
+        Caption = '-'
+      end
+      object SubMenuItemErrorChecking: TTntMenuItem
+        Caption = 'Error checking'
+        ImageIndex = 27
+        object Checkerrors1: TTntMenuItem
+          Action = ActionCheckErrors
+        end
+        object MenuItemShowErrorReport: TTntMenuItem
+          Action = ActionShowErrorReport
+        end
+        object MenuItemErrorCheckingPreferences: TTntMenuItem
+          Action = ActionErrorPreferences
+          Caption = 'Preferences...'
+        end
+        object N33: TTntMenuItem
+          Caption = '-'
+        end
+        object MenuItemRemoveTextForHi: TTntMenuItem
+          Action = ActionRemoveTextForHi
+        end
+        object MenuItemFixCommonErrors: TTntMenuItem
+          Action = ActionFixCommonErrors
+        end
+        object MenuItemSEFix: TTntMenuItem
+          Caption = 'All fix options above'
+          ImageIndex = 22
+          OnClick = MenuItemSEFixClick
+        end
+      end
+      object SubMenuItemSpellcheck: TTntMenuItem
+        Caption = 'Spell check'
+        object MenuItemSpellcheck: TTntMenuItem
+          Action = ActionSpellCheck
+          Caption = 'Spell check...'
+        end
+        object MenuItemLiveSpellcheck: TTntMenuItem
+          Action = ActionLiveSpellCheck
+          Checked = True
+        end
+        object N22: TTntMenuItem
+          Caption = '-'
+        end
+        object N32: TTntMenuItem
+          Caption = '-'
+        end
+        object SubMenuCustomDictionary: TTntMenuItem
+          Caption = 'Custom dictionary'
+          OnClick = SubMenuCustomDictionaryClick
+          object MenuCustomDictionaryCopyToClipboard: TTntMenuItem
+            Caption = 'Copy to clipboard'
+            OnClick = MenuCustomDictionaryCopyToClipboardClick
+          end
+          object MenuCustomDictionaryPasteFromClipboard: TTntMenuItem
+            Caption = 'Paste from clipboard'
+            OnClick = MenuCustomDictionaryPasteFromClipboardClick
+          end
+          object MenuCustomDictionaryAppendFromClipboard: TTntMenuItem
+            Caption = 'Append from clipboard'
+            OnClick = MenuCustomDictionaryAppendFromClipboardClick
+          end
+        end
+        object N23: TTntMenuItem
+          Caption = '-'
+        end
+        object MenuItemGetMoreDictionaries: TTntMenuItem
+          Caption = 'Get more dictionaries'
+          OnClick = MenuItemGetMoreDictionariesClick
+        end
+      end
+      object MenuItemDelay: TTntMenuItem
+        Action = ActionDelay
+      end
+      object MenuItemQuickSmartDelay: TTntMenuItem
+        Caption = 'Quick && Smart Delay'
+        object MenuItemSynchToCursor: TTntMenuItem
+          Action = ActionDelaySynchToCursor
+        end
+        object N26: TTntMenuItem
+          Caption = '-'
+        end
+        object Movecurrentsubtitleby200Ms1: TTntMenuItem
+          Action = ActionDelayMoveNegative200
+        end
+        object Movecurrentsubtitleby100Ms1: TTntMenuItem
+          Action = ActionDelayMoveNegative100
+        end
+        object Movecurrentsubtitleby50Ms1: TTntMenuItem
+          Action = ActionDelayMoveNegative50
+        end
+        object Movecurrentsubtitleby10Ms1: TTntMenuItem
+          Action = ActionDelayMoveNegative10
+        end
+        object N27: TTntMenuItem
+          Caption = '-'
+        end
+        object Movecurrentsubtitleby10Ms2: TTntMenuItem
+          Action = ActionDelayMovePositive10
+        end
+        object Movecurrentsubtitleby50Ms2: TTntMenuItem
+          Action = ActionDelayMovePositive50
+        end
+        object Movecurrentsubtitleby100Ms2: TTntMenuItem
+          Action = ActionDelayMovePositive100
+        end
+        object Movecurrentsubtitleby200Ms2: TTntMenuItem
+          Action = ActionDelayMovePositive200
+        end
+      end
+      object MenuItemSmartDesynch: TTntMenuItem
+        Caption = 'Smart desynch tool'
+        object MenuItemRTNew: TTntMenuItem
+          Action = ActionResynchToolsSetPos
+        end
+        object MenuItemRTDelete: TTntMenuItem
+          Action = ActionResynchToolsDelPos
+        end
+        object MenuItemRTReset: TTntMenuItem
+          Action = ActionResynchToolsReset
+        end
+        object tntmntmResynchShowHide: TTntMenuItem
+          Action = ActionResynchShowHide
+          Caption = 'Show/Hide deysnch tool window'
+        end
+      end
+      object MenuItemFpsAdaptation: TTntMenuItem
+        Caption = 'Fps adaptation tool'
+        object ChangeFpsTrueCinemaToCinema: TTntMenuItem
+          Caption = 'Fps Adaptation - 24 fps (True cinema) to 23,976 fps (Cinema)'
+          OnClick = ChangeFpsTrueCinemaToCinemaClick
+        end
+        object ChangeFpsPalToCinema: TTntMenuItem
+          Caption = 'Fps Adaptation - 25 fps (Pal) to 23,976 fps (Cinema)'
+          OnClick = ChangeFpsPalToCinemaClick
+        end
+        object ChangeFpsNtscToCinema: TTntMenuItem
+          Caption = 'Fps Adaptation - 29,97 fps (Ntsc) to 23,976 fps (Cinema)'
+          OnClick = ChangeFpsNtscToCinemaClick
+        end
+        object ChangeFpsCinemaToTrueCinema: TTntMenuItem
+          Caption = 'Fps Adaptation - 23,976 fps (Cinema) to 24 fps (True cinema)'
+          OnClick = ChangeFpsCinemaToTrueCinemaClick
+        end
+        object ChangeFpsPalToTrueCinema: TTntMenuItem
+          Caption = 'Fps Adaptation - 25 fps (Pal) to 24 fps (True cinema)'
+          OnClick = ChangeFpsPalToTrueCinemaClick
+        end
+        object ChangeFpsNtscToTrueCinema: TTntMenuItem
+          Caption = 'Fps Adaptation - 29,97 fps (Ntsc) to 24 fps (True cinema)'
+          OnClick = ChangeFpsNtscToTrueCinemaClick
+        end
+        object ChangeFpsCinemaToPal: TTntMenuItem
+          Caption = 'Fps Adaptation - 23,976 fps (Cinema) to 25 fps (Pal)'
+          OnClick = ChangeFpsCinemaToPalClick
+        end
+        object ChangeFpsTrueCinemaToPal: TTntMenuItem
+          Caption = 'Fps Adaptation - 24 fps (True cinema) to 25 fps (Pal)'
+          OnClick = ChangeFpsTrueCinemaToPalClick
+        end
+        object ChangeFpsNtscToPal: TTntMenuItem
+          Caption = 'Fps Adaptation - 29,97 fps (Ntsc) to 25 fps (Pal)'
+          OnClick = ChangeFpsNtscToPalClick
+        end
+        object ChangeFpsCinemaToNtsc: TTntMenuItem
+          Caption = 'Fps Adaptation - 23,976 fps (Cinema) to 29,97 fps (Ntsc)'
+          OnClick = ChangeFpsCinemaToNtscClick
+        end
+        object ChangeFpsTrueCinemaToNtsc: TTntMenuItem
+          Caption = 'Fps Adaptation - 24 fps (True cinema) to 29,97 fps (Ntsc)'
+          OnClick = ChangeFpsTrueCinemaToNtscClick
+        end
+        object ChangeFpsPalToNtsc: TTntMenuItem
+          Caption = 'Fps Adaptation - 25 fps (Pal) to 29,97 fps (Ntsc)'
+          OnClick = ChangeFpsPalToNtscClick
+        end
+        object MenuItemKeepDurationIntact: TTntMenuItem
+          Caption = 'Keep subtitles length'
+          Checked = True
+          OnClick = MenuItemKeepDurationIntactClick
+        end
+      end
+      object N5: TTntMenuItem
+        Caption = '-'
+      end
+      object Styles1: TTntMenuItem
+        Action = ActionStyles
+      end
+      object SubMenuItemWebServer: TTntMenuItem
+        Caption = 'Web server'
+        ImageIndex = 25
+        object MenuItemStartWebServer: TTntMenuItem
+          Caption = 'Start'
+          RadioItem = True
+          OnClick = MenuItemStartWebServerClick
+        end
+        object MenuItemStopWebServer: TTntMenuItem
+          Caption = 'Stop'
+          Checked = True
+          RadioItem = True
+          OnClick = MenuItemStopWebServerClick
+        end
+        object N7: TTntMenuItem
+          Caption = '-'
+        end
+        object MenuItemShowSuggestions: TTntMenuItem
+          Action = ActionShowSuggestions
+        end
+      end
+      object MenuItemPreferences: TTntMenuItem
+        Action = ActionPreferences
+        Caption = 'Preferences...'
+      end
+    end
+    object MenuItemView: TTntMenuItem
+      Caption = 'View'
+      SubMenuImages = ImageList1
+      object MenuItemZoomIn: TTntMenuItem
+        Action = ActionZoomIn
+      end
+      object MenuItemZoomOut: TTntMenuItem
+        Action = ActionZoomOut
+      end
+      object MenuItemZoomSelection: TTntMenuItem
+        Action = ActionZoomSelection
+      end
+      object MenuItemZoomAll: TTntMenuItem
+        Action = ActionZoomAll
+      end
+      object MenuItemVerticalScaling: TTntMenuItem
+        Action = ActionZoomVertical
+      end
+      object N25: TTntMenuItem
+        Caption = '-'
+      end
+      object MenuItemShowHideReferenceVO: TTntMenuItem
+        Action = ActionToggleVO
+      end
+      object N3: TTntMenuItem
+        Caption = '-'
+      end
+      object MenuItemShowHideVideo: TTntMenuItem
+        Action = ActionShowHideVideo
+      end
+      object MenuItemSetVideoResolution: TTntMenuItem
+        Caption = 'Set Video Resolution'
+        Enabled = False
+        object MenuItemSetVideoResolutionAdd50Perc: TTntMenuItem
+          Caption = 'Full resolution + 50%'
+          OnClick = MenuItemSetVideoResolutionAdd50PercClick
+        end
+        object MenuItemSetVideoResolutionAdd25Perc: TTntMenuItem
+          Caption = 'Full resolution + 25%'
+          OnClick = MenuItemSetVideoResolutionAdd25PercClick
+        end
+        object MenuItemSetVideoResolutionNormal: TTntMenuItem
+          Caption = 'Full resolution'
+          OnClick = MenuItemSetVideoResolutionNormalClick
+        end
+        object MenuItemSetVideoResolutionTo75Perc: TTntMenuItem
+          Caption = 'Resolution to 75% than original'
+          OnClick = MenuItemSetVideoResolutionTo75PercClick
+        end
+        object MenuItemSetVideoResolutionTo50Perc: TTntMenuItem
+          Caption = 'Resolution to 50% than original'
+          OnClick = MenuItemSetVideoResolutionTo50PercClick
+        end
+        object MenuItemSetVideoResolutionTo33Perc: TTntMenuItem
+          Caption = 'Resolution to 33% than original'
+          OnClick = MenuItemSetVideoResolutionTo33PercClick
+        end
+        object MenuItemSetVideoResolutionTo25Perc: TTntMenuItem
+          Caption = 'Resolution to 25% than original'
+          OnClick = MenuItemSetVideoResolutionTo25PercClick
+        end
+      end
+      object MenuItemShowHideSceneChange: TTntMenuItem
+        Action = ActionShowHideSceneChange
+      end
+      object MenuShowHideSubtitles: TTntMenuItem
+        Action = ActionShowHideSubs
+      end
+      object MenuItemDetachVideoWindow: TTntMenuItem
+        Action = ActionDetachVideo
+      end
+      object MenuItemShowFrameAtCursor: TTntMenuItem
+        Action = ActionShowFrameAtCursor
+      end
+      object MenuItemShowStartFrame: TTntMenuItem
+        Action = ActionShowStartFrame
+      end
+      object MenuItemShowStopFrame: TTntMenuItem
+        Action = ActionShowStopFrame
+      end
+      object N21: TTntMenuItem
+        Caption = '-'
+      end
+      object Showsilentzones1: TTntMenuItem
+        Action = ActionShowSilentZones
+      end
+      object N14: TTntMenuItem
+        Caption = '-'
+      end
+      object ShowHidelogs1: TTntMenuItem
+        Action = ActionShowHideLogs
+      end
+    end
+    object MenuItemPlayback: TTntMenuItem
+      Caption = 'Playback'
+      SubMenuImages = ImageList1
+      object MenuItemPlay: TTntMenuItem
+        Action = ActionPlay
+      end
+      object MenuItemStop: TTntMenuItem
+        Action = ActionStop
+      end
+      object MenuItemPause: TTntMenuItem
+        Action = ActionPause
+      end
+      object MenuItemLoop: TTntMenuItem
+        Action = ActionLoop
+      end
+      object NextSub1: TTntMenuItem
+        Action = ActionNextSub
+        Caption = 'Next subtitle'
+      end
+      object PreviousSub1: TTntMenuItem
+        Action = ActionPreviousSub
+        Caption = 'Previous subtitle'
+      end
+      object Loopselectionstart1: TTntMenuItem
+        Action = ActionLoopSelStart
+      end
+      object Loopselectionend1: TTntMenuItem
+        Action = ActionLoopSelEnd
+      end
+      object Playselectionstart1: TTntMenuItem
+        Action = ActionPlaySelStart
+      end
+      object Playselectionend1: TTntMenuItem
+        Action = ActionPlaySelEnd
+      end
+      object MenuItemPlayToEnd: TTntMenuItem
+        Action = ActionPlayToEnd
+      end
+      object N12: TTntMenuItem
+        Caption = '-'
+      end
+      object Rate1: TTntMenuItem
+        Caption = 'Playback Rate'
+        object Setplaybackrateat1001: TTntMenuItem
+          Action = ActionSetPlaybackRate100
+        end
+        object Setplaybackrateat901: TTntMenuItem
+          Action = ActionSetPlaybackRate90
+        end
+        object Setplaybackrateat801: TTntMenuItem
+          Action = ActionSetPlaybackRate80
+        end
+        object Setplaybackrateat701: TTntMenuItem
+          Action = ActionSetPlaybackRate70
+        end
+        object Setplaybackrateat601: TTntMenuItem
+          Action = ActionSetPlaybackRate60
+        end
+      end
+      object MenuItemsWaveCorrection: TTntMenuItem
+        Caption = 'Wave form correction'
+        object MenuItemActionShiftForwardWaveForm: TTntMenuItem
+          Action = ActionShiftForwardWaveForm
+        end
+        object MenuItemActionShiftBackwardWaveForm: TTntMenuItem
+          Action = ActionShiftBackwardWaveForm
+        end
+      end
+    end
+    object MenuItemJSTools: TTntMenuItem
+      Caption = 'JS Tools'
+      SubMenuImages = ImageList1
+    end
+    object MenuItemHelpRoot: TTntMenuItem
+      Caption = '?'
+      SubMenuImages = ImageList1
+      object MenuItemHelp: TTntMenuItem
+        Caption = 'Help'
+        ImageIndex = 26
+        object MenuItemHelpIndex: TTntMenuItem
+          Caption = 'Index'
+          OnClick = MenuItemHelpIndexClick
+        end
+        object MenuItemHelpIndexWAVDisplayControl: TTntMenuItem
+          Caption = 'WAV Display Control'
+          OnClick = MenuItemHelpIndexWAVDisplayControlClick
+        end
+      end
+      object N8: TTntMenuItem
+        Caption = '-'
+      end
+      object MenuItemCheckUpdates: TTntMenuItem
+        Caption = 'Check for updates'
+        ImageIndex = 64
+        OnClick = MenuItemCheckUpdatesClick
+      end
+      object MenuItemRecentChanges: TTntMenuItem
+        Caption = 'Recent changes'
+        Enabled = False
+        ImageIndex = 54
+        OnClick = MenuItemRecentChangesClick
+      end
+      object N29: TTntMenuItem
+        Caption = '-'
+      end
+      object MenuItemGooglePage: TTntMenuItem
+        Caption = 'Google+ page'
+        ImageIndex = 53
+        OnClick = MenuItemGooglePageClick
+      end
+      object N31: TTntMenuItem
+        Caption = '-'
+      end
+      object MenuItemAbout: TTntMenuItem
+        Caption = 'About'
+        OnClick = MenuItemAboutClick
+      end
+    end
+  end
+  object TntActionList1: TTntActionList
+    Images = ImageList1
+    Left = 40
+    Top = 8
+    object ActionZoomIn: TTntAction
+      Tag = 1
+      Category = 'Zoom'
+      Caption = 'Zoom In'
+      Hint = 'Zoom In'
+      ImageIndex = 0
+      OnExecute = ActionZoomInExecute
+    end
+    object ActionZoomOut: TTntAction
+      Tag = 1
+      Category = 'Zoom'
+      Caption = 'Zoom Out'
+      Hint = 'Zoom Out'
+      ImageIndex = 1
+      OnExecute = ActionZoomOutExecute
+    end
+    object ActionZoomSelection: TTntAction
+      Tag = 1
+      Category = 'Zoom'
+      Caption = 'Zoom Selection'
+      Hint = 'Zoom Selection'
+      ImageIndex = 2
+      OnExecute = ActionZoomSelectionExecute
+    end
+    object ActionZoomAll: TTntAction
+      Tag = 1
+      Category = 'Zoom'
+      Caption = 'Zoom All'
+      Hint = 'Zoom All'
+      ImageIndex = 3
+      OnExecute = ActionZoomAllExecute
+    end
+    object ActionPlay: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Play'
+      Hint = 'Play'
+      ImageIndex = 4
+      ShortCut = 112
+      OnExecute = ActionPlayExecute
+    end
+    object ActionStop: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Stop'
+      Hint = 'Stop'
+      ImageIndex = 5
+      ShortCut = 27
+      OnExecute = ActionStopExecute
+    end
+    object ActionLoop: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Loop'
+      Hint = 'Loop'
+      ImageIndex = 6
+      ShortCut = 113
+      OnExecute = ActionLoopExecute
+    end
+    object ActionExit: TTntAction
+      Caption = 'Exit'
+      ImageIndex = 17
+      OnExecute = ActionExitExecute
+    end
+    object ActionNewProject: TTntAction
+      Caption = 'New project'
+      ImageIndex = 16
+      ShortCut = 16462
+      OnExecute = ActionNewProjectExecute
+    end
+    object ActionShowHideVideo: TTntAction
+      Tag = 1
+      Caption = 'Show/Hide Video'
+      Hint = 'Show/Hide Video'
+      ImageIndex = 21
+      ShortCut = 115
+      OnExecute = ActionShowHideVideoExecute
+    end
+    object ActionOpenProject: TTntAction
+      Caption = 'Open Project'
+      ImageIndex = 18
+      ShortCut = 16463
+      OnExecute = ActionOpenProjectExecute
+    end
+    object ActionFind: TTntAction
+      Tag = 1
+      Caption = 'Find'
+      ImageIndex = 11
+      ShortCut = 16454
+      OnExecute = ActionFindExecute
+    end
+    object ActionSave: TTntAction
+      Tag = 1
+      Caption = 'Save'
+      ImageIndex = 15
+      ShortCut = 16467
+      OnExecute = ActionSaveExecute
+    end
+    object ActionSaveSelectedAs: TTntAction
+      Caption = 'Save selected As'
+      ImageIndex = 15
+      OnExecute = ActionSaveSelectedAsExecute
+    end
+    object ActionSaveAs: TTntAction
+      Tag = 1
+      Caption = 'Save As'
+      ImageIndex = 14
+      OnExecute = ActionSaveAsExecute
+    end
+    object ActionProjectProperties: TTntAction
+      Tag = 1
+      Caption = 'Project Properties'
+      ImageIndex = 23
+      OnExecute = ActionProjectPropertiesExecute
+    end
+    object ActionFindNext: TTntAction
+      Tag = 1
+      Caption = 'Find next'
+      ImageIndex = 10
+      ShortCut = 114
+      OnExecute = ActionFindNextExecute
+    end
+    object ActionCheckErrors: TTntAction
+      Tag = 1
+      Caption = 'Check errors'
+      Hint = 'Check errors'
+      ImageIndex = 19
+      OnExecute = ActionCheckErrorsExecute
+    end
+    object ActionFixCommonErrors: TTntAction
+      Tag = 1
+      Caption = 'Fix common errors'
+      Hint = 'Fix common errors'
+      ImageIndex = 22
+      OnExecute = ActionFixCommonErrorsExecute
+    end
+    object ActionRemoveTextForHi: TTntAction
+      Tag = 1
+      Caption = 'Remove text for hearing impareid'
+      Hint = 'Remove text for hearing impareid'
+      ImageIndex = 22
+      OnExecute = ActionRemoveTextForHiExecute
+    end
+    object ActionDelay: TTntAction
+      Tag = 1
+      Caption = 'Delay'
+      ImageIndex = 20
+      ShortCut = 16452
+      OnExecute = ActionDelayExecute
+    end
+    object ActionShowErrorReport: TTntAction
+      Tag = 1
+      Caption = 'Show error report'
+      ImageIndex = 24
+      OnExecute = ActionShowErrorReportExecute
+    end
+    object ActionNextSub: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Play next sub'
+      Hint = 'Play next subtitle'
+      ImageIndex = 7
+      ShortCut = 117
+      OnExecute = ActionNextSubExecute
+    end
+    object ActionPreviousSub: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Play previous sub'
+      Hint = 'Play previous subtitle'
+      ImageIndex = 8
+      ShortCut = 116
+      OnExecute = ActionPreviousSubExecute
+    end
+    object ActionGoto: TTntAction
+      Tag = 1
+      Caption = 'Goto'
+      ImageIndex = 9
+      ShortCut = 16455
+      OnExecute = ActionGotoExecute
+    end
+    object ActionPreferences: TTntAction
+      Tag = 1
+      Caption = 'Preferences'
+      Hint = 'Preferences'
+      ImageIndex = 22
+      OnExecute = ActionPreferencesExecute
+    end
+    object ActionClose: TTntAction
+      Tag = 1
+      Caption = 'Close'
+      ImageIndex = 13
+      OnExecute = ActionCloseExecute
+    end
+    object ActionErrorPreferences: TTntAction
+      Caption = 'Error preferences'
+      ImageIndex = 22
+      OnExecute = ActionErrorPreferencesExecute
+    end
+    object ActionShowSuggestions: TTntAction
+      Tag = 1
+      Caption = 'Show suggestions'
+      Hint = 'Show network suggestions'
+      ImageIndex = 24
+      OnExecute = ActionShowSuggestionsExecute
+    end
+    object EditCut1: TTntEditCut
+      Category = 'Edit'
+      Caption = 'Cu&t'
+      Hint = 'Cut|Cuts the selection and puts it on the Clipboard'
+      ImageIndex = 28
+      ShortCut = 16472
+    end
+    object EditSelectAll1: TTntEditSelectAll
+      Category = 'Edit'
+      Caption = 'Select &All'
+      Hint = 'Select All|Selects the entire document'
+      ShortCut = 16449
+    end
+    object EditDelete1: TTntEditDelete
+      Category = 'Edit'
+      Caption = '&Delete'
+      Hint = 'Delete|Erases the selection'
+      ImageIndex = 32
+      ShortCut = 46
+    end
+    object ActionInsertTextFile: TTntAction
+      Caption = 'Insert file'
+      ImageIndex = 33
+      OnExecute = ActionInsertTextFileExecute
+    end
+    object ActionClearSelection: TTntAction
+      Tag = 1
+      Caption = 'Clear selection'
+      ShortCut = 118
+      OnExecute = ActionClearSelectionExecute
+    end
+    object ActionLoopSelStart: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Loop selection start'
+      ImageIndex = 35
+      OnExecute = ActionLoopSelStartExecute
+    end
+    object ActionLoopSelEnd: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Loop selection end'
+      ImageIndex = 34
+      OnExecute = ActionLoopSelEndExecute
+    end
+    object ActionAddSubtitle: TTntAction
+      Tag = 1
+      Caption = 'Add subtitle'
+      ShortCut = 16471
+      OnExecute = ActionAddSubtitleExecute
+    end
+    object ActionSetSubtitleTime: TTntAction
+      Tag = 1
+      Caption = 'Set subtitle time'
+      ShortCut = 16468
+      OnExecute = ActionSetSubtitleTimeExecute
+    end
+    object ActionSetPlaybackRate60: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Set playback rate at 60%'
+      OnExecute = ActionSetPlaybackRate60Execute
+    end
+    object ActionSetPlaybackRate70: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Set playback rate at 70%'
+      OnExecute = ActionSetPlaybackRate70Execute
+    end
+    object ActionSetPlaybackRate80: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Set playback rate at 80%'
+      OnExecute = ActionSetPlaybackRate80Execute
+    end
+    object ActionSetPlaybackRate90: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Set playback rate at 90%'
+      OnExecute = ActionSetPlaybackRate90Execute
+    end
+    object ActionSetPlaybackRate100: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Set playback rate at 100%'
+      OnExecute = ActionSetPlaybackRate100Execute
+    end
+    object ActionShiftStartPlus100: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift start time by +100ms'
+      OnExecute = ActionShiftStartPlus100Execute
+    end
+    object ActionShiftStartMinus100: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift start time by -100ms'
+      OnExecute = ActionShiftStartMinus100Execute
+    end
+    object ActionShiftStopPlus100: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift stop time by +100ms'
+      OnExecute = ActionShiftStopPlus100Execute
+    end
+    object ActionShiftStopMinus100: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift stop time by -100ms'
+      OnExecute = ActionShiftStopMinus100Execute
+    end
+    object ActionShiftStartPlus10: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift start time by +10ms'
+      OnExecute = ActionShiftStartPlus10Execute
+    end
+    object ActionShiftStartMinus10: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift start time by -10ms'
+      OnExecute = ActionShiftStartMinus10Execute
+    end
+    object ActionShiftStopPlus10: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift stop time by +10ms'
+      OnExecute = ActionShiftStopPlus10Execute
+    end
+    object ActionShiftStopMinus10: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift stop time by -10ms'
+      OnExecute = ActionShiftStopMinus10Execute
+    end
+    object ActionZoomVertical: TTntAction
+      Tag = 1
+      Category = 'Zoom'
+      Caption = 'Zoom Vertical'
+      Hint = 'Zoom Vertical'
+      ImageIndex = 36
+      OnExecute = ActionZoomVerticalExecute
+    end
+    object ActionShowHideTextPipe: TTntAction
+      Tag = 1
+      Caption = 'Show/Hide Text Pipe'
+      Hint = 'Show/Hide Text Pipe'
+      OnExecute = ActionShowHideTextPipeExecute
+    end
+    object ActionLoadTextPipe: TTntAction
+      Tag = 1
+      Caption = 'Load text pipe...'
+      OnExecute = ActionLoadTextPipeExecute
+    end
+    object ActionClearTextPipe: TTntAction
+      Tag = 1
+      Caption = 'Clear text pipe'
+      OnExecute = ActionClearTextPipeExecute
+    end
+    object ActionSaveTextPipeAs: TTntAction
+      Caption = 'Save text pipe as...'
+      OnExecute = ActionSaveTextPipeAsExecute
+    end
+    object ActionAddSubFromPipe: TTntAction
+      Tag = 1
+      Caption = 'Add subtitle from pipe'
+      OnExecute = ActionAddSubFromPipeExecute
+    end
+    object ActionReplaceFromPipe: TTntAction
+      Tag = 1
+      Caption = 'Replace subtitle from pipe'
+      OnExecute = ActionReplaceFromPipeExecute
+    end
+    object ActionDetachVideo: TTntAction
+      Tag = 1
+      Caption = 'Detach video window'
+      OnExecute = ActionDetachVideoExecute
+    end
+    object ActionShowHideLogs: TTntAction
+      Tag = 1
+      Caption = 'Show/Hide Logs'
+      OnExecute = ActionShowHideLogsExecute
+    end
+    object ActionFixErrorMain: TTntAction
+      Tag = 1
+      Caption = 'Fix errors'
+      OnExecute = ActionFixErrorMainExecute
+    end
+    object ActionStartSub: TTntAction
+      Tag = 1
+      Caption = 'Start new subtitle'
+      OnExecute = ActionStartSubExecute
+    end
+    object ActionStopSub: TTntAction
+      Tag = 1
+      Caption = 'Stop current subtitle'
+      OnExecute = ActionStopSubExecute
+    end
+    object ActionStopAndStartSub: TTntAction
+      Tag = 1
+      Caption = 'Stop current sub and start new sub'
+      OnExecute = ActionStopAndStartSubExecute
+    end
+    object ActionInsertKaraokeMarker: TTntAction
+      Caption = 'Insert karaoke marker'
+      OnExecute = ActionInsertKaraokeMarkerExecute
+    end
+    object ActionShowStartFrame: TTntAction
+      Tag = 1
+      Caption = 'Show start frame'
+      ImageIndex = 41
+      OnExecute = ActionShowStartFrameExecute
+    end
+    object ActionShowStopFrame: TTntAction
+      Tag = 1
+      Caption = 'Show stop frame'
+      ImageIndex = 42
+      OnExecute = ActionShowStopFrameExecute
+    end
+    object ActionShowFrameAtCursor: TTntAction
+      Tag = 1
+      Caption = 'Show frame at cursor'
+      ImageIndex = 43
+      OnExecute = ActionShowFrameAtCursorExecute
+    end
+    object ActionExportToSSA: TTntAction
+      Caption = 'Export to SSA'
+    end
+    object ActionExportToWAV: TTntAction
+      Caption = 'Export to WAV'
+      OnExecute = ActionExportToWAVExecute
+    end
+    object ActionPlaySelStart: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Play selection start'
+      ImageIndex = 37
+      OnExecute = ActionPlaySelStartExecute
+    end
+    object ActionPlaySelEnd: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Play selection end'
+      ImageIndex = 38
+      OnExecute = ActionPlaySelEndExecute
+    end
+    object ActionPlaceKaraokeCursorsAtEnd: TTntAction
+      Tag = 1
+      Caption = 'Place karaoke cursors at end'
+      OnExecute = ActionPlaceKaraokeCursorsAtEndExecute
+    end
+    object ActionPlayToEnd: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Play to end'
+      Hint = 'Play to end'
+      ImageIndex = 39
+      OnExecute = ActionPlayToEndExecute
+    end
+    object ActionPlay1sBefore: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Play 1s before start'
+      OnExecute = ActionPlay1sBeforeExecute
+    end
+    object ActionSelectNextSub: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Select next sub'
+      OnExecute = ActionSelectNextSubExecute
+    end
+    object ActionSelectPreviousSub: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Select previous sub'
+      OnExecute = ActionSelectPreviousSubExecute
+    end
+    object ActionSetSubtitleStartTime: TTntAction
+      Tag = 1
+      Caption = 'Set subtitle start time'
+      OnExecute = ActionSetSubtitleStartTimeExecute
+    end
+    object ActionSetSubtitleStopTime: TTntAction
+      Tag = 1
+      Caption = 'Set subtitle stop time'
+      OnExecute = ActionSetSubtitleStopTimeExecute
+    end
+    object ActionSetSubtitleStopTimeAndGoToNext: TTntAction
+      Tag = 1
+      Caption = 'Set subtitle stop time / go to next'
+      OnExecute = ActionSetSubtitleStopTimeAndGoToNextExecute
+    end
+    object ActionStyles: TTntAction
+      Tag = 1
+      Caption = 'Styles'
+      OnExecute = ActionStylesExecute
+    end
+    object ActionPause: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Pause'
+      Hint = 'Pause/Resume'
+      ImageIndex = 40
+      OnExecute = ActionPauseExecute
+    end
+    object ActionToggleTimingMode: TTntAction
+      Tag = 1
+      Caption = 'Toggle between normal and timing mode'
+      Hint = 'Choose between "Normal" or "Timing" mode'
+      OnExecute = ActionToggleTimingModeExecute
+    end
+    object ActionToggleVO: TTntAction
+      Tag = 1
+      Caption = 'Show/Hide Reference VO'
+      GroupIndex = 2
+      Hint = 'Show/Hide reference VO subtitles'
+      OnExecute = ActionToggleVOExecute
+    end
+    object ActionShowHideSubs: TTntAction
+      Tag = 1
+      Caption = 'Show/Hide subtitles'
+      GroupIndex = 3
+      Hint = 'Show/Hide subtitles on video'
+      OnExecute = ActionShowHideSubsExecute
+    end
+    object ActionSetEditorFocus: TTntAction
+      Tag = 1
+      Caption = 'Set editor focus'
+      OnExecute = ActionSetEditorFocusExecute
+    end
+    object ActionSetEditorFocusAndSelect: TTntAction
+      Tag = 1
+      Caption = 'Set editor focus and select'
+      OnExecute = ActionSetEditorFocusAndSelectExecute
+    end
+    object ActionNextError: TTntAction
+      Tag = 1
+      Caption = 'Next error'
+      OnExecute = ActionNextErrorExecute
+    end
+    object ActionUndo: TTntAction
+      Tag = 1
+      Caption = 'Undo'
+      ImageIndex = 31
+      ShortCut = 16474
+      OnExecute = ActionUndoExecute
+    end
+    object ActionRedo: TTntAction
+      Tag = 1
+      Caption = 'Redo'
+      ImageIndex = 44
+      ShortCut = 16473
+      OnExecute = ActionRedoExecute
+    end
+    object ActionWAVDisplayScrollRight: TTntAction
+      Tag = 1
+      Caption = 'WAVDisplay scroll right'
+      OnExecute = ActionWAVDisplayScrollRightExecute
+    end
+    object ActionWAVDisplayScrollLeft: TTntAction
+      Tag = 1
+      Caption = 'WAVDisplay scroll left'
+      OnExecute = ActionWAVDisplayScrollLeftExecute
+    end
+    object ActionShowHideSceneChange: TTntAction
+      Tag = 1
+      Caption = 'Show/Hide scene change'
+      OnExecute = ActionShowHideSceneChangeExecute
+    end
+    object ActionTextItalic: TTntAction
+      Tag = 1
+      Category = 'QuickStyle'
+      Caption = 'Text in italic'
+      ShortCut = 16457
+      OnExecute = ActionTextItalicExecute
+    end
+    object ActionTextBold: TTntAction
+      Tag = 1
+      Category = 'QuickStyle'
+      Caption = 'Text in bold'
+      OnExecute = ActionTextBoldExecute
+    end
+    object ActionTextUnderline: TTntAction
+      Tag = 1
+      Category = 'QuickStyle'
+      Caption = 'Text in underline'
+      OnExecute = ActionTextUnderlineExecute
+    end
+    object ActionTextColor: TTntAction
+      Category = 'QuickStyle'
+      Caption = 'Text color'
+      OnExecute = ActionTextColorExecute
+    end
+    object ActionTextSize: TTntAction
+      Category = 'QuickStyle'
+      Caption = 'Text size'
+      OnExecute = ActionTextSizeExecute
+    end
+    object ActionStripTags: TTntAction
+      Tag = 1
+      Caption = 'Strip tags'
+      OnExecute = ActionStripTagsExecute
+    end
+    object ActionMerge: TTntAction
+      Tag = 1
+      Caption = 'Merge'
+      OnExecute = ActionMergeExecute
+    end
+    object ActionSplitAtCursor: TTntAction
+      Tag = 1
+      Caption = 'Split at cursor'
+      OnExecute = ActionSplitAtCursorExecute
+    end
+    object ActionOpenProjectFolder: TTntAction
+      Caption = 'Open Project Folder'
+      OnExecute = ActionOpenProjectFolderExecute
+    end
+    object ActionPlay1sBeforeToEnd: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Play 1s before start to end'
+      OnExecute = ActionPlay1sBeforeToEndExecute
+    end
+    object ActionDeleteSceneChange: TTntAction
+      Tag = 1
+      Caption = 'Delete scene change'
+      OnExecute = ActionDeleteSceneChangeExecute
+    end
+    object ActionReload: TTntAction
+      Tag = 1
+      Caption = 'Reload'
+      OnExecute = ActionReloadExecute
+    end
+    object ActionMergeWithPrevious: TTntAction
+      Tag = 1
+      Caption = 'Merge with previous'
+      OnExecute = ActionMergeWithPreviousExecute
+    end
+    object ActionMergeWithNext: TTntAction
+      Tag = 1
+      Caption = 'Merge with next'
+      OnExecute = ActionMergeWithNextExecute
+    end
+    object ActionMergeDialog: TTntAction
+      Tag = 1
+      Caption = 'Merge dialog'
+      OnExecute = ActionMergeDialogExecute
+    end
+    object ActionFixSelectedErrors: TTntAction
+      Tag = 1
+      Caption = 'Fix selected errors'
+      OnExecute = ActionFixSelectedErrorsExecute
+    end
+    object ActionMergeOnOneLine: TTntAction
+      Tag = 1
+      Caption = 'Merge on 1 line'
+      OnExecute = ActionMergeOnOneLineExecute
+    end
+    object ActionLoadPresets: TTntAction
+      Caption = 'Load presets'
+      OnExecute = ActionLoadPresetsExecute
+    end
+    object ActionCopy: TTntAction
+      Caption = '&Copy'
+      Hint = 'Copy|Copies the selection and puts it on the Clipboard'
+      ImageIndex = 29
+      ShortCut = 16451
+      OnExecute = ActionCopyExecute
+      OnUpdate = ActionCopyUpdate
+    end
+    object ActionShowSilentZones: TTntAction
+      Tag = 1
+      Caption = 'Show silent zones'
+      OnExecute = ActionShowSilentZonesExecute
+    end
+    object ActionLiveSpellCheck: TTntAction
+      Caption = 'Live spell check'
+      OnExecute = ActionLiveSpellCheckExecute
+    end
+    object ActionSpellCheck: TTntAction
+      Tag = 1
+      Caption = 'Spell check'
+      OnExecute = ActionSpellCheckExecute
+      OnUpdate = ActionSpellCheckUpdate
+    end
+    object ActionInsertSceneChange: TTntAction
+      Tag = 1
+      Caption = 'Insert scene change'
+      OnExecute = ActionInsertSceneChangeExecute
+    end
+    object ActionPaste: TTntAction
+      Caption = '&Paste'
+      Hint = 'Paste|Inserts Clipboard contents'
+      ImageIndex = 30
+      ShortCut = 16470
+      OnExecute = ActionPasteExecute
+      OnUpdate = ActionPasteUpdate
+    end
+    object ActionPasteAtCursor: TTntAction
+      Caption = 'Paste at cursor'
+      OnExecute = ActionPasteAtCursorExecute
+    end
+    object ActionTranslationTemplate: TTntAction
+      Caption = 'Translate'
+      OnExecute = ActionTranslationTemplateExecute
+    end
+    object ActionDelaySynchToCursor: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift all subtitles from current to cursor'
+      Hint = 'Align entries to the cursor from the selected subtitles\r\nto the last one (if ´All subs´ is unchecked)\r\nfor all subtitles (if ´All subs´ is checked)'
+      ImageIndex = 20
+      OnExecute = ActionDelaySynchToCursorExecute
+    end
+    object ActionDelayMoveNegative200: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift all subtitles from current by -200 Ms'
+      Hint = 'Shift all subtitles from current by -200 Ms'
+      ImageIndex = 46
+      OnExecute = ActionDelayMoveNegative200Execute
+    end
+    object ActionDelayMoveNegative100: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift all subtitles from current by -100 Ms'
+      Hint = 'Shift all subtitles from current by -100 Ms'
+      ImageIndex = 46
+      OnExecute = ActionDelayMoveNegative100Execute
+    end
+    object ActionDelayMoveNegative50: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift all subtitles from current by -50 Ms'
+      Hint = 'Shift all subtitles from current by -50 Ms'
+      ImageIndex = 45
+      OnExecute = ActionDelayMoveNegative50Execute
+    end
+    object ActionDelayMoveNegative10: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift all subtitles from current by -10 Ms'
+      Hint = 'Shift all subtitles from current by -10 Ms'
+      ImageIndex = 45
+      OnExecute = ActionDelayMoveNegative10Execute
+    end
+    object ActionDelayMovePositive10: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift all subtitles from current by +10 Ms'
+      Hint = 'Shift all subtitles from current by +10 Ms'
+      ImageIndex = 47
+      OnExecute = ActionDelayMovePositive10Execute
+    end
+    object ActionDelayMovePositive50: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift all subtitles from current by +50 Ms'
+      Hint = 'Shift all subtitles from current by +50 Ms'
+      ImageIndex = 47
+      OnExecute = ActionDelayMovePositive50Execute
+    end
+    object ActionDelayMovePositive100: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift all subtitles from current by +100 Ms'
+      Hint = 'Shift all subtitles from current by +100 Ms'
+      ImageIndex = 48
+      OnExecute = ActionDelayMovePositive100Execute
+    end
+    object ActionDelayMovePositive200: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Shift all subtitles from current by +200 Ms'
+      Hint = 'Shift all subtitles from current by +200 Ms'
+      ImageIndex = 48
+      OnExecute = ActionDelayMovePositive200Execute
+    end
+    object ActionScrollTextPipeUp: TTntAction
+      Tag = 1
+      Category = 'Edit'
+      Caption = 'Scroll Text Pipe Up'
+      OnExecute = ActionScrollTextPipeUpExecute
+    end
+    object ActionScrollTextPipeDown: TTntAction
+      Tag = 1
+      Category = 'Edit'
+      Caption = 'Scroll Text Pipe Down'
+      OnExecute = ActionScrollTextPipeDownExecute
+    end
+    object ActionMoveForwardToClosestSilentZone: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Move forward to closest silent zone'
+      OnExecute = ActionMoveForwardToClosestSilentZoneExecute
+    end
+    object ActionMoveBackwardToClosestSilentZone: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Move backward to closest silent zone'
+      OnExecute = ActionMoveBackwardToClosestSilentZoneExecute
+    end
+    object ActionShiftForwardWaveForm: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Shift wave form forward from cursor'
+      ShortCut = 24646
+      OnExecute = ActionShiftForwardWaveFormExecute
+    end
+    object ActionShiftBackwardWaveForm: TTntAction
+      Tag = 1
+      Category = 'Playback'
+      Caption = 'Shift wave form backward to the cursor'
+      ShortCut = 24642
+      OnExecute = ActionShiftBackwardWaveFormExecute
+    end
+    object ActionResynchToolsReset: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Reset all desynch tool checkpoints'
+      Enabled = False
+      ImageIndex = 51
+      OnExecute = ActionResynchToolsResetExecute
+    end
+    object ActionResynchToolsSetPos: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Insert a new desynch tool checkpoint'
+      Enabled = False
+      ImageIndex = 49
+      OnExecute = ActionResynchToolsSetPosExecute
+    end
+    object ActionResynchShowHide: TTntAction
+      Category = 'Subtitles'
+      ImageIndex = 22
+      OnExecute = ActionResynchShowHideExecute
+    end
+    object ActionResynchToolsDelPos: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Delete a desynch tool checkpoint'
+      Enabled = False
+      ImageIndex = 50
+      OnExecute = ActionResynchToolsDelPosExecute
+    end
+    object ActionTextBottomLeft: TTntAction
+      Tag = 1
+      Category = 'QuickStyle'
+      Caption = 'Text to bottom left'
+      OnExecute = ActionTextBottomLeftExecute
+    end
+    object ActionTextBottomMiddle: TTntAction
+      Tag = 1
+      Category = 'QuickStyle'
+      Caption = 'Text to bottom middle (default)'
+      OnExecute = ActionTextBottomMiddleExecute
+    end
+    object ActionTextBottomRight: TTntAction
+      Tag = 1
+      Category = 'QuickStyle'
+      Caption = 'Text to bottom right'
+      OnExecute = ActionTextBottomRightExecute
+    end
+    object ActionTextTopLeft: TTntAction
+      Tag = 1
+      Category = 'QuickStyle'
+      Caption = 'Text to top left'
+      OnExecute = ActionTextTopLeftExecute
+    end
+    object ActionTextTopMiddle: TTntAction
+      Tag = 1
+      Category = 'QuickStyle'
+      Caption = 'Text to top middle'
+      OnExecute = ActionTextTopMiddleExecute
+    end
+    object ActionTextTopRight: TTntAction
+      Tag = 1
+      Category = 'QuickStyle'
+      Caption = 'Text to top right'
+      OnExecute = ActionTextTopRightExecute
+    end
+    object ActionTextMiddleRight: TTntAction
+      Tag = 1
+      Category = 'QuickStyle'
+      Caption = 'Text to middle right'
+      OnExecute = ActionTextMiddleRightExecute
+    end
+    object ActionTextMiddleLeft: TTntAction
+      Tag = 1
+      Category = 'QuickStyle'
+      Caption = 'Text to middle left'
+      OnExecute = ActionTextMiddleLeftExecute
+    end
+    object ActionTextMiddleMiddle: TTntAction
+      Tag = 1
+      Category = 'QuickStyle'
+      Caption = 'Text to middle middle'
+      OnExecute = ActionTextMiddleMiddleExecute
+    end
+    object ActionMouseAntiOverlapping: TTntAction
+      Tag = 1
+      Caption = 'Enable / Disable mouse anti-overlapping'
+      OnExecute = ActionMouseAntiOverlappingExecute
+    end
+    object ActionRangeStopDblClick: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Double click event on subtitle stop marker'
+      OnExecute = ActionRangeStopDblClickExecute
+    end
+    object ActionRangeStartDblClick: TTntAction
+      Tag = 1
+      Category = 'Subtitles'
+      Caption = 'Double click event on subtitle start marker'
+      OnExecute = ActionRangeStartDblClickExecute
+    end
+    object ActionDiffSubFiles: TTntAction
+      Caption = 'Show Text<->VO/Other diffs'
+      ImageIndex = 27
+      OnExecute = ActionDiffSubFilesExecute
+    end
+    object ActionZipSubtitle: TTntAction
+      Caption = 'Zip Subtitle...'
+      OnExecute = ActionZipSubtitleExecute
+    end
+    object ActionWrapAroundSC: TTntAction
+      Caption = 'Wrap around Scenechange'
+      OnExecute = ActionWrapAroundSCExecute
+    end
+  end
+  object ImageList1: TImageList
+    BkColor = clFuchsia
+    DrawingStyle = dsTransparent
+    Left = 72
+    Top = 8
+    Bitmap = {binary 76198 -> ImageList1.Bitmap.bin}
+  end
+  object TntOpenDialog1: TTntOpenDialog
+    Options = [ofHideReadOnly, ofFileMustExist, ofEnableSizing]
+    Left = 8
+    Top = 40
+  end
+  object TntSaveDialog1: TTntSaveDialog
+    Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]
+    Left = 40
+    Top = 40
+  end
+  object SubListPopupMenu: TTntPopupMenu
+    OnPopup = SubListPopupMenuPopup
+    Left = 160
+    Top = 341
+    object pmiSubListDelete: TTntMenuItem
+      Caption = 'Delete'
+      ShortCut = 46
+      OnClick = pmiSubListDeleteClick
+    end
+    object pmiSubListMerge: TTntMenuItem
+      Action = ActionMerge
+    end
+    object pmiSubListMergeDialog: TTntMenuItem
+      Action = ActionMergeDialog
+    end
+    object pmiSubListDelay: TTntMenuItem
+      Action = ActionDelay
+    end
+    object pmiFixError: TTntMenuItem
+      Action = ActionFixErrorMain
+    end
+    object N19: TTntMenuItem
+      Caption = '-'
+    end
+    object extinitalic1: TTntMenuItem
+      Action = ActionTextItalic
+    end
+    object Otherstyles1: TTntMenuItem
+      Caption = 'Other styles'
+      object extinbold2: TTntMenuItem
+        Action = ActionTextBold
+      end
+      object extinunderline2: TTntMenuItem
+        Action = ActionTextUnderline
+      end
+      object extcolor2: TTntMenuItem
+        Action = ActionTextColor
+      end
+      object extsize2: TTntMenuItem
+        Action = ActionTextSize
+      end
+      object N28: TTntMenuItem
+        Caption = '-'
+      end
+      object opLeft1: TTntMenuItem
+        Action = ActionTextTopLeft
+      end
+      object opMiddle1: TTntMenuItem
+        Action = ActionTextTopMiddle
+      end
+      object opRight1: TTntMenuItem
+        Action = ActionTextTopRight
+      end
+      object BottomLeft1: TTntMenuItem
+        Action = ActionTextBottomLeft
+      end
+      object BottomMiddle1: TTntMenuItem
+        Action = ActionTextBottomMiddle
+      end
+      object BottomRight1: TTntMenuItem
+        Action = ActionTextBottomRight
+      end
+      object MiddleLeft1: TTntMenuItem
+        Action = ActionTextMiddleLeft
+      end
+      object MiddleMiddle1: TTntMenuItem
+        Action = ActionTextMiddleMiddle
+      end
+      object MiddleRight1: TTntMenuItem
+        Action = ActionTextMiddleRight
+      end
+      object N30: TTntMenuItem
+        Caption = '-'
+      end
+      object extinlowercase: TTntMenuItem
+        Caption = 'lowercase'
+        OnClick = extinlowercaseClick
+      end
+      object extinuppercase: TTntMenuItem
+        Caption = 'UPPERCASE'
+        OnClick = extinuppercaseClick
+      end
+      object extinuppercaseFirstLetter: TTntMenuItem
+        Caption = 'Capitalize every word'
+        OnClick = extinuppercaseFirstLetterClick
+      end
+    end
+    object pmiStriptags: TTntMenuItem
+      Action = ActionStripTags
+    end
+    object N16: TTntMenuItem
+      Caption = '-'
+    end
+    object pmiCreateKaraoke: TTntMenuItem
+      Caption = 'Create Karaoke'
+      OnClick = pmiCreateKaraokeClick
+    end
+    object pmiClearKaraoke: TTntMenuItem
+      Caption = 'Clear Karaoke'
+      OnClick = pmiClearKaraokeClick
+    end
+    object tntmntmN32: TTntMenuItem
+      Caption = '-'
+    end
+    object pmiSaveSelectedAs: TTntMenuItem
+      Action = ActionSaveSelectedAs
+    end
+  end
+  object TimerStatusBarMsg: TTimer
+    Enabled = False
+    Interval = 2000
+    OnTimer = TimerStatusBarMsgTimer
+    Left = 648
+    Top = 480
+  end
+  object TimerAutoScrollSub: TTimer
+    Enabled = False
+    Interval = 80
+    OnTimer = TimerAutoScrollSubTimer
+    Left = 616
+    Top = 480
+  end
+  object MemoSubPopupMenu: TTntPopupMenu
+    AutoHotkeys = maManual
+    Images = ImageList1
+    MenuAnimation = [maTopToBottom]
+    OnPopup = MemoSubPopupMenuPopup
+    Left = 64
+    Top = 515
+    object pmiMemoSubUndo: TTntMenuItem
+      Action = ActionUndo
+      AutoHotkeys = maAutomatic
+    end
+    object N9: TTntMenuItem
+      Caption = '-'
+    end
+    object pmiMemoSubCut: TTntMenuItem
+      Action = EditCut1
+      AutoHotkeys = maAutomatic
+    end
+    object pmiMemoSubCopy: TTntMenuItem
+      Action = ActionCopy
+      AutoHotkeys = maAutomatic
+    end
+    object pmiMemoSubPaste: TTntMenuItem
+      Action = ActionPaste
+      AutoHotkeys = maAutomatic
+    end
+    object pmiMemoSubDelete: TTntMenuItem
+      Action = EditDelete1
+      AutoHotkeys = maAutomatic
+    end
+    object N10: TTntMenuItem
+      Caption = '-'
+    end
+    object pmiMemoSubSelectAll: TTntMenuItem
+      Action = EditSelectAll1
+      AutoHotkeys = maAutomatic
+    end
+    object N18: TTntMenuItem
+      Caption = '-'
+    end
+    object pmiMemoSubItalic: TTntMenuItem
+      Action = ActionTextItalic
+      AutoHotkeys = maAutomatic
+      ImageIndex = 62
+    end
+    object pmiMemoSubOtherStyle: TTntMenuItem
+      AutoHotkeys = maAutomatic
+      Caption = 'Other styles'
+      object pmiMemoSubExtInBold: TTntMenuItem
+        Action = ActionTextBold
+        ImageIndex = 58
+      end
+      object pmiMemoSubExtinUnderline: TTntMenuItem
+        Action = ActionTextUnderline
+        ImageIndex = 59
+      end
+      object pmiMemoSubExtColor: TTntMenuItem
+        Action = ActionTextColor
+        ImageIndex = 60
+      end
+      object pmiMemoSubExtSize: TTntMenuItem
+        Action = ActionTextSize
+        ImageIndex = 61
+      end
+    end
+  end
+  object MemoTextPipePopupMenu: TTntPopupMenu
+    OnPopup = MemoTextPipePopupMenuPopup
+    Left = 8
+    Top = 184
+    object pmiAddAsSubtitle: TTntMenuItem
+      Action = ActionAddSubFromPipe
+    end
+    object pmiReplaceSubtitleFromPipe: TTntMenuItem
+      Action = ActionReplaceFromPipe
+    end
+    object pmiLoadTextPipe: TTntMenuItem
+      Action = ActionLoadTextPipe
+    end
+    object N13: TTntMenuItem
+      Caption = '-'
+    end
+    object pmiAutoColorizeText: TTntMenuItem
+      AutoCheck = True
+      Caption = 'Auto-colorize text'
+      Checked = True
+      GroupIndex = 1
+      RadioItem = True
+    end
+    object pmiAutoDeleteText: TTntMenuItem
+      AutoCheck = True
+      Caption = 'Auto-delete text'
+      GroupIndex = 1
+      RadioItem = True
+    end
+    object pmiAutoDeleteAllTextBefore: TTntMenuItem
+      AutoCheck = True
+      Caption = 'Auto-delete all text before'
+      GroupIndex = 1
+      RadioItem = True
+    end
+    object pmiN32: TTntMenuItem
+      Caption = '-'
+      GroupIndex = 1
+    end
+    object pmiMemoSubCutTP: TTntMenuItem
+      Action = EditCut1
+      GroupIndex = 1
+    end
+    object pmiMemoSubCopyTP: TTntMenuItem
+      Action = ActionCopy
+      GroupIndex = 1
+    end
+    object pmiMemoSubPasteTP: TTntMenuItem
+      Action = ActionPaste
+      GroupIndex = 1
+    end
+    object pmiDeleteTP: TTntMenuItem
+      Action = EditDelete1
+      GroupIndex = 1
+    end
+    object pmUndoTP: TTntMenuItem
+      Caption = 'Undo'
+      GroupIndex = 1
+      ShortCut = 16474
+      OnClick = pmUndoTPClick
+    end
+    object pmiN31: TTntMenuItem
+      Caption = '-'
+      GroupIndex = 1
+    end
+    object pmiSelectAllTP: TTntMenuItem
+      Action = EditSelectAll1
+      GroupIndex = 1
+    end
+    object N15: TTntMenuItem
+      Caption = '-'
+      GroupIndex = 1
+    end
+    object ShowHideTextPipe1: TTntMenuItem
+      Action = ActionShowHideTextPipe
+      Caption = 'Hide Text Pipe'
+      GroupIndex = 1
+    end
+  end
+  object TimerAutoBackup: TTimer
+    Enabled = False
+    Interval = 60000
+    OnTimer = TimerAutoBackupTimer
+    Left = 344
+    Top = 475
+  end
+  object SubListHeaderPopupMenu: TTntPopupMenu
+    Left = 192
+    Top = 341
+  end
+  object OpenDialogPresets: TTntOpenDialog
+    Options = [ofHideReadOnly, ofFileMustExist, ofEnableSizing]
+    Left = 8
+    Top = 72
+  end
+  object WAVDisplayPopupMenu: TTntPopupMenu
+    OnPopup = WAVDisplayPopupMenuPopup
+    Left = 192
+    Top = 24
+    object pmiWAVDispAddSubtitle: TTntMenuItem
+      Action = ActionAddSubtitle
+    end
+    object pmiWAVDispDeleteRange: TTntMenuItem
+      Caption = 'Delete subtitle'
+      OnClick = WAVDisplayPopup_DeleteRange
+    end
+    object pmiWAVDispSplitAtCursor: TTntMenuItem
+      Action = ActionSplitAtCursor
+    end
+    object pmiWAVDispSetSubtitleTime: TTntMenuItem
+      Action = ActionSetSubtitleTime
+    end
+    object pmiWAVDispPasteAtCursor: TTntMenuItem
+      Action = ActionPasteAtCursor
+    end
+    object pmiWAVDispCreateFromVO: TTntMenuItem
+      Caption = 'Create from VO'
+      OnClick = pmiWAVDispCreateFromVOClick
+    end
+    object pmiWrapAroundSC: TMenuItem
+      Action = ActionWrapAroundSC
+    end
+    object N24: TTntMenuItem
+      Caption = '-'
+    end
+    object pmiInsertSC: TTntMenuItem
+      Action = ActionInsertSceneChange
+    end
+    object pmiDeleteSC: TTntMenuItem
+      Action = ActionDeleteSceneChange
+    end
+    object pmiInsertKaraokeMarker: TTntMenuItem
+      Action = ActionInsertKaraokeMarker
+    end
+  end
+  object ImageListWavDisplayer: TImageList
+    Height = 32
+    Width = 32
+    Left = 120
+    Top = 8
+    Bitmap = {binary 50854 -> ImageListWavDisplayer.Bitmap.bin}
+  end
+  object MemoSubtitleVOPopupMenu: TTntPopupMenu
+    Left = 832
+    Top = 568
+    object pmiMemoSubtitleCopyVOToSubtitleText: TTntMenuItem
+      Caption = 'Copy VO to subtitlle text'
+      OnClick = pmiMemoSubtitleCopyVOToSubtitleTextClick
+    end
+  end
+  object VistaAltFix1: TVistaAltFix
+    Left = 375
+    Top = 9
+  end
+  object XPManifest1: TXPManifest
+    Left = 72
+    Top = 40
+  end
+  object SourceforgeRssFeedXml: TXMLDocument
+    FileName = 'http://sourceforge.net/api/file/index/project-id/732714/mtime/desc/limit/20/rss'
+    Left = 287
+    Top = 41
+    DOMVendorDesc = 'MSXML'
+  end
+  object SourceforgeRssFeedCodeXml: TXMLDocument
+    FileName = 'http://sourceforge.net/p/vss-itasa/code/feed'
+    Left = 319
+    Top = 41
+    DOMVendorDesc = 'MSXML'
+  end
+  object TimerChkUpdates: TTimer
+    Enabled = False
+    Interval = 500
+    OnTimer = TimerChkUpdatesTimer
+    Left = 384
+    Top = 491
+  end
+  object TimerSubtitlePreview: TTimer
+    Enabled = False
+    Interval = 750
+    OnTimer = TimerSubtitlePreviewTimer
+    Left = 436
+    Top = 397
+  end
+end

@@ -1,0 +1,67 @@
+<Window x:Class="VisualSubSync.App.Views.TranslateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Translate"
+        Width="608" Height="289" MinWidth="300" MinHeight="280"
+        ResizeMode="CanResize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+        FontFamily="Microsoft Sans Serif" FontSize="11"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True" SnapsToDevicePixels="True"
+        KeyUp="OnKeyUp">
+  <!-- TTranslateForm (docs/enhanced/TTRANSLATEFORM.txt): redimensionável, PanelClient (alClient) e PanelBottom
+       (alBottom, 35). As âncoras akRight viram margens à direita; a ordem no XAML é a TabOrder do DFM
+       (PanelBottom antes de PanelClient), e cada TTntRadioGroup é uma parada só de Tab.
+       Os itens dos TTntRadioGroup seguem ArrangeButtons da VCL, como na janela Delay. -->
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="35" />
+    </Grid.RowDefinitions>
+
+    <!-- PanelBottom -->
+    <Grid Grid.Row="1">
+      <Button Width="75" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,8,77,0"
+              Content="OK" IsDefault="False" Click="OnOK" />
+      <Button Width="75" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,8,-3,0"
+              Content="Cancel" Click="OnCancel" />
+    </Grid>
+
+    <!-- PanelClient -->
+    <Grid Grid.Row="0">
+      <!-- rgSelectionType : " Subtitles to translate " -->
+      <Grid KeyboardNavigation.TabNavigation="Once" KeyboardNavigation.DirectionalNavigation="Cycle">
+        <Border Margin="8,8,-1,0" Height="81" VerticalAlignment="Top" Style="{StaticResource VssGroupFrame}" />
+        <TextBlock Margin="16,1,0,0" Height="14" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Style="{StaticResource VssGroupCaption}" Text=" Subtitles to translate " />
+        <RadioButton x:Name="rbAll" Margin="16,29,0,0" Width="128" Height="17" HorizontalAlignment="Left" VerticalAlignment="Top"
+                     GroupName="SelectionType" Content="All (create a new file)" Checked="OnSelectionTypeClick" />
+        <RadioButton x:Name="rbMissingOnly" Margin="16,60,1,0" Height="17" VerticalAlignment="Top"
+                     GroupName="SelectionType" Content="Missing only (enrich current file)" Checked="OnSelectionTypeClick" />
+      </Grid>
+
+      <!-- rgTextType : " New subtitle text " -->
+      <Grid KeyboardNavigation.TabNavigation="Once" KeyboardNavigation.DirectionalNavigation="Cycle">
+        <Border Margin="8,96,-1,0" Height="113" VerticalAlignment="Top" Style="{StaticResource VssGroupFrame}" />
+        <TextBlock Margin="16,89,0,0" Height="14" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Style="{StaticResource VssGroupCaption}" Text=" New subtitle text " />
+        <RadioButton x:Name="rbEmpty" Margin="16,113,1,0" Height="17" VerticalAlignment="Top"
+                     GroupName="TextType" Content="Empty" Checked="OnTextTypeClick" />
+        <RadioButton x:Name="rbCopyOriginal" Margin="16,136,1,0" Height="17" VerticalAlignment="Top"
+                     GroupName="TextType" Content="Copy original text" Checked="OnTextTypeClick" />
+        <RadioButton x:Name="rbCopyTagsOnly" Margin="16,159,1,0" Height="17" VerticalAlignment="Top"
+                     GroupName="TextType" Content="Copy tags only" Checked="OnTextTypeClick" />
+        <RadioButton x:Name="rbCustomText" Margin="16,182,0,0" Width="136" Height="17" HorizontalAlignment="Left" VerticalAlignment="Top"
+                     GroupName="TextType" Content="Custom text" Checked="OnTextTypeClick" />
+      </Grid>
+
+      <TextBox x:Name="edCustomText" Margin="152,179,7,0" Height="21" VerticalAlignment="Top" VerticalContentAlignment="Center"
+               Text="** untranslated **" />
+      <TextBox x:Name="edTargetFile" Margin="144,26,39,0" Height="21" VerticalAlignment="Top" VerticalContentAlignment="Center" />
+      <Button x:Name="bttBrowseTargetFile" Margin="0,24,5,0" Width="35" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top"
+              Content="..." Click="OnBrowseTargetFile" />
+    </Grid>
+  </Grid>
+</Window>
