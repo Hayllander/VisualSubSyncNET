@@ -7,7 +7,7 @@
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <Company>VisualSubSync</Company>
     <Product>VisualSubSyncNET</Product>
-    <Version>2.0.0-alpha.3</Version>
+    <Version>2.0.0-alpha.4</Version>
     <!-- Permite compilar os projetos WPF fora do Windows (apenas compilação, não execução). -->
     <EnableWindowsTargeting Condition="'$(OS)' != 'Windows_NT'">true</EnableWindowsTargeting>
   </PropertyGroup>

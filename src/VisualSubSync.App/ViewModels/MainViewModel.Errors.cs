@@ -190,7 +190,6 @@ public sealed partial class MainViewModel : IVssCoreEngine
     private void RunPluginChanges(Action fix)
     {
         _pluginChanges = [];
-        int selected = Waveform?.SelectedRangeIndex ?? -1;
         var changes = _pluginChanges;
         try
         {
@@ -207,12 +206,6 @@ public sealed partial class MainViewModel : IVssCoreEngine
         }
 
         RefreshRanges();
-        if (selected >= 0 && changes.Exists(c => c.Index == selected && (c.NewStart is not null || c.NewStop is not null)))
-        {
-            // OnSubtitleRangeJSWrapperChangeStart/Stop: a seleção acompanha a legenda selecionada.
-            Waveform?.SelectRange(_document.Items[selected].StartMs, _document.Items[selected].StopMs);
-        }
-
         UpdateEditorStatus(_caret.Line, _caret.Column, _caret.FirstVisible);
         if (changes.Count > 0)
         {
@@ -242,19 +235,37 @@ public sealed partial class MainViewModel : IVssCoreEngine
     /// <summary>OnSubtitleRangeJSWrapperChangeStart: o valor antigo é guardado só na primeira mudança.</summary>
     private void OnPluginChangingStart(Subtitle sub, int value)
     {
-        if (PluginChangeFor(sub) is { } change)
+        if (PluginChangeFor(sub) is not { } change)
         {
-            change.OldStart ??= sub.StartMs;
-            change.NewStart = value;
+            return;
         }
+
+        change.OldStart ??= sub.StartMs;
+        change.NewStart = value;
+        TrackSelectionWith(sub, isStart: true, value);
     }
 
     private void OnPluginChangingStop(Subtitle sub, int value)
     {
-        if (PluginChangeFor(sub) is { } change)
+        if (PluginChangeFor(sub) is not { } change)
         {
-            change.OldStop ??= sub.StopMs;
-            change.NewStop = value;
+            return;
+        }
+
+        change.OldStop ??= sub.StopMs;
+        change.NewStop = value;
+        TrackSelectionWith(sub, isStart: false, value);
+    }
+
+    /// <summary>
+    /// OnSubtitleRangeJSWrapperChangeStart/Stop: "Subtitle match current selection, update selection
+    /// accordingly" — quando a legenda presa à seleção muda de tempo, a faixa branca anda junto.
+    /// </summary>
+    private void TrackSelectionWith(Subtitle sub, bool isStart, int value)
+    {
+        if (Waveform is { } waveform && waveform.SelectedRangeIndex == _document.Items.IndexOf(sub))
+        {
+            waveform.TrackSelectedRangeTime(isStart, value);
         }
     }
 

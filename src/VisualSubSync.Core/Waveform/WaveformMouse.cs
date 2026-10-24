@@ -263,6 +263,22 @@ public sealed class WaveformMouse
     /// <summary>SetCursorPos (sem disparar o evento: quem chama já sabe).</summary>
     public void SetCursor(int ms) => CursorMs = Math.Clamp(ms, 0, Math.Max(0, LengthMs));
 
+    /// <summary>
+    /// FSelection.StartTime/StopTime movidos direto (TMainForm.OnSubtitleRangeJSWrapperChangeStart/Stop):
+    /// a legenda presa à seleção mudou de tempo, então a faixa branca anda junto sem soltá-la.
+    /// </summary>
+    public void SetSelectionTime(bool isStart, int ms)
+    {
+        if (isStart)
+        {
+            SelectionStartMs = ms;
+        }
+        else
+        {
+            SelectionStopMs = ms;
+        }
+    }
+
     /// <summary>Seleção definida de fora (campos de tempo, zoom), sem legenda presa.</summary>
     public void SetSelection(int startMs, int stopMs)
     {

@@ -966,7 +966,11 @@ public sealed partial class WaveformControl : FrameworkElement, IWaveformView
         PrepareMouse();
         if (e.ClickCount == 2 && e.ChangedButton == MouseButton.Left)
         {
-            // MouseDown sai com ssDouble; o VCL chama DblClick em seguida.
+            // MouseDown sai com ssDouble; o VCL chama DblClick em seguida. O VCL conta com o
+            // WM_MOUSEMOVE que o Windows manda antes do WM_LBUTTONDBLCLK para redetectar a borda
+            // (o clique anterior zerou a borda dinâmica no MouseUp); sem refazer a detecção aqui,
+            // o duplo clique no tracejado não chega aos plugins (OnRangeStart/StopDblClick).
+            _mouse.MouseMove(WaveformInput.None, x, y);
             _mouse.DoubleClick(y);
         }
         else
@@ -1236,6 +1240,16 @@ public sealed partial class WaveformControl : FrameworkElement, IWaveformView
         PushState();
     }
 
+    /// <summary>
+    /// OnSubtitleRangeJSWrapperChangeStart/Stop: a legenda presa à seleção mudou de tempo pelo plugin,
+    /// então a faixa branca anda junto (o original mexe em WAVDisplayer.Selection sem soltar a legenda).
+    /// </summary>
+    public void TrackSelectedRangeTime(bool isStart, int ms)
+    {
+        _mouse.SetSelectionTime(isStart, ms);
+        PushState();
+    }
+
     /// <summary>Scroll(ViewPercent): desloca a vista em uma porcentagem da página.</summary>
     public void Scroll(int viewPercent) => SetPosition(PositionMs + (int)Math.Round(PageSizeMs / 100.0 * viewPercent));
 
@@ -1415,6 +1429,9 @@ public interface IWaveformView
     void SelectRange(int startMs, int stopMs);
 
     void ClearSelection();
+
+    /// <summary>OnSubtitleRangeJSWrapperChangeStart/Stop: acompanha a legenda presa à seleção.</summary>
+    void TrackSelectedRangeTime(bool isStart, int ms);
 
     /// <summary>Seleciona um trecho sem prendê-lo a uma legenda.</summary>
     void SetSelection(int startMs, int stopMs);
