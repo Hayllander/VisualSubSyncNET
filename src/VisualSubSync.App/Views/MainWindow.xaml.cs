@@ -26,6 +26,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         _viewModel = viewModel;
         DataContext = viewModel;
+        Title = viewModel.WindowTitle;
         viewModel.Waveform = WAVDisplayer;
         viewModel.TextPipe = new RichTextPipe(MemoTextPipe);
         InitializeColumns(viewModel.Settings);
@@ -135,6 +136,9 @@ public partial class MainWindow : Window
     {
         switch (e.PropertyName)
         {
+            case nameof(MainViewModel.WindowTitle):
+                Title = _viewModel.WindowTitle;
+                break;
             case nameof(MainViewModel.SelectedSubtitle) when _viewModel.SelectedSubtitle is { } item:
                 vtvSubsList.ScrollIntoView(item);
                 break;
@@ -433,7 +437,7 @@ public partial class MainWindow : Window
         catch (Exception ex) when (ex is System.IO.IOException or UnauthorizedAccessException)
         {
             System.Diagnostics.Trace.TraceWarning($"Could not save {settings.FileName}: {ex.Message}");
-            MessageBox.Show(this, $"Could not save {settings.FileName}: {ex.Message}", "VisualSubSync", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(this, $"Could not save {settings.FileName}: {ex.Message}", MainViewModel.ApplicationName, MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
 
@@ -450,6 +454,10 @@ public partial class MainWindow : Window
 
     /// <summary>pmiFixError (ActionFixErrorMain): ativado só pelo SubListPopupMenuPopup.</summary>
     private void pmiFixError_Click(object sender, RoutedEventArgs e) => _viewModel.FixErrorMainCommand.Execute(null);
+
+    /// <summary>MenuItemCheckUpdatesClick do legado: dispara a verificação manual pelo menu "?".
+    /// </summary>
+    private void MenuItemCheckUpdates_Click(object sender, RoutedEventArgs e) => _viewModel.CheckUpdatesCommand.Execute(null);
 
     /// <summary>WAVDisplayPopupMenuPopup.</summary>
     private void WAVDisplayer_ContextMenuOpening(object sender, ContextMenuEventArgs e)

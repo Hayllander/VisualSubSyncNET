@@ -26,6 +26,9 @@ public partial class PreferencesWindow : Window
     private readonly List<HotkeyRow> _hotkeyRows;
     private FontSpec _subListFont;
     private FontSpec _subTextFont;
+    private FontSpec _subVideoFont;
+    private int _outlineSubVideoColorFont;
+    private int _shadowSubVideoColorFont;
     private ParamRow? _editing;
     private int _hotKey;
     private bool _updatingAssociations;
@@ -37,6 +40,9 @@ public partial class PreferencesWindow : Window
         _settings = settings;
         _subListFont = settings.SubListFont;
         _subTextFont = settings.SubTextFont;
+        _subVideoFont = settings.SubVideoFont;
+        _outlineSubVideoColorFont = settings.OutlineSubVideoColorFont;
+        _shadowSubVideoColorFont = settings.ShadowSubVideoColorFont;
 
         // FormCreate: a primeira aba; ShowPreferences(TabSheet) troca para a pedida.
         PageControlPreferences.SelectedItem = tabName is not null && FindName(tabName) is TabItem tab ? tab : tsGeneral;
@@ -93,6 +99,14 @@ public partial class PreferencesWindow : Window
 
         ShowFont(EditSubListFont, _subListFont);
         ShowFont(EditSubTextFont, _subTextFont);
+        ShowFont(EditSubVideoFont, _subVideoFont, applyColor: false);
+        TrackBarTransparencySubVideo.Value = c.TransparencySubVideoFont;
+        EditOutlineSubVideoFont.Position = c.OutlineSubVideoFont;
+        ShapeSubVideoOutline.Fill = ToBrush(c.OutlineSubVideoColorFont);
+        TrackBarTransparencyOutline.Value = c.TransparencyOutlineSubVideoFont;
+        EditShadowSubVideoFont.Position = c.ShadowSubVideoFont;
+        ShapeSubVideoShadow.Fill = ToBrush(c.ShadowSubVideoColorFont);
+        TrackBarTransparencyShadow.Value = c.TransparencyShadowSubVideoFont;
 
         chkSceneChange.IsChecked = c.ShowSceneChange;
         EditSCStartOffset.Position = c.SceneChangeStartOffset;
@@ -134,6 +148,14 @@ public partial class PreferencesWindow : Window
 
         c.SubListFont = _subListFont;
         c.SubTextFont = _subTextFont;
+        c.SubVideoFont = _subVideoFont;
+        c.TransparencySubVideoFont = (int)Math.Round(TrackBarTransparencySubVideo.Value);
+        c.OutlineSubVideoFont = EditOutlineSubVideoFont.Position;
+        c.OutlineSubVideoColorFont = _outlineSubVideoColorFont;
+        c.TransparencyOutlineSubVideoFont = (int)Math.Round(TrackBarTransparencyOutline.Value);
+        c.ShadowSubVideoFont = EditShadowSubVideoFont.Position;
+        c.ShadowSubVideoColorFont = _shadowSubVideoColorFont;
+        c.TransparencyShadowSubVideoFont = (int)Math.Round(TrackBarTransparencyShadow.Value);
 
         c.ShowSceneChange = chkSceneChange.IsChecked == true;
         c.SceneChangeStartOffset = EditSCStartOffset.Position;
@@ -290,8 +312,50 @@ public partial class PreferencesWindow : Window
         }
     }
 
+    private void OnSubVideoFont(object sender, RoutedEventArgs e)
+    {
+        if (FontPicker.Choose(this, _subVideoFont) is { } font)
+        {
+            _subVideoFont = font;
+            ShowFont(EditSubVideoFont, font, applyColor: false);
+        }
+    }
+
+    private void OnSubVideoOutlineColor(object sender, MouseButtonEventArgs e)
+    {
+        if (ColorPicker.Choose(this, (uint)_outlineSubVideoColorFont) is uint color)
+        {
+            _outlineSubVideoColorFont = (int)color;
+            ShapeSubVideoOutline.Fill = ToBrush(_outlineSubVideoColorFont);
+        }
+    }
+
+    private void OnSubVideoShadowColor(object sender, MouseButtonEventArgs e)
+    {
+        if (ColorPicker.Choose(this, (uint)_shadowSubVideoColorFont) is uint color)
+        {
+            _shadowSubVideoColorFont = (int)color;
+            ShapeSubVideoShadow.Fill = ToBrush(_shadowSubVideoColorFont);
+        }
+    }
+
+    private void OnDefaultSubtitlesVideo(object sender, RoutedEventArgs e)
+    {
+        _subVideoFont = VssSettings.DefaultSubVideoFont;
+        _outlineSubVideoColorFont = 0;
+        _shadowSubVideoColorFont = 0;
+        ShowFont(EditSubVideoFont, _subVideoFont, applyColor: false);
+        TrackBarTransparencySubVideo.Value = 0;
+        EditOutlineSubVideoFont.Position = 2;
+        ShapeSubVideoOutline.Fill = ToBrush(_outlineSubVideoColorFont);
+        TrackBarTransparencyOutline.Value = 0;
+        EditShadowSubVideoFont.Position = 3;
+        ShapeSubVideoShadow.Fill = ToBrush(_shadowSubVideoColorFont);
+        TrackBarTransparencyShadow.Value = 4;
+    }
+
     /// <summary>EditSub*Font: o texto Font2String escrito na própria fonte.</summary>
-    private static void ShowFont(TextBox edit, FontSpec font)
+    private static void ShowFont(TextBox edit, FontSpec font, bool applyColor = true)
     {
         edit.Text = font.ToString();
         edit.FontFamily = new FontFamily(font.Name);
@@ -310,10 +374,13 @@ public partial class PreferencesWindow : Window
         }
 
         edit.TextDecorations = decorations;
-        edit.Foreground = font.ToRgb() is int rgb
+        edit.Foreground = applyColor && font.ToRgb() is int rgb
             ? new SolidColorBrush(Color.FromRgb((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb))
             : SystemColors.WindowTextBrush;
     }
+
+    private static SolidColorBrush ToBrush(int colorRef) =>
+        new(Color.FromRgb((byte)(colorRef & 0xFF), (byte)((colorRef >> 8) & 0xFF), (byte)((colorRef >> 16) & 0xFF)));
 
     // ---------------------------------------------------------------- Error checking
 

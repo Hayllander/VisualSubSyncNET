@@ -419,7 +419,7 @@
           <MenuItem Header="WAV Display Control" Command="{Binding HelpWavDisplayControlCommand}" />
         </MenuItem>
         <Separator />
-        <MenuItem Header="Check for updates" Command="{Binding CheckUpdatesCommand}">
+        <MenuItem Header="Check for updates" Click="MenuItemCheckUpdates_Click">
           <MenuItem.Icon><Image Source="/Assets/Menu/il_64.png" /></MenuItem.Icon>
         </MenuItem>
         <MenuItem Header="Recent changes" IsEnabled="False">

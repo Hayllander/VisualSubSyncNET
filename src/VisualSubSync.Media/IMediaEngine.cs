@@ -1,3 +1,5 @@
+using VisualSubSync.Core.Settings;
+
 namespace VisualSubSync.Media;
 
 /// <summary>
@@ -66,8 +68,22 @@ public interface IMediaEngine : IAsyncDisposable
     /// <summary>Atualiza as legendas sobrepostas ao vídeo (substitui o DirectVobSub do legado).</summary>
     void SetSubtitleOverlay(string? subtitlePath);
 
+    /// <summary>Aplica o estilo da legenda mostrada sobre o vídeo, como o renderer do Enhanced.</summary>
+    void SetSubtitleStyle(VideoSubtitleStyle style);
+
     event EventHandler? PlaybackStopped;
 }
+
+/// <summary>Configuração visual da legenda sobre o vídeo (fonte, transparências, contorno e sombra).</summary>
+public sealed record VideoSubtitleStyle(
+    FontSpec Font,
+    int Transparency,
+    int Outline,
+    int OutlineColor,
+    int TransparencyOutline,
+    int Shadow,
+    int ShadowColor,
+    int TransparencyShadow);
 
 /// <summary>Faixa de áudio disponível para extração no diálogo de novo projeto / WAV.</summary>
 public sealed record AudioStreamInfo(int Index, string DisplayName);

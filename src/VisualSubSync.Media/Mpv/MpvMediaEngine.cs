@@ -25,6 +25,7 @@ public sealed class MpvMediaEngine : IMediaEngine
     private volatile bool _playing;
     private int? _rangeStartMs, _rangeStopMs;
     private bool _loop;
+    private VideoSubtitleStyle? _subtitleStyle;
     private volatile bool _awaitingRestart;
     private double _rate = 1.0;
     private int _disposed;
@@ -285,7 +286,25 @@ public sealed class MpvMediaEngine : IMediaEngine
         if (!string.IsNullOrEmpty(subtitlePath))
         {
             Check(MpvNative.Command(_ctx, "sub-add", subtitlePath, "select"), "sub-add");
+            if (_subtitleStyle is { } style)
+            {
+                ApplySubtitleStyle(style);
+                MpvNative.Command(_ctx, "sub-reload");
+            }
         }
+    }
+
+    public void SetSubtitleStyle(VideoSubtitleStyle style)
+    {
+        ArgumentNullException.ThrowIfNull(style);
+        _subtitleStyle = style;
+        ApplySubtitleStyle(style);
+    }
+
+    private void ApplySubtitleStyle(VideoSubtitleStyle style)
+    {
+        Check(MpvNative.Command(_ctx, "set", "sub-ass-override", "force"), "set sub-ass-override");
+        Check(MpvNative.Command(_ctx, "set", "sub-ass-force-style", BuildAssForceStyle(style)), "set sub-ass-force-style");
     }
 
     /// <summary>Recarrega a legenda atual após edição (equivalente ao refresh do DirectVobSub).</summary>
@@ -306,6 +325,47 @@ public sealed class MpvMediaEngine : IMediaEngine
 
     private void SeekCommand(int timeMs) =>
         Check(MpvNative.Command(_ctx, "seek", (timeMs / 1000.0).ToString("0.000", CultureInfo.InvariantCulture), "absolute+exact"), "seek");
+
+    private static string BuildAssForceStyle(VideoSubtitleStyle style)
+    {
+        string primaryColor = ToAssColorFromRgb(style.Font.ToRgb() ?? 0xFFFFFF, style.Transparency);
+        string outlineColor = ToAssColorFromColorRef(style.OutlineColor, style.TransparencyOutline);
+        string shadowColor = ToAssColorFromColorRef(style.ShadowColor, style.TransparencyShadow);
+
+        return string.Create(CultureInfo.InvariantCulture,
+            $"FontName={style.Font.Name}," +
+            $"FontSize={style.Font.SizePt}," +
+            $"PrimaryColour={primaryColor}," +
+            $"SecondaryColour={primaryColor}," +
+            $"OutlineColour={outlineColor}," +
+            $"BackColour={shadowColor}," +
+            $"Bold={(style.Font.Bold ? -1 : 0)}," +
+            $"Italic={(style.Font.Italic ? -1 : 0)}," +
+            $"Underline={(style.Font.Underline ? -1 : 0)}," +
+            $"StrikeOut={(style.Font.Strikeout ? -1 : 0)}," +
+            $"Outline={style.Outline}," +
+            $"Shadow={style.Shadow}");
+    }
+
+    /// <summary>ASS usa &amp;HAABBGGRR, com alfa 0 opaco e 255 transparente.</summary>
+    private static string ToAssColorFromRgb(int rgb, int transparency)
+    {
+        int alpha = Math.Clamp(transparency, 0, 10) * 255 / 10;
+        int red = (rgb >> 16) & 0xFF;
+        int green = (rgb >> 8) & 0xFF;
+        int blue = rgb & 0xFF;
+
+        return string.Create(CultureInfo.InvariantCulture, $"&H{alpha:X2}{blue:X2}{green:X2}{red:X2}");
+    }
+
+    private static string ToAssColorFromColorRef(int colorRef, int transparency)
+    {
+        int alpha = Math.Clamp(transparency, 0, 10) * 255 / 10;
+        int red = colorRef & 0xFF;
+        int green = (colorRef >> 8) & 0xFF;
+        int blue = (colorRef >> 16) & 0xFF;
+        return string.Create(CultureInfo.InvariantCulture, $"&H{alpha:X2}{blue:X2}{green:X2}{red:X2}");
+    }
 
     private void EventLoop()
     {

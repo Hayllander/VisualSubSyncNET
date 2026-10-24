@@ -37,6 +37,15 @@ public sealed partial class MainViewModel
         bool oldSwap = Settings.SwapSubtitlesList;
         var oldListFont = Settings.SubListFont;
         var oldTextFont = Settings.SubTextFont;
+        var oldVideoStyle = (
+            Settings.SubVideoFont,
+            Settings.TransparencySubVideoFont,
+            Settings.OutlineSubVideoFont,
+            Settings.OutlineSubVideoColorFont,
+            Settings.TransparencyOutlineSubVideoFont,
+            Settings.ShadowSubVideoFont,
+            Settings.ShadowSubVideoColorFont,
+            Settings.TransparencyShadowSubVideoFont);
         if (!_dialogs.ShowPreferences(Settings, tabName))
         {
             return;
@@ -55,6 +64,24 @@ public sealed partial class MainViewModel
         // ApplyMiscSettings: mudança de cena, espaço mínimo e o texto na forma de onda.
         ShowSceneChange = Settings.ShowSceneChange;
         ShowTextInWavDisplay = Settings.ShowTextInWavDisplay;
+        if (oldVideoStyle != (
+            Settings.SubVideoFont,
+            Settings.TransparencySubVideoFont,
+            Settings.OutlineSubVideoFont,
+            Settings.OutlineSubVideoColorFont,
+            Settings.TransparencyOutlineSubVideoFont,
+            Settings.ShadowSubVideoFont,
+            Settings.ShadowSubVideoColorFont,
+            Settings.TransparencyShadowSubVideoFont))
+        {
+            ApplyVideoSubtitleStyle();
+            _videoPreviewNeedSubtitleUpdate = true;
+            if (ShowingVideo)
+            {
+                UpdateSubtitleForPreview(true);
+            }
+        }
+
         OnPropertyChanged(nameof(Settings));
         PreferencesApplied?.Invoke(this, new PreferencesAppliedEventArgs(
             Settings.SwapSubtitlesList != oldSwap,

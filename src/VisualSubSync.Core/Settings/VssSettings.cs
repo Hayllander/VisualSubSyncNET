@@ -13,6 +13,7 @@ public sealed class VssSettings
 {
     public static readonly FontSpec DefaultSubListFont = new("Arial", 8, 0, 0, "clWindowText");
     public static readonly FontSpec DefaultSubTextFont = new("Arial", 10, 1, 0, "clWindowText");
+    public static readonly FontSpec DefaultSubVideoFont = new("Arial", 18, 1, 0, "clWhite");
 
     private IniDocument _ini = IniDocument.Parse(string.Empty);
 
@@ -23,6 +24,30 @@ public sealed class VssSettings
 
     /// <summary>[Fonts] SubText: fonte do editor, do contador de linhas e do texto na forma de onda.</summary>
     public FontSpec SubTextFont { get; set; } = DefaultSubTextFont;
+
+    /// <summary>[Fonts] SubVideo (Enhanced): fonte da legenda mostrada sobre o vídeo.</summary>
+    public FontSpec SubVideoFont { get; set; } = DefaultSubVideoFont;
+
+    /// <summary>[Fonts] TransparencyColorSubVideo (0..10): transparência da cor principal da legenda.</summary>
+    public int TransparencySubVideoFont { get; set; }
+
+    /// <summary>[Fonts] OutlineSubVideo (0..9): espessura do contorno.</summary>
+    public int OutlineSubVideoFont { get; set; } = 2;
+
+    /// <summary>[Fonts] OutlineColorSubVideo (TColor $00BBGGRR): cor do contorno.</summary>
+    public int OutlineSubVideoColorFont { get; set; }
+
+    /// <summary>[Fonts] TransparencyOutlineColorSubVideo (0..10): transparência do contorno.</summary>
+    public int TransparencyOutlineSubVideoFont { get; set; }
+
+    /// <summary>[Fonts] ShadowSubVideo (0..9): deslocamento da sombra.</summary>
+    public int ShadowSubVideoFont { get; set; } = 3;
+
+    /// <summary>[Fonts] ShadowColorSubVideo (TColor $00BBGGRR): cor da sombra.</summary>
+    public int ShadowSubVideoColorFont { get; set; }
+
+    /// <summary>[Fonts] TransparencyShadowColorSubVideo (0..10): transparência da sombra.</summary>
+    public int TransparencyShadowSubVideoFont { get; set; } = 4;
 
     /// <summary>[Misc] SwapSubtitlesList: editor acima e lista embaixo.</summary>
     public bool SwapSubtitlesList { get; set; }
@@ -264,6 +289,14 @@ public sealed class VssSettings
             AutoSaveWhenPlaying = ini.GetBool("Backup", "AutoSaveWhenPlaying", AutoSaveWhenPlaying);
             SubListFont = FontSpec.Parse(ini.Get("Fonts", "SubList"), SubListFont);
             SubTextFont = FontSpec.Parse(ini.Get("Fonts", "SubText"), SubTextFont);
+            SubVideoFont = FontSpec.Parse(ini.Get("Fonts", "SubVideo"), SubVideoFont);
+            TransparencySubVideoFont = ini.GetInt("Fonts", "TransparencyColorSubVideo", TransparencySubVideoFont);
+            OutlineSubVideoFont = ini.GetInt("Fonts", "OutlineSubVideo", OutlineSubVideoFont);
+            OutlineSubVideoColorFont = ini.GetInt("Fonts", "OutlineColorSubVideo", OutlineSubVideoColorFont);
+            TransparencyOutlineSubVideoFont = ini.GetInt("Fonts", "TransparencyOutlineColorSubVideo", TransparencyOutlineSubVideoFont);
+            ShadowSubVideoFont = ini.GetInt("Fonts", "ShadowSubVideo", ShadowSubVideoFont);
+            ShadowSubVideoColorFont = ini.GetInt("Fonts", "ShadowColorSubVideo", ShadowSubVideoColorFont);
+            TransparencyShadowSubVideoFont = ini.GetInt("Fonts", "TransparencyShadowColorSubVideo", TransparencyShadowSubVideoFont);
         }
 
         ShowSceneChange = ini.GetBool("WAVDisplay", "ShowSceneChange", ShowSceneChange);
@@ -357,6 +390,14 @@ public sealed class VssSettings
 
         ini.Set("Fonts", "SubList", SubListFont.ToString());
         ini.Set("Fonts", "SubText", SubTextFont.ToString());
+        ini.Set("Fonts", "SubVideo", SubVideoFont.ToString());
+        ini.SetInt("Fonts", "TransparencyColorSubVideo", TransparencySubVideoFont);
+        ini.SetInt("Fonts", "OutlineSubVideo", OutlineSubVideoFont);
+        ini.SetInt("Fonts", "OutlineColorSubVideo", OutlineSubVideoColorFont);
+        ini.SetInt("Fonts", "TransparencyOutlineColorSubVideo", TransparencyOutlineSubVideoFont);
+        ini.SetInt("Fonts", "ShadowSubVideo", ShadowSubVideoFont);
+        ini.SetInt("Fonts", "ShadowColorSubVideo", ShadowSubVideoColorFont);
+        ini.SetInt("Fonts", "TransparencyShadowColorSubVideo", TransparencyShadowSubVideoFont);
 
         ini.SetBool("WAVDisplay", "ShowSceneChange", ShowSceneChange);
         ini.SetInt("WAVDisplay", "SceneChangeStartOffset", SceneChangeStartOffset);

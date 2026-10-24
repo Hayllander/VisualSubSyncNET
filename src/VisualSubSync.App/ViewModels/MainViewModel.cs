@@ -375,7 +375,10 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
             {
                 IsVideoDetached = project.DetachedVideo;
                 ShowingVideo = project.ShowVideo;
-                SetVideoSubtitleFile(project.SubtitlesFile);
+                if (ShowingVideo)
+                {
+                    UpdateSubtitleForPreview(true);
+                }
                 VideoWindowNormal = new VideoWindowBounds(project.VideoWindowNormalLeft, project.VideoWindowNormalTop,
                     project.VideoWindowNormalWidth, project.VideoWindowNormalHeight);
                 if (!ShowingSubs)
@@ -458,7 +461,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
             if (SaveTo(Project.SubtitlesFile, BaseWriteOptions))
             {
                 IsDirty = false;
-                SetVideoSubtitleFile(Project.SubtitlesFile);
+                UpdateSubtitleForPreview(true);
             }
         }
 
@@ -650,7 +653,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
 
         if (videoChanged || subtitlesChanged)
         {
-            SetVideoSubtitleFile(project.SubtitlesFile);
+            UpdateSubtitleForPreview(true);
         }
 
         // Esconde o vídeo quando ele não ficou aberto (ActionShowHideVideo.Execute).
@@ -831,6 +834,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         {
             _engine = new MpvMediaEngine(videoHandle);
             _engine.PlaybackStopped += OnPlaybackStopped;
+            ApplyVideoSubtitleStyle();
         }
         catch (Exception ex) when (ex is DllNotFoundException or InvalidOperationException or EntryPointNotFoundException)
         {
@@ -1011,7 +1015,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         if (Project is { } audioProject) ApplyPlaybackAudio(audioProject, ShowingVideo);
         if (ShowingVideo)
         {
-            UpdateSubtitleForPreview(false);
+            UpdateSubtitleForPreview(true);
         }
 
         if (Project is { } project && project.ShowVideo != ShowingVideo)
@@ -1127,6 +1131,11 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
     /// <see cref="Dispose"/> (que espera essa thread terminar) não trave a janela ao fechar.</remarks>
     private void OnPlaybackStopped(object? sender, EventArgs e) => dispatcher.BeginInvoke(() =>
     {
+        if (_engine is { IsPlaying: true })
+        {
+            return;
+        }
+
         _playTimer.Stop();
         IsPlaying = false;
     });
@@ -1163,11 +1172,19 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
             return;
         }
 
-        string tmp = SubtitlePreview.TemporaryFileName(Project.SubtitlesFile);
+        string tmp = Path.ChangeExtension(SubtitlePreview.TemporaryFileName(Project.SubtitlesFile), ".ass");
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(tmp)!);
-            SubtitleFile.Save(_document, tmp, BaseWriteOptions);
+            SubtitleFile.Save(
+                CreateVideoPreviewDocument(),
+                tmp,
+                new SubtitleWriteOptions
+                {
+                    ApplicationVersion = ApplicationVersion,
+                    PreviousExtension = Path.GetExtension(Project.SubtitlesFile),
+                    Utf8 = true,
+                });
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
@@ -1184,6 +1201,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
     {
         if (_engine is { IsOpen: true } engine)
         {
+            ApplyVideoSubtitleStyle();
             engine.SetSubtitleOverlay(path.Length > 0 && File.Exists(path) ? path : null);
         }
     }

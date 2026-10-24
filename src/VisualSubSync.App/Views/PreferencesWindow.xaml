@@ -42,7 +42,7 @@
               <Canvas>
                 <TextBlock Canvas.Left="16" Canvas.Top="52" Text="Automatic save every (minutes) :" />
                 <CheckBox x:Name="chkCreateBackup" Canvas.Left="16" Canvas.Top="24" Width="185" Height="17" Content="Create backup file (*.bak) on save" />
-                <Button x:Name="bttOpenBackupDir" Canvas.Left="288" Canvas.Top="49" Width="90" Height="20" Padding="0" Content="Show backups..." ToolTip="Open backup directory in VisualSubSync directory" Click="OnOpenBackupDir" />
+                <Button x:Name="bttOpenBackupDir" Canvas.Left="288" Canvas.Top="49" Width="90" Height="20" Padding="0" Content="Show backups..." ToolTip="Open backup directory in VisualSubSyncNET directory" Click="OnOpenBackupDir" />
                 <ctl:UpDownEdit x:Name="EditBackupTime" Canvas.Left="176" Canvas.Top="48" Width="72" Height="21" Minimum="0" Maximum="100" Increment="1" Text="0" />
                 <CheckBox x:Name="chkAutoSaveWhenPlaying" Canvas.Left="232" Canvas.Top="24" Width="169" Height="17" Content="Auto save when playing start" />
                 <Button x:Name="bttOpenBackupTempDir" Canvas.Left="384" Canvas.Top="49" Width="113" Height="20" Padding="0" Content="Show temp backups..." ToolTip="Open backup on any modification in TEMP directory" Click="OnOpenBackupTempDir" />
@@ -57,11 +57,11 @@
               <Canvas>
                 <TextBlock Canvas.Left="45" Canvas.Top="150" Text="Set cursor behind subtitle when smart is used (ms)" />
                 <TextBlock Canvas.Left="106" Canvas.Top="181" Width="481" Height="17" IsEnabled="False" Text="Select path..." />
-                <CheckBox x:Name="chkAssociateExtVSSPRJ" Canvas.Left="16" Canvas.Top="24" Width="265" Height="17" Content="Associate project file (*.vssprj) with VisualSubSync" ToolTip="Double click on a .vssprj file will automatically open the project in VisualSubSync" Click="OnAssociateClick" />
+                <CheckBox x:Name="chkAssociateExtVSSPRJ" Canvas.Left="16" Canvas.Top="24" Width="265" Height="17" Content="Associate project file (*.vssprj) with VisualSubSyncNET" ToolTip="Double click on a .vssprj file will automatically open the project in VisualSubSyncNET" Click="OnAssociateClick" />
                 <CheckBox x:Name="chkSwapSubList" Canvas.Left="16" Canvas.Top="75" Width="385" Height="17" Content="Swap subtitles list" />
-                <CheckBox x:Name="chkAssociateExtSRT" Canvas.Left="16" Canvas.Top="49" Width="209" Height="17" Content="Associate .SRT file with VisualSubSync" Click="OnAssociateClick" />
-                <CheckBox x:Name="chkAssociateExtSSA" Canvas.Left="232" Canvas.Top="49" Width="217" Height="17" Content="Associate .SSA file with VisualSubSync" Click="OnAssociateClick" />
-                <CheckBox x:Name="chkAssociateExtASS" Canvas.Left="451" Canvas.Top="49" Width="210" Height="17" Content="Associate .ASS file with VisualSubSync" Click="OnAssociateClick" />
+                <CheckBox x:Name="chkAssociateExtSRT" Canvas.Left="16" Canvas.Top="49" Width="209" Height="17" Content="Associate .SRT file with VisualSubSyncNET" Click="OnAssociateClick" />
+                <CheckBox x:Name="chkAssociateExtSSA" Canvas.Left="232" Canvas.Top="49" Width="217" Height="17" Content="Associate .SSA file with VisualSubSyncNET" Click="OnAssociateClick" />
+                <CheckBox x:Name="chkAssociateExtASS" Canvas.Left="451" Canvas.Top="49" Width="210" Height="17" Content="Associate .ASS file with VisualSubSyncNET" Click="OnAssociateClick" />
                 <CheckBox x:Name="chkLoadMostRecentProjectOnStartup" Canvas.Left="16" Canvas.Top="102" Width="201" Height="17" Content="Load most recent project on startup" />
                 <CheckBox Canvas.Left="16" Canvas.Top="131" Width="225" Height="17" IsEnabled="False" Content="Enable quick/smart and silent zone panels" />
                 <ctl:UpDownEdit Canvas.Left="287" Canvas.Top="148" Width="57" Height="21" Minimum="0" Maximum="1500" Increment="10" Text="500" IsEnabled="False" />
@@ -317,23 +317,23 @@
                 <Button x:Name="bttSubTextFont" Canvas.Left="680" Canvas.Top="24" Width="33" Height="25" Padding="0" Content="..." Click="OnSubTextFont" />
               </Canvas>
             </Grid>
-            <Grid IsEnabled="False">  <!-- TntGroupBox10 -->
+            <Grid>  <!-- TntGroupBox10 -->
               <Border Margin="0,6,0,0" Style="{StaticResource VssGroupFrame}" />
               <TextBlock Margin="8,0,0,0" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Style="{StaticResource VssGroupCaption}" Text=" Subtitles video : " />
               <Canvas>
                 <TextBlock Canvas.Left="16" Canvas.Top="128" Text="Outline" />
                 <TextBlock Canvas.Left="16" Canvas.Top="173" Text="Shadow" />
-                <Rectangle Canvas.Left="139" Canvas.Top="126" Width="17" Height="17" Stroke="Black" Fill="White" ToolTip="Set outline color" />
-                <Rectangle Canvas.Left="139" Canvas.Top="171" Width="17" Height="17" Stroke="Black" Fill="White" ToolTip="Set shadow color" />
+                <Rectangle x:Name="ShapeSubVideoOutline" Canvas.Left="139" Canvas.Top="126" Width="17" Height="17" Stroke="Black" Fill="White" ToolTip="Set outline color" MouseLeftButtonUp="OnSubVideoOutlineColor" />
+                <Rectangle x:Name="ShapeSubVideoShadow" Canvas.Left="139" Canvas.Top="171" Width="17" Height="17" Stroke="Black" Fill="White" ToolTip="Set shadow color" MouseLeftButtonUp="OnSubVideoShadowColor" />
                 <TextBlock Canvas.Left="16" Canvas.Top="82" Text="Transparency" />
-                <TextBox Canvas.Left="16" Canvas.Top="24" Width="657" Height="52" VerticalContentAlignment="Center" IsReadOnly="True" IsEnabled="False" Text="ABCabc 123" />
-                <Button Canvas.Left="680" Canvas.Top="24" Width="33" Height="25" Padding="0" IsEnabled="False" Content="..." />
-                <ctl:UpDownEdit Canvas.Left="89" Canvas.Top="124" Width="38" Height="21" Minimum="0" Maximum="9" Increment="1" Thousands="False" Text="3" IsEnabled="False" ToolTip="Outline" />
-                <ctl:UpDownEdit Canvas.Left="89" Canvas.Top="169" Width="38" Height="21" Minimum="0" Maximum="9" Increment="1" Thousands="False" Text="4" IsEnabled="False" ToolTip="Shadow" />
-                <Button Canvas.Left="592" Canvas.Top="88" Width="75" Height="25" Padding="0" IsEnabled="False" Content="Default" />
-                <Slider Canvas.Left="82" Canvas.Top="76" Width="150" Height="30" IsEnabled="False" ToolTip="Set subtitle video transparency" />
-                <Slider Canvas.Left="166" Canvas.Top="122" Width="150" Height="30" IsEnabled="False" ToolTip="Set outline transparency" />
-                <Slider Canvas.Left="166" Canvas.Top="169" Width="150" Height="30" IsEnabled="False" ToolTip="Set shadow transparency" />
+                <TextBox x:Name="EditSubVideoFont" Canvas.Left="16" Canvas.Top="24" Width="657" Height="52" VerticalContentAlignment="Center" IsReadOnly="True" Text="ABCabc 123" />
+                <Button x:Name="bttSubVideoFont" Canvas.Left="680" Canvas.Top="24" Width="33" Height="25" Padding="0" Content="..." Click="OnSubVideoFont" />
+                <ctl:UpDownEdit x:Name="EditOutlineSubVideoFont" Canvas.Left="89" Canvas.Top="124" Width="38" Height="21" Minimum="0" Maximum="9" Increment="1" Thousands="False" Text="3" ToolTip="Outline" />
+                <ctl:UpDownEdit x:Name="EditShadowSubVideoFont" Canvas.Left="89" Canvas.Top="169" Width="38" Height="21" Minimum="0" Maximum="9" Increment="1" Thousands="False" Text="4" ToolTip="Shadow" />
+                <Button x:Name="ButtonDefaultSubtitlesVideo" Canvas.Left="592" Canvas.Top="88" Width="75" Height="25" Padding="0" Content="Default" Click="OnDefaultSubtitlesVideo" />
+                <Slider x:Name="TrackBarTransparencySubVideo" Canvas.Left="82" Canvas.Top="76" Width="150" Height="30" ToolTip="Set subtitle video transparency" IsSnapToTickEnabled="True" TickFrequency="1" />
+                <Slider x:Name="TrackBarTransparencyOutline" Canvas.Left="166" Canvas.Top="122" Width="150" Height="30" ToolTip="Set outline transparency" IsSnapToTickEnabled="True" TickFrequency="1" />
+                <Slider x:Name="TrackBarTransparencyShadow" Canvas.Left="166" Canvas.Top="169" Width="150" Height="30" ToolTip="Set shadow transparency" IsSnapToTickEnabled="True" TickFrequency="1" />
               </Canvas>
             </Grid>
           </DockPanel>

@@ -63,7 +63,9 @@ internal static partial class FontPicker
             }
 
             var result = Marshal.PtrToStructure<LOGFONTW>(pLogFont);
-            int size = (int)Math.Round(-result.lfHeight * 72.0 / PixelsPerInch, MidpointRounding.AwayFromZero);
+            // O ChooseFont devolve o tamanho final em décimos de ponto; usar iPointSize evita depender
+            // de como o lfHeight voltou do diálogo em pixels lógicos.
+            int size = Math.Max(1, (int)Math.Round(cf.iPointSize / 10.0, MidpointRounding.AwayFromZero));
             int style = (result.lfWeight >= 700 ? 1 : 0) | (result.lfItalic != 0 ? 2 : 0) |
                         (result.lfUnderline != 0 ? 4 : 0) | (result.lfStrikeOut != 0 ? 8 : 0);
             return new FontSpec(result.lfFaceName, size, style, result.lfCharSet, FontSpec.ColorToString(cf.rgbColors & 0xFFFFFF));
