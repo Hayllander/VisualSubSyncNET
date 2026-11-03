@@ -1207,3 +1207,19 @@ Pedido do usuário, inspirado no "Unbreak" + "Auto-break" do Subtitle Edit: acha
 - **Fix:** junta as linhas e, se o texto não couber numa linha, quebra de novo no espaço que deixa as linhas mais equilibradas, preferindo quebrar depois de pontuação e evitando quebrar logo depois de palavra curta (artigo, preposição). Nunca quebra dentro de uma tag.
 - **ParamMaxPerLine:** 0 (padrão) usa o ParamMaxPerLine do plugin "Too long line" (com `VSSCore.GetPluginParamValue`), ou 42 se não houver.
 - **Testes:** `LineBalanceTests`.
+
+## Validação para publicação — 03/11/2026
+
+- Projeto ativo: `C:\Projetos\VisualSubSync.NET`; versão `2.0.0-alpha.12`.
+- Revisados o registro de conclusão da migração de 25/10, as mudanças posteriores nos plugins,
+  API e relatório de erros e as notas da alpha.12. Não foi repetida nesta data a auditoria semântica
+  integral das rotinas Delphi; os limites de teste humano e instalação limpa continuam registrados.
+- Build Release: zero avisos e erros. Core: 235 aprovados; App: 17 aprovados; Media: 8 aprovados
+  na execução isolada. Total: 260, sem ignorados. Na execução concorrente das suítes, o teste
+  `Loop_at_eof_keeps_playing_after_keep_open_pauses` falhou na contagem de atualizações em 750 ms;
+  a repetição isolada passou. Instabilidade temporal registrada, sem alteração do motor para mascará-la.
+- Os fontes locais destinados à release coincidiram integralmente com `origin/main` em `526568e`,
+  incluindo as notas de release. O branch local foi alinhado preservando arquivos e índice.
+- Instalador preparado: `installer\Redist\VisualSubSyncNET-2.0.0-alpha.12-Setup.exe`.
+  SHA-256: `19dca2ba1580986ca1c1a31a392acbce6252b77b4254e9e660ced8deeca0224a`,
+  conferido com as notas. Publicação solicitada como pré-release, adequada aos testes pontuais.
