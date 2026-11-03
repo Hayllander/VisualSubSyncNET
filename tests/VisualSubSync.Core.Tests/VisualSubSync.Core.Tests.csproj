@@ -17,7 +17,10 @@
     <None Include="Samples\**" CopyToOutputDirectory="PreserveNewest" />
     <!-- O modelo da exportação para WAV, copiado de Release\web do original. -->
     <None Include="../../src/VisualSubSync.App/web/index_wav_export.shtml" Link="web/index_wav_export.shtml" CopyToOutputDirectory="PreserveNewest" />
-    <None Include="../../src/VisualSubSync.App/jsplugin/**" Link="jsplugin/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Os plugins JavaScript do 1.0.1 (Release\jsplugin), para conferir a compatibilidade do motor. -->
+    <None Include="Fixtures/jsplugin-1.0.1/**" Link="jsplugin/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Os plugins que o programa distribui (os do Enhanced). -->
+    <None Include="../../src/VisualSubSync.App/jsplugin/**" Link="jsplugin-enh/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/VisualSubSync.Core/VisualSubSync.Core.csproj" />

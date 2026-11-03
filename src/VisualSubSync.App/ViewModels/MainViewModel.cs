@@ -1172,19 +1172,32 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
             return;
         }
 
-        string tmp = Path.ChangeExtension(SubtitlePreview.TemporaryFileName(Project.SubtitlesFile), ".ass");
+        // SaveSubtitles(TmpDstFilename) grava no formato do projeto. O VSFilter do Enhanced só aplica
+        // a fonte de "Subtitles video" (put_TextSettings) a legendas sem estilos; SSA/ASS ficam com os
+        // estilos do próprio arquivo. Por isso só o SRT vira um ASS com o estilo das preferências.
+        bool ownStyles = SubtitleFile.HasStyles(Project.SubtitlesFile);
+        string tmp = ownStyles
+            ? SubtitlePreview.TemporaryFileName(Project.SubtitlesFile)
+            : Path.ChangeExtension(SubtitlePreview.TemporaryFileName(Project.SubtitlesFile), ".ass");
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(tmp)!);
-            SubtitleFile.Save(
-                CreateVideoPreviewDocument(),
-                tmp,
-                new SubtitleWriteOptions
-                {
-                    ApplicationVersion = ApplicationVersion,
-                    PreviousExtension = Path.GetExtension(Project.SubtitlesFile),
-                    Utf8 = true,
-                });
+            if (ownStyles)
+            {
+                SubtitleFile.Save(_document, tmp, BaseWriteOptions);
+            }
+            else
+            {
+                SubtitleFile.Save(
+                    CreateVideoPreviewDocument(),
+                    tmp,
+                    new SubtitleWriteOptions
+                    {
+                        ApplicationVersion = ApplicationVersion,
+                        PreviousExtension = Path.GetExtension(Project.SubtitlesFile),
+                        Utf8 = true,
+                    });
+            }
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {

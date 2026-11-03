@@ -6,7 +6,9 @@ using System.Runtime.InteropServices;
 using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using VisualSubSync.Core.Audio;
 using VisualSubSync.Core.Plugins;
+using VisualSubSync.Core.Projects;
 using VisualSubSync.Core.Subtitles;
 using VisualSubSync.Core.Timing;
 
@@ -49,6 +51,10 @@ public sealed partial class MainViewModel : IVssCoreEngine
 {
     private PluginContext? _pluginContext;
 
+    private PeakData? _audioLevelsSource;
+
+    private AudioLevels? _audioLevels;
+
     /// <summary>UndoableMultiChangeTask: só existe enquanto um plugin corrige legendas.</summary>
     private List<TextChange>? _pluginChanges;
 
@@ -90,6 +96,15 @@ public sealed partial class MainViewModel : IVssCoreEngine
             context.SceneChangeVisible = ShowSceneChange;
             context.SceneChanges = SceneChanges ?? [];
             (context.VideoWidth, context.VideoHeight) = _engine is { HasVideo: true } engine ? engine.VideoSize : (0, 0);
+
+            // Funcionalidade nova (VSSCore.GetAudioLevel/FindAudio): refeito só quando os picos mudam.
+            if (!ReferenceEquals(_audioLevelsSource, Peaks))
+            {
+                _audioLevelsSource = Peaks;
+                _audioLevels = Peaks is { } peaks ? new AudioLevels(peaks) : null;
+            }
+
+            context.Audio = _audioLevels;
             return context;
         }
     }
@@ -109,7 +124,7 @@ public sealed partial class MainViewModel : IVssCoreEngine
         Errors.Clear();
         var watch = Stopwatch.StartNew();
         var context = PluginContext;
-        var found = ErrorChecker.Check(_document.Items, PluginPath, context, PluginSettings, LogPluginError);
+        var found = WithoutSkipped(ErrorChecker.Check(_document.Items, PluginPath, context, PluginSettings, LogPluginError));
         long execTime = watch.ElapsedMilliseconds;
         foreach (var error in found)
         {
@@ -131,6 +146,27 @@ public sealed partial class MainViewModel : IVssCoreEngine
         ErrorReportStatus = message;
         _dialogs.LogMessage(message, silent: true);
     }
+
+    /// <summary>AddError do Enhanced: as legendas esquecidas com "Clear &amp; Forget" não entram na lista.</summary>
+    private List<ErrorItem> WithoutSkipped(List<ErrorItem> found)
+    {
+        var skipped = SkippedErrors.Load(Project?.FileName ?? string.Empty);
+        return skipped.Count == 0 ? found : [.. found.Where(e => !skipped.Contains(SuggestionItem.ConvertCrLfToPipe(e.Subtitle.Text)))];
+    }
+
+    /// <summary>miClearAndSkipClick do Enhanced: grava no projeto o texto das legendas desses erros.</summary>
+    public void ForgetErrors(IEnumerable<ErrorItemViewModel> errors)
+    {
+        ArgumentNullException.ThrowIfNull(errors);
+        SkippedErrors.Add(Project?.FileName ?? string.Empty, errors.Select(e => SuggestionItem.ConvertCrLfToPipe(e.Error.Subtitle.Text)));
+    }
+
+    /// <summary>
+    /// Melhoria de 27/10/2026: depois de Clear, Clear &amp; Forget e os outros Clear, a barra mostra quantos
+    /// erros restam na lista.
+    /// </summary>
+    public void UpdateErrorCountStatus() =>
+        ErrorReportStatus = string.Create(CultureInfo.InvariantCulture, $"{Errors.Count} error(s) found.");
 
     /// <summary>ActionShowErrorReportExecute: ErrorReportForm.Visible := not ErrorReportForm.Visible.</summary>
     [RelayCommand]
@@ -175,12 +211,18 @@ public sealed partial class MainViewModel : IVssCoreEngine
         int fixedCount = 0;
         RunPluginChanges(() => fixedCount = ErrorChecker.FixErrors(_document.Items, [.. errors.Select(e => e.Error)], context, PluginSettings, LogPluginError));
         long execTime = watch.ElapsedMilliseconds;
-        foreach (var error in Errors)
+
+        // Melhoria pedida pelo usuário em 27/10/2026 (2.0.0-alpha.7): o original só redesenha a lista e
+        // mostra quantos foram corrigidos. Aqui a lista é verificada de novo, sem passar pelo Log, para
+        // mostrar quantos erros restam sem precisar de outro Check errors.
+        var found = WithoutSkipped(ErrorChecker.Check(_document.Items, PluginPath, context, PluginSettings, LogPluginError));
+        Errors.Clear();
+        foreach (var error in found)
         {
-            error.Refresh();
+            Errors.Add(new ErrorItemViewModel(error));
         }
 
-        ErrorReportStatus = string.Create(CultureInfo.InvariantCulture, $"{fixedCount} error(s) fixed (in {execTime} ms).");
+        ErrorReportStatus = string.Create(CultureInfo.InvariantCulture, $"{fixedCount} error(s) fixed (in {execTime} ms). {Errors.Count} error(s) found.");
     }
 
     /// <summary>
@@ -200,7 +242,7 @@ public sealed partial class MainViewModel : IVssCoreEngine
             _pluginChanges = null;
         }
 
-        foreach (var change in changes)
+        foreach (var change in changes.Where(c => c.Index >= 0 && c.Index < Subtitles.Count))
         {
             Subtitles[change.Index].RefreshAll();
         }
@@ -221,7 +263,13 @@ public sealed partial class MainViewModel : IVssCoreEngine
             return null;
         }
 
+        // Uma legenda que o plugin já apagou (DeleteSubtitle) não entra no desfazer.
         int index = _document.Items.IndexOf(sub);
+        if (index < 0)
+        {
+            return null;
+        }
+
         var change = _pluginChanges.Find(c => c.Index == index);
         if (change is null)
         {
@@ -343,6 +391,46 @@ public sealed partial class MainViewModel : IVssCoreEngine
     /// <summary>TVSSCoreWrapper.MeasureStringWidth: GetTextExtentPoint32W numa fonte criada para a tela.</summary>
     int IVssCoreEngine.MeasureStringWidth(string fontName, int fontSize, bool bold, string text) =>
         Gdi.MeasureStringWidth(fontName, fontSize, bold, text);
+
+    /// <summary>
+    /// TMainForm.GetPluginParamValue (Enhanced): IniFile.ReadInteger(seção, parâmetro, 0). Aqui o valor
+    /// vem das preferências em memória, que são as que vão para o VisualSubSync.ini.
+    /// </summary>
+    int IVssCoreEngine.GetPluginParamValue(string section, string parameter) =>
+        Settings.Plugins?.GetByName(section)?.GetParam(parameter) is { } param
+        && int.TryParse(param.ValueAsString, NumberStyles.Integer, CultureInfo.InvariantCulture, out int value) ? value : 0;
+
+    /// <summary>
+    /// TMainForm.JsDeleteSubtitle (Enhanced): um TUndoableDeleteTask empilhado. Se um plugin já tinha
+    /// mudado a legenda, ela volta ao que era antes de ser apagada (assim o desfazer a devolve inteira) e
+    /// as mudanças das legendas seguintes passam para a nova posição.
+    /// </summary>
+    void IVssCoreEngine.DeleteSubtitle(int index)
+    {
+        if (index < 0 || index >= _document.Items.Count)
+        {
+            return;
+        }
+
+        if (_pluginChanges is { } changes)
+        {
+            var sub = _document.Items[index];
+            if (changes.Find(c => c.Index == index) is { } change)
+            {
+                sub.StartMs = change.OldStart ?? sub.StartMs;
+                sub.StopMs = change.OldStop ?? sub.StopMs;
+                sub.Text = change.OldText ?? sub.Text;
+                changes.Remove(change);
+            }
+
+            foreach (var c in changes.Where(c => c.Index > index))
+            {
+                c.Index--;
+            }
+        }
+
+        DoAndPush(new DeleteTask(this, [index]));
+    }
 }
 
 /// <summary>As chamadas GDI de MeasureStringWidth.</summary>

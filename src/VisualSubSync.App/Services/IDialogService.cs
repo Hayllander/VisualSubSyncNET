@@ -48,7 +48,7 @@ public interface IDialogService
     /// ShowPreferences: mostra a janela na aba pedida (ou na última aberta) e devolve verdadeiro com OK,
     /// já com as preferências gravadas em <paramref name="settings"/>.
     /// </summary>
-    bool ShowPreferences(Core.Settings.VssSettings settings, string? tabName);
+    bool ShowPreferences(Core.Settings.VssSettings settings, string? tabName, bool projectOpen);
 
     /// <summary>StyleFormInstance.ShowModal: Apply troca o nome nas legendas e marca o projeto.</summary>
     /// <summary>TSpellCheckForm.ShowModal; <paramref name="focusSubtitle"/> é o FocusNode de cada erro.</summary>

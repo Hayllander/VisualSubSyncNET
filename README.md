@@ -185,14 +185,18 @@ full pass over the audio stream.
 - [Enhanced interface reference](docs/enhanced/README.md)
 - [Parity audit (2026-10-21)](docs/AUDITORIA-PARIDADE-2026-10-21.md)
 - [Parity traceability data](docs/RASTREABILIDADE-PARIDADE-2026-10-21.json)
+- [Source comparison reports (2026-10-23)](docs/auditoria-2026-10-23/)
+- [Source comparison (2026-10-25)](docs/auditoria-2026-10-25/comparacao-2026-10-25.md)
+- [Final migration check (2026-10-25)](docs/auditoria-2026-10-25/conferencia-final-migracao.md)
 - [Media measurements](docs/medicoes/)
 
 The parity index can be regenerated with `python tools/audit-parity.py`.
 
 ## Project status
 
-Milestones M0–M9 are implemented as described in the migration plan, with explicit validation
-pending. Current state:
+The migration of VisualSubSync 1.0.1 was concluded on 2026-10-25 with version 2.0.0-alpha.5: every
+routine, window, action and ini key of the original has a counterpart or a documented reason (see
+the final migration check). From here VisualSubSyncNET evolves as an independent project. Current state:
 
 - Build: no warnings, no errors (`TreatWarningsAsErrors` is enabled).
 - Tests: **249 passing** (224 Core, 17 App, 8 Media); 0 failures, 0 skipped.

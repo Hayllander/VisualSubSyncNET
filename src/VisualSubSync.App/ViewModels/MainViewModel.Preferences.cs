@@ -46,7 +46,7 @@ public sealed partial class MainViewModel
             Settings.ShadowSubVideoFont,
             Settings.ShadowSubVideoColorFont,
             Settings.TransparencyShadowSubVideoFont);
-        if (!_dialogs.ShowPreferences(Settings, tabName))
+        if (!_dialogs.ShowPreferences(Settings, tabName, IsProjectOpen))
         {
             return;
         }

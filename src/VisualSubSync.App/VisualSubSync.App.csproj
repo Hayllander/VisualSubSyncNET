@@ -18,7 +18,7 @@
   <ItemGroup>
     <!-- ServerRootDir: as páginas do diretório web do original (Export to WAV e o servidor web). -->
     <Content Include="web\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
-    <!-- g_PluginPath: os plugins JavaScript do original (Release\jsplugin), sem alteração. -->
+    <!-- g_PluginPath: os plugins JavaScript do Enhanced (jsplugin), sem alteração. -->
     <Content Include="jsplugin\**" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <!-- MenuItemHelpIndexClick: as páginas de ajuda do original (Release\help), sem alteração. -->
     <Content Include="help\**" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />

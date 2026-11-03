@@ -33,10 +33,22 @@ public partial class PreferencesWindow : Window
     private int _hotKey;
     private bool _updatingAssociations;
 
-    public PreferencesWindow(VssSettings settings, string? tabName)
+    public PreferencesWindow(VssSettings settings, string? tabName, bool projectOpen = false)
     {
         ArgumentNullException.ThrowIfNull(settings);
         InitializeComponent();
+
+        // ShowPreferences do Enhanced: com projeto aberto (ActionClose.Enabled) a fonte de
+        // "Subtitles video" não muda, porque o VSFilter só a recebe ao montar o grafo do vídeo.
+        foreach (UIElement control in new UIElement[]
+                 {
+                     EditSubVideoFont, bttSubVideoFont, TrackBarTransparencySubVideo, EditOutlineSubVideoFont,
+                     ShapeSubVideoOutline, TrackBarTransparencyOutline, EditShadowSubVideoFont, ShapeSubVideoShadow,
+                     TrackBarTransparencyShadow, ButtonDefaultSubtitlesVideo,
+                 })
+        {
+            control.IsEnabled = !projectOpen;
+        }
         _settings = settings;
         _subListFont = settings.SubListFont;
         _subTextFont = settings.SubTextFont;

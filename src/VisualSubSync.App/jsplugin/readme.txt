@@ -37,9 +37,6 @@ VSSCore.GetPrevious(Subtitle) : Return the subtitle previous to the specified on
 VSSCore.GetFirstSelected() : Return the first selected subtitle
 VSSCore.GetNextSelected(Subtitle) : Return the next selected subtitle after the specified one
 VSSCore.MeasureStringWidth(FontName, FontSize, IsBold, Text) : Return the width of the text in pixels.
-VSSCore.GetTextSelectionStart() : Return the position of the first selected character in the text.
-VSSCore.GetTextSelectionLength() : Return the number of characters that are selected.
-VSSCore.GetAudioCursorPosition() : Return the position of the yellow audio cursor in ms.
 
 Subtitle.Index : Index of the subtitle
 Subtitle.Start : Start time in ms of the subtitle
@@ -59,3 +56,8 @@ SceneChange.GetPrevious(TimeMs) : Get the time in ms of the next scene change in
 SceneChange.Contains(Start,Stop) : Check if there is a scene change between [Start,Stop]
 
 
+
+VisualSubSyncNET only (new, not in VisualSubSync 1.0.1 or Enhanced):
+
+VSSCore.GetAudioLevel(Start, Stop) : Audio level between Start and Stop (ms), in percent of the loudest peak of the file. -1 without waveform.
+VSSCore.FindAudio(From, To, Level, Above) : First time (ms) from From to To (backward if To < From) where the audio stays 30 ms above Level (Above true) or below it (Above false). Backward, the end of that stretch is returned. -1 if not found.

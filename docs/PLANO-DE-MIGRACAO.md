@@ -1105,3 +1105,105 @@ Diferenças mantidas de propósito:
   "Not enough parameters"/"Too many parameters"), e `GetSelectedCount` devolve a contagem. Nenhum plugin
   distribuído depende disso.
 
+## Comparação de 25/10/2026 com o original e o Enhanced
+
+Conferi as mudanças feitas depois de 23/10 (Check for updates, "Subtitles video", seleção acompanhando os
+plugins, duplo clique na borda e o nome VisualSubSyncNET) contra `main.pas`, `Renderer.pas` e
+`PreferencesFormUnit.pas` do Enhanced e do 1.0.1. As chaves `[Fonts] SubVideo`, `TransparencyColorSubVideo`,
+`OutlineSubVideo`, `OutlineColorSubVideo`, `TransparencyOutlineColorSubVideo`, `ShadowSubVideo`,
+`ShadowColorSubVideo` e `TransparencyShadowColorSubVideo`, os padrões e o botão Default conferem com o Enhanced.
+`OnSubtitleRangeJSWrapperChangeStart/Stop` e o duplo clique na borda (`TWAVDisplayer.DblClick`) também conferem.
+
+| Rotina | Ajuste |
+| --- | --- |
+| `UpdateSubtitleForPreview` / `TDShowRenderer.SetSubtitleFont` | O Enhanced passa a fonte de "Subtitles video" ao VSFilter com `put_TextSettings`, que vale só para legendas sem estilos. Projetos SSA/ASS voltam a mostrar no vídeo os estilos do próprio arquivo (antes todas as legendas viravam o estilo Default); só o SRT vira um ASS com o estilo das preferências. Confirmado pelo usuário em 25/10/2026: em SSA/ASS vale o que vem no arquivo. |
+| `ShowPreferences` | Como no Enhanced, os controles de "Subtitles video" ficam desabilitados com projeto aberto (`not ActionClose.Enabled`); a fonte vale ao abrir o vídeo do próximo projeto. Histórico: na 2.0.0-alpha.4 eles ficaram editáveis também com projeto aberto, com a legenda do vídeo reaplicada ao dar OK; na 2.0.0-alpha.5 voltamos ao comportamento do Enhanced, por decisão do usuário em 25/10/2026. A orientação para quem usa o programa: trocar a fonte de "Subtitles video" antes de abrir ou criar um projeto. |
+
+## Conclusão da migração — 25/10/2026
+
+Conferência final feita em 25/10/2026, sempre contra os fontes do original 1.0.1 (`C:\Projetos\VisualSubSync`) e do Enhanced (`C:\Projetos\VisualSubSyncEnh`), sem alterá-los. Relatório completo em `docs/auditoria-2026-10-25/conferencia-final-migracao.md`; a comparação do mesmo dia está em `docs/auditoria-2026-10-25/comparacao-2026-10-25.md`.
+
+| Item | Resultado |
+| --- | --- |
+| Rotinas das 46 unidades `.pas` | 1.502 no total; 1.050 achadas pelo nome; das 452 restantes, 149 estão em unidades trocadas por outra tecnologia (FFmpeg, mpv, editor e controles do WPF), 115 são acessores e construtores e 188 foram conferidas à mão: existem com outro nome ou estão documentadas neste plano |
+| Janelas | As 18 têm equivalente |
+| Ações do `main.dfm` | As 113 têm destino (`ActionExit` virou `ExitCommand`; `ActionExportToSSA` não tem código no original) |
+| Chaves do ini e do projeto | As 85 estão presentes |
+| `help`, `web` e `jsplugin` | Iguais ao original, exceto `french.html`, editado pelo usuário |
+| Testes | 222 do Core passam no Linux; os 2 de `StorageSafetyTests` só rodam no Windows |
+
+Versão entregue: **2.0.0-alpha.5** (executável `VisualSubSyncNET.exe` e instalador em `installer\Redist`). Com isso a migração do 1.0.1 é dada como concluída. A partir daqui o VisualSubSyncNET evolui como projeto próprio, independente do original e do Enhanced; a publicação na web e na loja será a 2.0.0.
+
+Pontos conhecidos, registrados e não alterados nesta etapa:
+
+- `ApplyVideoSubtitleStyle()` não faz nada, e `MpvMediaEngine.SetSubtitleStyle`/`BuildAssForceStyle` não são chamados (código sem uso).
+- A associação de arquivos (`ShellAssociation`) ainda usa o nome "VisualSubSync" e pode colidir com a do 1.0.1 instalado na mesma máquina.
+- As pastas temporárias e de dados ainda se chamam "VisualSubSync".
+
+## Plugins JavaScript do Enhanced — 27/10/2026 (2.0.0-alpha.6)
+
+O usuário notou que, no Error report, corrigir pelo botão direito não fazia nada. A correção (`FixErrorInList`, `CanFixError`, `ErrorListPopupMenuPopup`) é igual no 1.0.1, no Enhanced e no .NET, e funciona. A diferença estava nos plugins: os do 1.0.1 só têm `FixError` em French typography, Overlapping, Scene change e Too long line, e os erros de duração (Too short/long display time) e Too many lines ficavam sem "Fix selected errors". No Enhanced, o plugin Duration corrige a duração.
+
+Decisão do usuário em 27/10/2026: a pasta `jsplugin` passa a ser a do Enhanced instalado (`C:\Projetos\VisualSubSyncEnh\jsplugin`), sem alteração. Isso troca uma regra do plano: até a 2.0.0-alpha.5 os plugins eram os de `Release\jsplugin` do 1.0.1.
+
+| Ponto | Como ficou |
+| --- | --- |
+| Plugins de erro | Duration, Greek typography, ITASA - Common errors, ITASA - Row splitter, Overlapping & minimum blank, Speed, Too long line, Too many lines e Un-closed tags. Saem French typography, Scene change, Too long display time e Too short display time |
+| Plugin geral | `general_plugin.js` do Enhanced (colunas RS, CPS e Duration) e as ações `action_itasa.js`, `action_nixxo.js` e `action_quick_stats.js`. Sai `action_split_at_cursor.js` |
+| `VSSCore.DeleteSubtitle(index)` | Novo, como em `TVSSCoreWrapper.DeleteSubtitle` do Enhanced: índice a partir de 1, `false` fora da lista, apaga com desfazer (`JsDeleteSubtitle`). Usado por ITASA - Common errors quando a legenda fica vazia. Se um plugin já tinha mudado a legenda, ela volta ao que era antes de ser apagada, para o desfazer devolvê-la inteira |
+| `VSSCore.GetPluginParamValue(seção, parâmetro)` | Novo, como no Enhanced. O Enhanced lê o inteiro do ini gravado (`ReadInteger`, 0 se não houver); aqui vem das preferências em memória, que são as que vão para o ini |
+| Testes | Os plugins do 1.0.1 ficam em `tests/VisualSubSync.Core.Tests/Fixtures/jsplugin-1.0.1` para conferir a compatibilidade do motor; `EnhancedPluginTests` confere os do Enhanced |
+| Instalador | Apaga da pasta instalada os plugins do 1.0.1 que não existem no Enhanced, deixados por uma instalação anterior |
+| `tools/audit-parity.py` | Compara `jsplugin` com a pasta do Enhanced instalado |
+
+## Total de erros depois de corrigir — 27/10/2026 (2.0.0-alpha.7 e alpha.8)
+
+Melhoria pedida pelo usuário. No original (`FixErrorInList`), corrigir pelo Error report só redesenha a lista e mostra "N error(s) fixed (in X ms).", e para saber quantos erros restam é preciso rodar Check errors de novo. Agora, depois de corrigir, a lista é verificada de novo (sem passar pelo Log). Os erros corrigidos saem da lista, e a barra mostra "N error(s) fixed (in X ms). M error(s) found.". Na 2.0.0-alpha.7 a seleção ia para o erro que ficou na posição do primeiro corrigido, e isso tirava a janela principal da legenda em que se estava trabalhando. Na 2.0.0-alpha.8, como no Enhanced (que só redesenha a lista e mantém o foco no erro corrigido), a janela principal continua na mesma legenda: o foco da lista volta para um erro que ainda exista nessa legenda ou, se não houver, para o que ficou na posição do erro focado, sem mudar a legenda selecionada. Vale para "Fix selected errors", "Fix all errors of same type", "Fix all errors with same error msg" e o atalho de Fix selected errors.
+
+## Funcionalidades novas do VisualSubSyncNET
+
+O que está nesta seção não existe no 1.0.1 nem no Enhanced. Foi pedido pelo usuário e não é regra de paridade.
+
+| Versão | Funcionalidade |
+| --- | --- |
+| 2.0.0-alpha.7 e alpha.8 | Total de erros depois de corrigir no Error report (ver "Total de erros depois de corrigir — 27/10/2026") |
+| 2.0.0-alpha.9 | Plugin de erro **Audio sync**, que compara o início das legendas com o áudio |
+| 2.0.0-alpha.10 | Contagem de erros na barra depois de Clear, Clear & Forget e os outros Clear (o Clear & Forget em si é portado do Enhanced) |
+| 2.0.0-alpha.11 | Tecla Del no Error report faz Clear & Forget nos erros selecionados (no Enhanced o item não tem atalho); o menu mostra "Del" ao lado do item |
+| 2.0.0-alpha.12 | Plugin de erro **Line balance**, que acha quebras de linha desnecessárias ou desequilibradas e as corrige |
+
+### Audio sync — 27/10/2026 (2.0.0-alpha.9)
+
+Pedido do usuário: detectar no Error checking a legenda que começa antes da fala (silêncio no começo) ou depois dela. Como todo erro, só é apontado e deve ser conferido pelo usuário; o plugin não tem `FixError`. Música ou ruído de fundo forte podem dar erros falsos.
+
+- **Níveis do áudio (`Core/Audio/AudioLevels.cs`):** lidos da tabela de picos que desenha a forma de onda (um pico a cada 10 ms). O nível é o RMS dos picos (o maior valor absoluto de cada bloco) em porcentagem do maior pico do arquivo, para o mesmo limiar servir a áudios mais altos ou mais baixos. Nas buscas, a fala ou o silêncio precisam durar 30 ms seguidos, para um estalo não contar.
+- **Funções novas para os plugins:** `VSSCore.GetAudioLevel(Start, Stop)` devolve o nível em 0–100, ou -1 sem forma de onda. `VSSCore.FindAudio(From, To, Level, Above)` devolve o primeiro ponto, de From para To (para trás se To < From), em que o áudio fica acima de Level (Above true) ou abaixo dele; para trás devolve onde o trecho achado acaba, e -1 se não houver. Estão descritas no `jsplugin/readme.txt`.
+- **Plugin `jsplugin/audio_sync.js`:** aponta "starts N ms before the voice" (silêncio no começo acima de ParamMaxEarlyStart, 300 ms), "starts N ms after the voice" (a fala começou antes da legenda mais de ParamMaxLateStart, 300 ms; procura o silêncio até ParamLookBack, 2000 ms, sem passar do fim da legenda anterior) e "no voice found" (ParamReportNoVoice). ParamVoiceLevel (10 %) é o nível que conta como fala. Sem forma de onda, o plugin não aponta nada.
+- **Testes:** `AudioSyncTests` com picos sintéticos.
+- A pasta `jsplugin` continua sendo a do Enhanced sem alteração, mais `audio_sync.js` e a seção nova no fim do `readme.txt`.
+
+## Clear & Forget e os Clear por mensagem — 27/10/2026 (2.0.0-alpha.10)
+
+Pedido do usuário: como o Audio sync só aponta, liberar o "Clear & Forget" para tirar da lista o que não é erro. Os três itens do menu do Error report que estavam desabilitados por só existirem no Enhanced foram portados dos fontes do Enhanced (`ErrorReportFormUnit.pas`, `ProjectUnit.pas`):
+
+| Item | Como ficou |
+| --- | --- |
+| Clear & Forget (`miClearAndSkipClick`) | Grava no `.vssprj` o texto das legendas selecionadas (quebras como "\|"), em `[VisualSubsync]` `SkippedSub001`, `SkippedSub002`... e `LastSkippedOnErrorCheck`, as mesmas chaves do Enhanced (um projeto do Enhanced com essa lista é lido igual). Depois, como Clear. Nas próximas verificações (Check errors e a recontagem depois de corrigir), os erros dessas legendas não entram na lista (`AddError` com `SearchSkippedSubOnErrorCheck`) |
+| Clear all errors with different error msg (`pmiClearAllYYYClick`) | Fica só com os erros do mesmo plugin e mesma mensagem do erro focado |
+| Clear all errors with same error msg (`pmiClearAllXXXClick`) | Tira os erros do mesmo plugin e mesma mensagem do erro focado |
+
+Diferenças:
+
+- O Enhanced grava só os selecionados seguidos a partir do primeiro (o laço para no primeiro não selecionado), mas apaga da lista todos os selecionados. Aqui todos os selecionados são gravados.
+- O Enhanced deixa os três itens sempre ativos. Aqui Clear & Forget pede seleção, e os dois Clear por mensagem pedem um erro focado.
+- Como o Enhanced, o esquecimento vale para a legenda inteira (todos os plugins), pelo texto, e não há como desfazer pela tela: é preciso tirar as chaves `SkippedSub` do `.vssprj`.
+- Melhoria da mesma linha do total de erros da alpha.7: depois de Clear, Clear & Forget, os Clear por mensagem e Clear all, a barra mostra "N error(s) found." com o que resta na lista.
+
+### Line balance — 29/10/2026 (2.0.0-alpha.12)
+
+Pedido do usuário, inspirado no "Unbreak" + "Auto-break" do Subtitle Edit: achar legendas como "Ele saiu pela porta da|frente", em que a quebra de linha é desnecessária ou deixa uma linha muito curta.
+
+- **Plugin `jsplugin/line_balance.js`:** só olha legendas de 2 linhas e ignora diálogos (linhas começando com "-"). Aponta "fits in one line (N characters)" quando as duas linhas juntas cabem numa só, e "unbalanced lines (A/B)" quando a linha menor tem menos de ParamMinRatio (50 %) da maior e uma nova quebra deixaria as linhas mais parecidas. Tags `{...}` e `<...>` não contam no tamanho.
+- **Fix:** junta as linhas e, se o texto não couber numa linha, quebra de novo no espaço que deixa as linhas mais equilibradas, preferindo quebrar depois de pontuação e evitando quebrar logo depois de palavra curta (artigo, preposição). Nunca quebra dentro de uma tag.
+- **ParamMaxPerLine:** 0 (padrão) usa o ParamMaxPerLine do plugin "Too long line" (com `VSSCore.GetPluginParamValue`), ou 42 se não houver.
+- **Testes:** `LineBalanceTests`.

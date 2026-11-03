@@ -1,3 +1,4 @@
+using VisualSubSync.Core.Audio;
 using VisualSubSync.Core.Scenes;
 using VisualSubSync.Core.Subtitles;
 
@@ -24,6 +25,14 @@ public interface IVssCoreEngine
 
     /// <summary>MeasureStringWidth: largura em pixels do texto na fonte pedida (GetTextExtentPoint32W).</summary>
     int MeasureStringWidth(string fontName, int fontSize, bool bold, string text);
+
+    /// <summary>GetPluginParamValue (Enhanced): o valor inteiro de um parâmetro de plugin nas preferências, ou 0.</summary>
+    int GetPluginParamValue(string section, string parameter) => 0;
+
+    /// <summary>JsDeleteSubtitle (Enhanced): apaga a legenda da posição (a partir de 0), com desfazer.</summary>
+    void DeleteSubtitle(int index)
+    {
+    }
 }
 
 /// <summary>
@@ -72,6 +81,9 @@ public sealed class PluginContext
     public int SceneChangeFilterOffset { get; set; } = 250;
 
     public bool SceneChangeVisible { get; set; }
+
+    /// <summary>Os níveis do áudio do projeto (funcionalidade nova); null sem forma de onda.</summary>
+    public AudioLevels? Audio { get; set; }
 
     /// <summary>OnSubtitleChangeStart/Stop/Text: chamados antes de o plugin mudar a legenda (para o desfazer).</summary>
     public event Action<Subtitle, int>? ChangingStart;

@@ -42,7 +42,7 @@
              SelectionChanged="OnSelectionChanged" MouseDoubleClick="OnErrorDoubleClick"
              ContextMenuOpening="OnContextMenuOpening">
       <ListBox.ContextMenu>
-        <!-- ErrorListPopupMenu. Os itens que só existem no Enhanced ficam desativados. -->
+        <!-- ErrorListPopupMenu (layout e itens do Enhanced). -->
         <ContextMenu>
           <MenuItem x:Name="pmiFixError" Header="Fix selected errors" Click="OnFixSelected" />
           <MenuItem x:Name="pmiFixAllXXX" Header="Fix all errors of same type (color)" Click="OnFixAllSameType" />
@@ -51,11 +51,11 @@
           <MenuItem x:Name="pmiSelectAllXXX" Header="Select all errors of same type (color)" Click="OnSelectAllSameType" />
           <MenuItem x:Name="pmiSelectAllYYY" Header="Select all errors with same error msg" Click="OnSelectAllSameMessage" />
           <Separator />
-          <MenuItem Header="Clear &amp;&amp; Forget" IsEnabled="False" />
+          <MenuItem x:Name="miClearAndSkip" Header="Clear &amp;&amp; Forget" InputGestureText="Del" Click="OnClearAndForget" />
           <Separator />
           <MenuItem Header="Clear" Click="OnClear" />
-          <MenuItem Header="Clear all errors with different error msg" IsEnabled="False" />
-          <MenuItem Header="Clear all errors with same error msg" IsEnabled="False" />
+          <MenuItem x:Name="pmiClearAllYYY" Header="Clear all errors with different error msg" Click="OnClearDifferentMessage" />
+          <MenuItem x:Name="pmiClearAllXXX" Header="Clear all errors with same error msg" Click="OnClearSameMessage" />
           <MenuItem Header="Clear all" Click="OnClearAll" />
         </ContextMenu>
       </ListBox.ContextMenu>

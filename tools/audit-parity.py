@@ -64,7 +64,9 @@ def run(project, original, enhanced):
     extras = [dict(unit=p.name, routines=routines(p)) for p in sorted(enhanced.glob("*.pas")) if not (original / p.name).exists()]
     resources = {}
     for folder in ("jsplugin", "web", "help"):
-        a, b = original / "Release" / folder, project / "src" / "VisualSubSync.App" / folder
+        # Desde a 2.0.0-alpha.6 os plugins JavaScript são os do Enhanced instalado (a pasta acima de fontes).
+        source = enhanced.parent / folder if folder == "jsplugin" else original / "Release" / folder
+        a, b = source, project / "src" / "VisualSubSync.App" / folder
         files = []
         for path in sorted(a.rglob("*")):
             if path.is_file():

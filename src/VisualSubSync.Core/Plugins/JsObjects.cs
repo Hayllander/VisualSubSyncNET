@@ -227,6 +227,37 @@ public sealed class VssCoreJs
     public int GetTextSelectionLength() => _context.Engine?.GetTextSelectionLength() ?? 0;
 
     public int GetAudioCursorPosition() => _context.Engine?.GetAudioCursorPosition() ?? 0;
+
+    /// <summary>
+    /// Funcionalidade nova do VisualSubSyncNET: o nível do áudio em [Start, Stop) em 0–100 (porcentagem do
+    /// maior pico do arquivo); -1 quando o projeto não tem forma de onda.
+    /// </summary>
+    public double GetAudioLevel(double start, double stop) =>
+        _context.Audio is { } audio ? audio.Level(JsConvert.ToInt32(start), JsConvert.ToInt32(stop)) : -1;
+
+    /// <summary>
+    /// Funcionalidade nova do VisualSubSyncNET: de From para To (para trás se To &lt; From), o primeiro ponto
+    /// em que o áudio fica acima de Level (Above true) ou abaixo dele (Above false); -1 se não houver.
+    /// </summary>
+    public int FindAudio(double from, double to, double level, bool above) =>
+        _context.Audio is { } audio ? audio.Find(JsConvert.ToInt32(from), JsConvert.ToInt32(to), level, above) : -1;
+
+    /// <summary>TVSSCoreWrapper.GetPluginParamValue (Enhanced): IniFile.ReadInteger(seção, parâmetro, 0).</summary>
+    public int GetPluginParamValue(string section, string parameter) =>
+        _context.Engine?.GetPluginParamValue(section ?? string.Empty, parameter ?? string.Empty) ?? 0;
+
+    /// <summary>TVSSCoreWrapper.DeleteSubtitle (Enhanced): Index começa em 1; fora da lista devolve false.</summary>
+    public bool DeleteSubtitle(double index)
+    {
+        int i = JsConvert.ToInt32(index);
+        if (_context.Engine is not { } engine || i <= 0 || i > Subs.Count)
+        {
+            return false;
+        }
+
+        engine.DeleteSubtitle(i - 1);
+        return true;
+    }
 }
 
 /// <summary>Conversões de valores do JavaScript como as do SpiderMonkey 1.5 usado pelo original.</summary>

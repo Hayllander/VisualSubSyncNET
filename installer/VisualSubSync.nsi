@@ -72,6 +72,14 @@ Section "Main (required)" SecMain
   ; Make section read only as it's required
   SectionIn RO
 
+  ; Desde a 2.0.0-alpha.6 os plugins JavaScript são os do Enhanced: apaga os do 1.0.1 que não
+  ; existem nele, deixados por uma instalação anterior.
+  Delete "$INSTDIR\jsplugin\french_typo.js"
+  Delete "$INSTDIR\jsplugin\scene_change.js"
+  Delete "$INSTDIR\jsplugin\too_long_display_time.js"
+  Delete "$INSTDIR\jsplugin\too_short_display_time.js"
+  Delete "$INSTDIR\jsplugin\general\action_split_at_cursor.js"
+
   ; Programa, runtime do .NET, mpv, FFmpeg, web, help, jsplugin e dict
   !insertmacro VSS_INSTALL_FILES
 

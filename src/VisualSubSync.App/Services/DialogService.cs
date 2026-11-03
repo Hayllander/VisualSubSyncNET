@@ -148,11 +148,11 @@ public sealed class DialogService(VssSettings settings) : IDialogService
 
     public void ClearLog() => Log.Clear();
 
-    public bool ShowPreferences(VssSettings settings, string? tabName)
+    public bool ShowPreferences(VssSettings settings, string? tabName, bool projectOpen)
     {
         // O original reaproveita o formulário: sem aba pedida, volta a última, e a janela reabre onde
         // estava. A posição vem do ini e vai para ele ao sair (PrefFormInitialized).
-        var window = new PreferencesWindow(settings, tabName ?? _preferencesTab) { Owner = Application.Current.MainWindow };
+        var window = new PreferencesWindow(settings, tabName ?? _preferencesTab, projectOpen) { Owner = Application.Current.MainWindow };
         FormPlacement.Restore(window, settings, "PreferencesForm");
         bool ok = window.ShowDialog() == true;
         _preferencesTab = window.SelectedTabName;
