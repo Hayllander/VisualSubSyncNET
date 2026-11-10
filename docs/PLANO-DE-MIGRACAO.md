@@ -1223,3 +1223,7 @@ Pedido do usuário, inspirado no "Unbreak" + "Auto-break" do Subtitle Edit: acha
 - Instalador preparado: `installer\Redist\VisualSubSyncNET-2.0.0-alpha.12-Setup.exe`.
   SHA-256: `19dca2ba1580986ca1c1a31a392acbce6252b77b4254e9e660ced8deeca0224a`,
   conferido com as notas. Publicação solicitada como pré-release, adequada aos testes pontuais.
+
+## Botão Save — 10/11/2026 (2.0.0-alpha.13)
+
+Botão de disquete ao lado dos controles de sincronização, ligado ao mesmo comando de File → Save. Compilação Release para Windows x64 e geração do instalador NSIS concluídas.

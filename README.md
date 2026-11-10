@@ -8,7 +8,7 @@ behaves*, and **VisualSubSync Enhanced 1.2.29** is the *visual* reference (layou
 tooltips, icons, shortcuts and colours). Neither the original nor the Enhanced sources are modified
 by this project.
 
-**Current version: `2.0.0-alpha.12`**
+**Current version: `2.0.0-alpha.13`** — [Download the Windows installer](https://github.com/Hayllander/VisualSubSyncNET/releases/latest)
 
 ---
 

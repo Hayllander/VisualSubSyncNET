@@ -753,6 +753,20 @@
                     </Canvas>
                   </TabItem>
                 </TabControl>
+                <Button Canvas.Top="6" Width="42" Height="42" Command="{Binding SaveCommand}"
+                        ToolTip="Save" AutomationProperties.Name="Save">
+                  <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource SpeedButton}">
+                      <Setter Property="Canvas.Left" Value="1028" />
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding Settings.QuickSmartSilentZonePanels}" Value="False">
+                          <Setter Property="Canvas.Left" Value="753" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Button.Style>
+                  <Image Source="/Assets/Menu/il_15.png" Width="32" Height="32" />
+                </Button>
               </Canvas>
               <Border x:Name="MiddleHost">
                 <DataGrid x:Name="vtvSubsList"
