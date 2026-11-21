@@ -281,7 +281,10 @@ public partial class ErrorReportWindow : Window
 
     /// <summary>
     /// FormKeyDown (KeyPreview): Esc fecha. Del faz Clear &amp; Forget nos erros selecionados (atalho novo do
-    /// VisualSubSyncNET, pedido pelo usuário em 29/10/2026).
+    /// VisualSubSyncNET, pedido pelo usuário em 29/10/2026). As outras teclas passam pelos atalhos da
+    /// janela principal (Application.IsShortCut → MainForm.IsShortCut): com o Error report focado continua
+    /// dando para navegar nas legendas, tocar, ajustar tempos etc. Sem ação para a tecla, ela segue para a
+    /// lista de erros (setas, Home/End...). Com um menu desta janela aberto, as teclas ficam com ele.
     /// </summary>
     private void OnPreviewKeyDown(object sender, KeyEventArgs e)
     {
@@ -293,6 +296,10 @@ public partial class ErrorReportWindow : Window
         else if (e.Key == Key.Delete && Keyboard.Modifiers == ModifierKeys.None)
         {
             OnClearAndForget(sender, e);
+            e.Handled = true;
+        }
+        else if (Keyboard.FocusedElement is not MenuItem && Owner is MainWindow main && main.ExecuteActionShortcut(e))
+        {
             e.Handled = true;
         }
     }

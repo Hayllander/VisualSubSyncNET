@@ -143,7 +143,12 @@ public partial class MainWindow
             _actions[action.Name] = (vm.ExecuteJsActionCommand, action.Name);
         }
 
-        vm.WaveformFocusRequested += (_, _) => WAVDisplayer.Focus();
+        // SetFocus num controle do MainForm ativa o MainForm, mesmo com o atalho vindo do Error report.
+        vm.WaveformFocusRequested += (_, _) =>
+        {
+            ActivateIfInactive();
+            WAVDisplayer.Focus();
+        };
         // pmiSelectAllXXX/YYY do Error report: MainForm.vtvSubsList.Selected[Node] := True.
         vm.SubtitleSelectionAddRequested += (_, items) =>
         {
@@ -159,6 +164,7 @@ public partial class MainWindow
         {
             if (MemoSubtitleText.IsEnabled)
             {
+                ActivateIfInactive();
                 MemoSubtitleText.Focus();
             }
 
@@ -187,6 +193,14 @@ public partial class MainWindow
         vtvSubsList.InputBindings.Add(new KeyBinding(new RelayCommand(CopySubtitles), Key.C, ModifierKeys.Control));
         vtvSubsList.InputBindings.Add(new KeyBinding(new RelayCommand(() => PasteSubtitles(atCursor: false)), Key.V, ModifierKeys.Control));
         Loaded += (_, _) => UpdateMenuShortcuts();
+    }
+
+    private void ActivateIfInactive()
+    {
+        if (!IsActive)
+        {
+            Activate();
+        }
     }
 
     /// <summary>CopyVTVToClipboard.</summary>
@@ -247,6 +261,29 @@ public partial class MainWindow
             return;
         }
 
+        if (ExecuteActionShortcut(e))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        var key = e.Key == Key.System ? e.SystemKey : e.Key;
+
+        // TntFormKeyDown (KeyPreview no modo Timing).
+        if (key == Key.Space && _viewModel.OnTimingSpaceDown())
+        {
+            e.Handled = true;
+        }
+    }
+
+    /// <summary>
+    /// TCustomActionList.IsShortCut: executa a ação cujo atalho (do modo atual) é a tecla. Também é chamado
+    /// pelas janelas não modais (Error report), como a VCL faz em Application.IsShortCut, que repassa ao
+    /// MainForm as teclas que a janela focada não usou.
+    /// </summary>
+    internal bool ExecuteActionShortcut(KeyEventArgs e)
+    {
+        ArgumentNullException.ThrowIfNull(e);
         var key = e.Key == Key.System ? e.SystemKey : e.Key;
         int shortcut = ToShortcut(key);
         if (shortcut != 0 && _viewModel.Settings.Hotkeys.Find(shortcut, _viewModel.IsTimingMode) is { } entry)
@@ -255,16 +292,11 @@ public partial class MainWindow
             if (_actions.TryGetValue(entry.ActionName, out var action) && action.Command.CanExecute(action.Parameter))
             {
                 action.Command.Execute(action.Parameter);
-                e.Handled = true;
-                return;
+                return true;
             }
         }
 
-        // TntFormKeyDown (KeyPreview no modo Timing).
-        if (key == Key.Space && _viewModel.OnTimingSpaceDown())
-        {
-            e.Handled = true;
-        }
+        return false;
     }
 
     protected override void OnPreviewKeyUp(KeyEventArgs e)

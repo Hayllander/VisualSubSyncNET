@@ -1245,3 +1245,7 @@ Testes: `TextStyleTagsTests` (posições e as três trocas de caixa).
 ## "Text in uppercase" (Ctrl+U) — 21/11/2026 (2.0.0-alpha.15)
 
 Pedido do usuário: no menu de contexto da lista de legendas, logo abaixo de "Text in italic", o item "Text in uppercase" com atalho Ctrl+U (`ActionTextUppercase` em `HotkeyTable`, valor 16469 = Ctrl+U, configurável em Preferences → Hotkeys). Usa o mesmo comando do UPPERCASE de "Other styles": troca a caixa sem mexer nas tags, numa tarefa de desfazer. Não existe no Enhanced; é um acréscimo desta versão.
+
+## Atalhos com o Error report focado — 21/11/2026 (2.0.0-alpha.16)
+
+Correção de paridade relatada pelo usuário: no VSS original, com a janela Error report aberta e focada, os atalhos da janela principal continuam funcionando (a VCL repassa ao MainForm, em `Application.IsShortCut`, as teclas que a janela focada não usou). Aqui era preciso clicar na janela principal ou fechar o Error report. Agora `ErrorReportWindow.OnPreviewKeyDown` trata Esc (fecha) e Del (Clear & Forget) e manda as outras teclas para `MainWindow.ExecuteActionShortcut` (o antigo trecho de `OnPreviewKeyDown` da janela principal, o `TCustomActionList.IsShortCut`); tecla sem ação segue para a lista de erros (setas, Home/End). Com um menu do Error report aberto, as teclas ficam com o menu. As ações que põem o foco na forma de onda ou no editor de texto ativam antes a janela principal, como o `SetFocus` da VCL.
