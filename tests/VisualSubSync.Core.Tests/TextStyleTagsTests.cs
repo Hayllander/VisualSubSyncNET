@@ -32,4 +32,24 @@ public class TextStyleTagsTests
     {
         Assert.Equal(new TaggedMemoText("ab{\\i1}{\\i0}c", 7, 0), TextStyleTags.TagMemo("abc", 2, 0, "{\\i1}", "{\\i0}"));
     }
+
+    [Fact]
+    public void Positions_use_an_tags_only_in_srt()
+    {
+        Assert.Equal(("{\\an1}", ""), TextStyleTags.For(TextTagType.PosBottomLeft, "film.srt"));
+        Assert.Equal(("{\\an2}", ""), TextStyleTags.For(TextTagType.PosBottomMiddle, "film.srt"));
+        Assert.Equal(("{\\an5}", ""), TextStyleTags.For(TextTagType.PosMiddleMiddle, "film.srt"));
+        Assert.Equal(("{\\an7}", ""), TextStyleTags.For(TextTagType.PosTopLeft, "film.srt"));
+        Assert.Equal(("{\\an9}", ""), TextStyleTags.For(TextTagType.PosTopRight, "film.srt"));
+        Assert.Null(TextStyleTags.For(TextTagType.PosTopLeft, "film.ass"));
+    }
+
+    [Fact]
+    public void Case_changes_keep_the_tags()
+    {
+        const string text = "<i>Ele saiu</i> pela PORTA\r\nda frente {\\an8}AGORA";
+        Assert.Equal("<i>ele saiu</i> pela porta\r\nda frente {\\an8}agora", TextStyleTags.ChangeCase(text, TextCaseType.Lower));
+        Assert.Equal("<i>ELE SAIU</i> PELA PORTA\r\nDA FRENTE {\\an8}AGORA", TextStyleTags.ChangeCase(text, TextCaseType.Upper));
+        Assert.Equal("<i>Ele Saiu</i> Pela Porta\r\nDa Frente {\\an8}Agora", TextStyleTags.ChangeCase(text, TextCaseType.CapitalizeWords));
+    }
 }

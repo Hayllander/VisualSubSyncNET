@@ -1227,3 +1227,21 @@ Pedido do usuário, inspirado no "Unbreak" + "Auto-break" do Subtitle Edit: acha
 ## Botão Save — 10/11/2026 (2.0.0-alpha.13)
 
 Botão de disquete ao lado dos controles de sincronização, ligado ao mesmo comando de File → Save. Compilação Release para Windows x64 e geração do instalador NSIS concluídas.
+
+## Posições e caixa em "Other styles" — 15/11/2026 (2.0.0-alpha.14)
+
+Correção de paridade relatada pelo usuário: no menu de contexto da lista de legendas, submenu "Other styles", os itens de posição e de caixa estavam desabilitados; no Enhanced todos funcionam. Portados de `main.pas` do Enhanced:
+
+| Item | Como ficou |
+| --- | --- |
+| Text to top left ... Text to middle right (`ActionTextTopLeft` etc., `TagText(ttPos...)`) | Em SRT insere `{\an1}`..`{\an9}` (teclado numérico) antes do texto das legendas selecionadas, ou no cursor quando o editor tem o foco, como os outros estilos rápidos. Em ASS/SSA, como no Enhanced, não faz nada. Os atalhos configuráveis dessas ações (Preferences → Hotkeys) também passaram a funcionar |
+| lowercase / UPPERCASE (`extinlowercaseClick`, `extinuppercaseClick`) | Troca a caixa das legendas selecionadas sem mexer nas tags (`TagSplit`), numa tarefa de desfazer |
+| Capitalize every word (`extinuppercaseFirstLetterClick`) | Passa para minúsculas e põe maiúscula no começo de cada palavra (depois de espaço ou quebra de linha) e de cada trecho entre tags |
+
+Diferença: no Enhanced, "Capitalize every word" chama antes o lowercase e gera duas tarefas de desfazer; aqui é uma só, e um Ctrl+Z volta o texto original.
+
+Testes: `TextStyleTagsTests` (posições e as três trocas de caixa).
+
+## "Text in uppercase" (Ctrl+U) — 21/11/2026 (2.0.0-alpha.15)
+
+Pedido do usuário: no menu de contexto da lista de legendas, logo abaixo de "Text in italic", o item "Text in uppercase" com atalho Ctrl+U (`ActionTextUppercase` em `HotkeyTable`, valor 16469 = Ctrl+U, configurável em Preferences → Hotkeys). Usa o mesmo comando do UPPERCASE de "Other styles": troca a caixa sem mexer nas tags, numa tarefa de desfazer. Não existe no Enhanced; é um acréscimo desta versão.

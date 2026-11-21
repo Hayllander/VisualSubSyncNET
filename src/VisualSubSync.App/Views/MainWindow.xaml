@@ -803,25 +803,26 @@
                       <MenuItem x:Name="pmiFixError" Header="Fix errors" Tag="ActionFixErrorMain" Click="pmiFixError_Click" />
                       <Separator />
                       <MenuItem Header="Text in italic" Tag="ActionTextItalic" Command="{Binding TextItalicCommand}" />
+                      <MenuItem Header="Text in uppercase" Tag="ActionTextUppercase" Command="{Binding TextUppercaseCommand}" />
                       <MenuItem Header="Other styles">
                         <MenuItem Header="Text in bold" Tag="ActionTextBold" Command="{Binding TextBoldCommand}" />
                         <MenuItem Header="Text in underline" Tag="ActionTextUnderline" Command="{Binding TextUnderlineCommand}" />
                         <MenuItem Header="Text color" Tag="ActionTextColor" Command="{Binding TextColorCommand}" />
                         <MenuItem Header="Text size" Tag="ActionTextSize" Command="{Binding TextSizeCommand}" />
                         <Separator />
-                        <MenuItem Header="Text to top left" Tag="ActionTextTopLeft" IsEnabled="False" />
-                        <MenuItem Header="Text to top middle" Tag="ActionTextTopMiddle" IsEnabled="False" />
-                        <MenuItem Header="Text to top right" Tag="ActionTextTopRight" IsEnabled="False" />
-                        <MenuItem Header="Text to bottom left" Tag="ActionTextBottomLeft" IsEnabled="False" />
-                        <MenuItem Header="Text to bottom middle (default)" Tag="ActionTextBottomMiddle" IsEnabled="False" />
-                        <MenuItem Header="Text to bottom right" Tag="ActionTextBottomRight" IsEnabled="False" />
-                        <MenuItem Header="Text to middle left" Tag="ActionTextMiddleLeft" IsEnabled="False" />
-                        <MenuItem Header="Text to middle middle" Tag="ActionTextMiddleMiddle" IsEnabled="False" />
-                        <MenuItem Header="Text to middle right" Tag="ActionTextMiddleRight" IsEnabled="False" />
+                        <MenuItem Header="Text to top left" Tag="ActionTextTopLeft" Command="{Binding TextTopLeftCommand}" />
+                        <MenuItem Header="Text to top middle" Tag="ActionTextTopMiddle" Command="{Binding TextTopMiddleCommand}" />
+                        <MenuItem Header="Text to top right" Tag="ActionTextTopRight" Command="{Binding TextTopRightCommand}" />
+                        <MenuItem Header="Text to bottom left" Tag="ActionTextBottomLeft" Command="{Binding TextBottomLeftCommand}" />
+                        <MenuItem Header="Text to bottom middle (default)" Tag="ActionTextBottomMiddle" Command="{Binding TextBottomMiddleCommand}" />
+                        <MenuItem Header="Text to bottom right" Tag="ActionTextBottomRight" Command="{Binding TextBottomRightCommand}" />
+                        <MenuItem Header="Text to middle left" Tag="ActionTextMiddleLeft" Command="{Binding TextMiddleLeftCommand}" />
+                        <MenuItem Header="Text to middle middle" Tag="ActionTextMiddleMiddle" Command="{Binding TextMiddleMiddleCommand}" />
+                        <MenuItem Header="Text to middle right" Tag="ActionTextMiddleRight" Command="{Binding TextMiddleRightCommand}" />
                         <Separator />
-                        <MenuItem Header="lowercase" IsEnabled="False" />
-                        <MenuItem Header="UPPERCASE" IsEnabled="False" />
-                        <MenuItem Header="Capitalize every word" IsEnabled="False" />
+                        <MenuItem Header="lowercase" Command="{Binding TextLowercaseCommand}" />
+                        <MenuItem Header="UPPERCASE" Command="{Binding TextUppercaseCommand}" />
+                        <MenuItem Header="Capitalize every word" Command="{Binding TextCapitalizeWordsCommand}" />
                       </MenuItem>
                       <MenuItem Header="Strip tags" Tag="ActionStripTags" Command="{Binding StripTagsCommand}" />
                       <Separator />

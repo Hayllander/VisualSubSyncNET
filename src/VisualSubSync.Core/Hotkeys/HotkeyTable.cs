@@ -132,6 +132,7 @@ public sealed class HotkeyTable
         ("ActionWAVDisplayScrollLeft", "WAVDisplay scroll left", 0),
         ("ActionShowHideSceneChange", "Show/Hide scene change", 0),
         ("ActionTextItalic", "Text in italic", 16457),
+        ("ActionTextUppercase", "Text in uppercase", 16469),
         ("ActionTextBold", "Text in bold", 0),
         ("ActionTextUnderline", "Text in underline", 0),
         ("ActionStripTags", "Strip tags", 0),

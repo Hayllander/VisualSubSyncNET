@@ -8,6 +8,23 @@ public enum TextTagType
     Underline,
     Color,
     Size,
+    PosBottomLeft,
+    PosBottomMiddle,
+    PosBottomRight,
+    PosMiddleLeft,
+    PosMiddleMiddle,
+    PosMiddleRight,
+    PosTopLeft,
+    PosTopMiddle,
+    PosTopRight,
+}
+
+/// <summary>As trocas de caixa do submenu "Other styles" (extinlowercase, extinuppercase, extinuppercaseFirstLetter).</summary>
+public enum TextCaseType
+{
+    Lower,
+    Upper,
+    CapitalizeWords,
 }
 
 /// <summary>Resultado de TagTextMemo: o novo texto e a seleção que o editor recebe depois.</summary>
@@ -25,6 +42,12 @@ public static class TextStyleTags
         string ext = Path.GetExtension(subtitlesFile ?? string.Empty).ToLowerInvariant();
         if (ext == ".srt")
         {
+            if (tagType >= TextTagType.PosBottomLeft)
+            {
+                // {\an1}..{\an9}: a ordem do enum segue o teclado numérico.
+                return ($"{{\\an{tagType - TextTagType.PosBottomLeft + 1}}}", string.Empty);
+            }
+
             return tagType switch
             {
                 TextTagType.Italic => ("<i>", "</i>"),
@@ -37,6 +60,12 @@ public static class TextStyleTags
 
         if (ext is ".ass" or ".ssa")
         {
+            if (tagType >= TextTagType.PosBottomLeft)
+            {
+                // Como no Enh, as posições só existem para SRT.
+                return null;
+            }
+
             return tagType switch
             {
                 TextTagType.Italic => ("{\\i1}", "{\\i0}"),
@@ -74,5 +103,45 @@ public static class TextStyleTags
         }
 
         return new TaggedMemoText(text[..selStart] + startTag + stopTag + text[selStart..], selStart + startTag.Length, 0);
+    }
+
+    /// <summary>
+    /// extinlowercaseClick / extinuppercaseClick / extinuppercaseFirstLetterClick: troca a caixa só dos
+    /// trechos de texto de TagSplit, sem mexer nas tags. "Capitalize" passa tudo para minúsculas e põe
+    /// maiúscula no início de cada trecho e depois de espaço ou quebra de linha.
+    /// </summary>
+    public static string ChangeCase(string text, TextCaseType caseType)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        var words = SubtitleTextStats.TagSplit(text);
+        var result = new System.Text.StringBuilder(text.Length);
+        for (int i = 0; i < words.Count; i++)
+        {
+            result.Append(i % 2 != 0 ? words[i] : caseType switch
+            {
+                TextCaseType.Lower => words[i].ToLowerInvariant(),
+                TextCaseType.Upper => words[i].ToUpperInvariant(),
+                _ => Capitalize(words[i].ToLowerInvariant()),
+            });
+        }
+
+        return result.ToString();
+    }
+
+    private static string Capitalize(string s)
+    {
+        var chars = s.ToCharArray();
+        bool flag = true;
+        for (int i = 0; i < chars.Length; i++)
+        {
+            if (flag)
+            {
+                chars[i] = char.ToUpperInvariant(chars[i]);
+            }
+
+            flag = chars[i] is ' ' or '\r' or '\n';
+        }
+
+        return new string(chars);
     }
 }

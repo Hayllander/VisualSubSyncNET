@@ -27,6 +27,45 @@ public sealed partial class MainViewModel
     [RelayCommand(CanExecute = nameof(HasProject))]
     private void TextSize() => TagText(TextTagType.Size);
 
+    [RelayCommand(CanExecute = nameof(HasProject))]
+    private void TextTopLeft() => TagText(TextTagType.PosTopLeft);
+
+    [RelayCommand(CanExecute = nameof(HasProject))]
+    private void TextTopMiddle() => TagText(TextTagType.PosTopMiddle);
+
+    [RelayCommand(CanExecute = nameof(HasProject))]
+    private void TextTopRight() => TagText(TextTagType.PosTopRight);
+
+    [RelayCommand(CanExecute = nameof(HasProject))]
+    private void TextBottomLeft() => TagText(TextTagType.PosBottomLeft);
+
+    [RelayCommand(CanExecute = nameof(HasProject))]
+    private void TextBottomMiddle() => TagText(TextTagType.PosBottomMiddle);
+
+    [RelayCommand(CanExecute = nameof(HasProject))]
+    private void TextBottomRight() => TagText(TextTagType.PosBottomRight);
+
+    [RelayCommand(CanExecute = nameof(HasProject))]
+    private void TextMiddleLeft() => TagText(TextTagType.PosMiddleLeft);
+
+    [RelayCommand(CanExecute = nameof(HasProject))]
+    private void TextMiddleMiddle() => TagText(TextTagType.PosMiddleMiddle);
+
+    [RelayCommand(CanExecute = nameof(HasProject))]
+    private void TextMiddleRight() => TagText(TextTagType.PosMiddleRight);
+
+    /// <summary>extinlowercaseClick: minúsculas nas legendas selecionadas, sem mexer nas tags.</summary>
+    [RelayCommand(CanExecute = nameof(HasProject))]
+    private void TextLowercase() => ChangeSelectedTexts(text => TextStyleTags.ChangeCase(text, TextCaseType.Lower));
+
+    /// <summary>extinuppercaseClick: maiúsculas nas legendas selecionadas, sem mexer nas tags.</summary>
+    [RelayCommand(CanExecute = nameof(HasProject))]
+    private void TextUppercase() => ChangeSelectedTexts(text => TextStyleTags.ChangeCase(text, TextCaseType.Upper));
+
+    /// <summary>extinuppercaseFirstLetterClick: inicial maiúscula em cada palavra (uma única tarefa de desfazer).</summary>
+    [RelayCommand(CanExecute = nameof(HasProject))]
+    private void TextCapitalizeWords() => ChangeSelectedTexts(text => TextStyleTags.ChangeCase(text, TextCaseType.CapitalizeWords));
+
     /// <summary>ActionStripTagsExecute: tira as tags das legendas selecionadas, numa tarefa de desfazer.</summary>
     [RelayCommand(CanExecute = nameof(HasProject))]
     private void StripTags() => ChangeSelectedTexts(SubtitleTextStats.StripTags);
