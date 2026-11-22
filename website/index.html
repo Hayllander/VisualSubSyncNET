@@ -108,8 +108,41 @@
     .nav {
       display: flex;
       flex-wrap: wrap;
+      align-items: center;
       gap: 6px 16px;
       font-size: 14px;
+    }
+
+    .lang {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      padding: 2px 3px 2px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: var(--panel);
+    }
+
+    .lang svg { margin-right: 4px; }
+
+    .lang button {
+      padding: 3px 9px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .lang button:hover { color: var(--brand); }
+
+    .lang button[aria-pressed="true"] {
+      background: var(--brand);
+      color: #fff;
     }
 
     /* Hero */
@@ -407,6 +440,12 @@
         <span>VisualSubSync.NET</span>
       </a>
       <nav class="nav" aria-label="Main">
+        <div class="lang" role="group" aria-label="Language">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 12h19M12 2.5c2.6 2.8 3.8 6 3.8 9.5s-1.2 6.7-3.8 9.5c-2.6-2.8-3.8-6-3.8-9.5S9.4 5.3 12 2.5z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+          <button type="button" data-lang="en" title="English">EN</button>
+          <button type="button" data-lang="pt" title="Português">PT</button>
+          <button type="button" data-lang="es" title="Español">ES</button>
+        </div>
         <a href="#download">Download</a>
         <a href="#whats-new">What's new</a>
         <a href="#features">Features</a>
@@ -682,11 +721,229 @@
         Built with mpv/libmpv, FFmpeg, Jint, Hunspell (WeCantSpell) and CommunityToolkit.Mvvm.
       </p>
       <p>
-        Maintained by Clediomar Santos (Hayllander) ·
+        <span>Maintained by</span> Clediomar Santos (Hayllander) ·
         <a href="https://github.com/Hayllander/VisualSubSyncNET" target="_blank" rel="noopener">github.com/Hayllander/VisualSubSyncNET</a> ·
         <a href="http://legendasrt.com.br/">legendasrt.com.br</a>
       </p>
     </div>
   </footer>
+
+  <script>
+    // Translations: [English (as written in the page), Português, Español].
+    // English is the page itself; other languages replace matching elements.
+    var T = [
+      ["Download", "Download", "Descargar"],
+      ["What's new", "Novidades", "Novedades"],
+      ["Features", "Recursos", "Funciones"],
+      ["Install", "Instalação", "Instalación"],
+      ["Changelog", "Histórico", "Historial"],
+      ["Help", "Ajuda", "Ayuda"],
+      ["Version 2.0.0-alpha.17 · November 22, 2026", "Versão 2.0.0-alpha.17 · 22 de novembro de 2026", "Versión 2.0.0-alpha.17 · 22 de noviembre de 2026"],
+      ["Subtitle timing on the waveform, rebuilt for today's Windows.",
+       "Sincronização de legendas na forma de onda, refeita para o Windows atual.",
+       "Sincronización de subtítulos sobre la forma de onda, rehecha para el Windows actual."],
+      ["VisualSubSync.NET is a free port of the classic VisualSubSync (2013) to .NET 10 and WPF. You see the voice in the audio waveform, place each subtitle where it is spoken, and keep the same menus, shortcuts and workflow you already know.",
+       "O VisualSubSync.NET é uma versão gratuita do clássico VisualSubSync (2013) em .NET 10 e WPF. Você vê a voz na forma de onda do áudio, coloca cada legenda onde ela é falada e mantém os mesmos menus, atalhos e fluxo de trabalho que já conhece.",
+       "VisualSubSync.NET es una versión gratuita del clásico VisualSubSync (2013) en .NET 10 y WPF. Ves la voz en la forma de onda del audio, colocas cada subtítulo donde se dice y conservas los mismos menús, atajos y forma de trabajo que ya conoces."],
+      ["Download for Windows <small>Installer · 64-bit · 117 MB</small>",
+       "Baixar para Windows <small>Instalador · 64 bits · 117 MB</small>",
+       "Descargar para Windows <small>Instalador · 64 bits · 117 MB</small>"],
+      ["All releases", "Todas as versões", "Todas las versiones"],
+      ["No .NET install needed", "Não precisa instalar o .NET", "No hace falta instalar .NET"],
+      ["Free software (GPL v2)", "Software livre (GPL v2)", "Software libre (GPL v2)"],
+      ["Main window: waveform with subtitles, video preview, subtitle list and editor.",
+       "Janela principal: forma de onda com as legendas, vídeo, lista de legendas e editor.",
+       "Ventana principal: forma de onda con los subtítulos, vídeo, lista de subtítulos y editor."],
+      ["What's new in alpha.17", "Novidades da alpha.17", "Novedades de la alpha.17"],
+      ["The latest releases focus on making daily editing faster.",
+       "As últimas versões deixam a edição do dia a dia mais rápida.",
+       "Las últimas versiones hacen más rápida la edición del día a día."],
+      ["Drag and drop <span class=\"tag-new\">New</span>", "Arrastar e soltar <span class=\"tag-new\">Novo</span>", "Arrastrar y soltar <span class=\"tag-new\">Nuevo</span>"],
+      ["Drop a <code>.vssprj</code> on the window to open it. Drop a video and/or a subtitle (also <code>.wav</code> or <code>.peak</code>) and <strong>New Project</strong> opens already filled in. A second subtitle becomes the VO subtitle.",
+       "Solte um <code>.vssprj</code> na janela para abri-lo. Solte um vídeo e/ou uma legenda (também <code>.wav</code> ou <code>.peak</code>) e o <strong>New Project</strong> abre já preenchido. Uma segunda legenda vira a legenda VO.",
+       "Suelta un <code>.vssprj</code> en la ventana para abrirlo. Suelta un vídeo y/o un subtítulo (también <code>.wav</code> o <code>.peak</code>) y <strong>New Project</strong> se abre ya completado. Un segundo subtítulo pasa a ser el subtítulo VO."],
+      ["Text in uppercase", "Texto em maiúsculas", "Texto en mayúsculas"],
+      ["<kbd>Ctrl</kbd>+<kbd>U</kbd>, or the subtitle list right-click menu, turns the selected subtitles to uppercase, keeping the tags, in one undo step. The shortcut can be changed in Preferences → Hotkeys.",
+       "<kbd>Ctrl</kbd>+<kbd>U</kbd>, ou o menu do botão direito da lista, passa as legendas selecionadas para maiúsculas, mantendo as tags, em um único passo de desfazer. O atalho pode ser trocado em Preferences → Hotkeys.",
+       "<kbd>Ctrl</kbd>+<kbd>U</kbd>, o el menú del botón derecho de la lista, pasa los subtítulos seleccionados a mayúsculas, conservando las etiquetas, en un solo paso de deshacer. El atajo se puede cambiar en Preferences → Hotkeys."],
+      ["Shortcuts in the Error report", "Atalhos no Error report", "Atajos en el Error report"],
+      ["With the Error report window focused, the main shortcuts (navigate, play, adjust times) keep working, like in the original. <kbd>Esc</kbd> closes it and <kbd>Del</kbd> does Clear &amp; Forget.",
+       "Com a janela Error report em foco, os atalhos da janela principal (navegar, tocar, ajustar tempos) continuam funcionando, como no original. <kbd>Esc</kbd> fecha a janela e <kbd>Del</kbd> faz o Clear &amp; Forget.",
+       "Con la ventana Error report activa, los atajos de la ventana principal (navegar, reproducir, ajustar tiempos) siguen funcionando, como en el original. <kbd>Esc</kbd> la cierra y <kbd>Del</kbd> hace Clear &amp; Forget."],
+      ["Everything from VisualSubSync 1.0.1 was ported, with the look of VisualSubSync Enhanced 1.2.29. Features marked new exist only in VisualSubSync.NET.",
+       "Tudo do VisualSubSync 1.0.1 foi portado, com o visual do VisualSubSync Enhanced 1.2.29. Os recursos marcados como novos existem só no VisualSubSync.NET.",
+       "Todo lo de VisualSubSync 1.0.1 fue portado, con el aspecto de VisualSubSync Enhanced 1.2.29. Las funciones marcadas como nuevas existen solo en VisualSubSync.NET."],
+      ["Waveform timing", "Sincronia na forma de onda", "Sincronización en la forma de onda"],
+      ["Audio peaks and scene changes from FFmpeg, zoom, selection, loop playback and quick delay buttons.",
+       "Picos de áudio e mudanças de cena pelo FFmpeg, zoom, seleção, reprodução em loop e botões rápidos de atraso.",
+       "Picos de audio y cambios de escena con FFmpeg, zoom, selección, reproducción en bucle y botones rápidos de retraso."],
+      ["Video playback", "Reprodução de vídeo", "Reproducción de vídeo"],
+      ["Built-in video through libmpv, in the main window or in a detached window for a second monitor.",
+       "Vídeo integrado pelo libmpv, na janela principal ou em uma janela separada para um segundo monitor.",
+       "Vídeo integrado con libmpv, en la ventana principal o en una ventana aparte para un segundo monitor."],
+      ["SRT and SSA/ASS", "SRT e SSA/ASS", "SRT y SSA/ASS"],
+      ["Styles, positions, karaoke timing, presets, split and merge, find, go to, undo and redo.",
+       "Estilos, posições, karaokê, predefinições, dividir e juntar, localizar, ir para, desfazer e refazer.",
+       "Estilos, posiciones, karaoke, ajustes predefinidos, dividir y unir, buscar, ir a, deshacer y rehacer."],
+      ["Error checking", "Verificação de erros", "Comprobación de errores"],
+      ["The VisualSubSync Enhanced JavaScript plugins, with a right-click Fix for each problem.",
+       "Os plugins JavaScript do VisualSubSync Enhanced, com o Fix no botão direito para cada problema.",
+       "Los plugins JavaScript de VisualSubSync Enhanced, con Fix en el botón derecho para cada problema."],
+      ["Audio sync check <span class=\"tag-new\">New</span>", "Sincronia com o áudio <span class=\"tag-new\">Novo</span>", "Sincronía con el audio <span class=\"tag-new\">Nuevo</span>"],
+      ["Reports subtitles that start too early or too late compared with the voice in the waveform.",
+       "Aponta legendas que começam cedo ou tarde demais em relação à voz na forma de onda.",
+       "Señala subtítulos que empiezan demasiado pronto o demasiado tarde respecto a la voz en la forma de onda."],
+      ["Line balance <span class=\"tag-new\">New</span>", "Equilíbrio de linhas <span class=\"tag-new\">Novo</span>", "Equilibrio de líneas <span class=\"tag-new\">Nuevo</span>"],
+      ["Finds two-line subtitles that fit on one line or are badly split, and rebreaks them on Fix.",
+       "Encontra legendas de duas linhas que cabem em uma só ou estão mal divididas, e refaz a quebra no Fix.",
+       "Encuentra subtítulos de dos líneas que caben en una sola o están mal divididos, y rehace el corte con Fix."],
+      ["Spell checking", "Corretor ortográfico", "Corrector ortográfico"],
+      ["Hunspell dictionaries, with the dictionary chosen per project.",
+       "Dicionários Hunspell, com o dicionário escolhido por projeto.",
+       "Diccionarios Hunspell, con el diccionario elegido por proyecto."],
+      ["Translation helper", "Ajuda para tradução", "Ayuda para traducir"],
+      ["Show the original (VO) subtitle next to the one you are translating.",
+       "Mostra a legenda original (VO) ao lado da que você está traduzindo.",
+       "Muestra el subtítulo original (VO) junto al que estás traduciendo."],
+      ["Import and export", "Importar e exportar", "Importar y exportar"],
+      ["Opens old VisualSubSync projects and settings. Exports to CUE, TXT and CSV.",
+       "Abre projetos e configurações do VisualSubSync antigo. Exporta para CUE, TXT e CSV.",
+       "Abre proyectos y configuraciones del VisualSubSync antiguo. Exporta a CUE, TXT y CSV."],
+      ["<strong>Download the installer</strong> Click <a href=\"#download\">Download for Windows</a> to get <code>VisualSubSyncNET-2.0.0-alpha.17-Setup.exe</code>.",
+       "<strong>Baixe o instalador</strong> Clique em <a href=\"#download\">Baixar para Windows</a> para obter o <code>VisualSubSyncNET-2.0.0-alpha.17-Setup.exe</code>.",
+       "<strong>Descarga el instalador</strong> Haz clic en <a href=\"#download\">Descargar para Windows</a> para obtener <code>VisualSubSyncNET-2.0.0-alpha.17-Setup.exe</code>."],
+      ["<strong>Run it</strong> The installer is not signed yet, so Windows may show \"Windows protected your PC\". Click <em>More info</em>, then <em>Run anyway</em>.",
+       "<strong>Execute</strong> O instalador ainda não é assinado, então o Windows pode mostrar \"O Windows protegeu o computador\". Clique em <em>Mais informações</em> e depois em <em>Executar assim mesmo</em>.",
+       "<strong>Ejecútalo</strong> El instalador aún no está firmado, así que Windows puede mostrar \"Windows protegió su PC\". Haz clic en <em>Más información</em> y luego en <em>Ejecutar de todas formas</em>."],
+      ["<strong>Follow the setup</strong> It installs to <code>C:\\Program Files\\VisualSubSyncNET</code> and adds a Start menu shortcut. Updates install over the previous version.",
+       "<strong>Siga a instalação</strong> Ele instala em <code>C:\\Program Files\\VisualSubSyncNET</code> e cria um atalho no menu Iniciar. As atualizações são instaladas por cima da versão anterior.",
+       "<strong>Sigue la instalación</strong> Se instala en <code>C:\\Program Files\\VisualSubSyncNET</code> y crea un acceso directo en el menú Inicio. Las actualizaciones se instalan sobre la versión anterior."],
+      ["<strong>Start a project</strong> Open VisualSubSyncNET from the Start menu and drag your video and subtitle onto the window, or use File → New Project.",
+       "<strong>Comece um projeto</strong> Abra o VisualSubSyncNET pelo menu Iniciar e arraste o vídeo e a legenda para a janela, ou use File → New Project.",
+       "<strong>Empieza un proyecto</strong> Abre VisualSubSyncNET desde el menú Inicio y arrastra el vídeo y el subtítulo a la ventana, o usa File → New Project."],
+      ["Requirements", "Requisitos", "Requisitos"],
+      ["Windows 10 or Windows 11, 64-bit.", "Windows 10 ou Windows 11, 64 bits.", "Windows 10 o Windows 11, 64 bits."],
+      ["No .NET runtime, codec pack or extra player is needed. Video and audio support is included.",
+       "Não precisa de .NET, pacote de codecs nem player extra. O suporte a vídeo e áudio já vem incluído.",
+       "No hace falta .NET, paquete de códecs ni reproductor extra. El soporte de vídeo y audio ya viene incluido."],
+      ["About 400 MB of disk space.", "Cerca de 400 MB de espaço em disco.", "Unos 400 MB de espacio en disco."],
+      ["Where your settings go", "Onde ficam suas configurações", "Dónde se guarda tu configuración"],
+      ["Settings: <code>%APPDATA%\\VisualSubSync.ini</code> (or next to the program, if that folder is writable).",
+       "Configurações: <code>%APPDATA%\\VisualSubSync.ini</code> (ou junto do programa, se a pasta permitir gravação).",
+       "Configuración: <code>%APPDATA%\\VisualSubSync.ini</code> (o junto al programa, si se puede escribir en esa carpeta)."],
+      ["Backups: <code>%APPDATA%\\VisualSubSync\\Backup</code>.", "Backups: <code>%APPDATA%\\VisualSubSync\\Backup</code>.", "Copias de seguridad: <code>%APPDATA%\\VisualSubSync\\Backup</code>."],
+      ["Projects (<code>.vssprj</code>) are compatible with the original VisualSubSync.",
+       "Os projetos (<code>.vssprj</code>) são compatíveis com o VisualSubSync original.",
+       "Los proyectos (<code>.vssprj</code>) son compatibles con el VisualSubSync original."],
+      ["SHA-256 of the alpha.17 installer:<br> <code>60c344308aa11512219ba49008ec017e224b4ca0bf6829ea96d3889645fec33f</code>",
+       "SHA-256 do instalador da alpha.17:<br> <code>60c344308aa11512219ba49008ec017e224b4ca0bf6829ea96d3889645fec33f</code>",
+       "SHA-256 del instalador de la alpha.17:<br> <code>60c344308aa11512219ba49008ec017e224b4ca0bf6829ea96d3889645fec33f</code>"],
+      ["This is an alpha: the port is complete, and real-world testing is ongoing. Full notes are on the <a href=\"https://github.com/Hayllander/VisualSubSyncNET/releases\" target=\"_blank\" rel=\"noopener\">releases page</a>.",
+       "Esta é uma versão alfa: a migração está completa e os testes em uso real continuam. As notas completas estão na <a href=\"https://github.com/Hayllander/VisualSubSyncNET/releases\" target=\"_blank\" rel=\"noopener\">página de versões</a>.",
+       "Esta es una versión alfa: la migración está completa y las pruebas en uso real continúan. Las notas completas están en la <a href=\"https://github.com/Hayllander/VisualSubSyncNET/releases\" target=\"_blank\" rel=\"noopener\">página de versiones</a>."],
+      ["2.0.0-alpha.17 <span>November 22, 2026</span>", "2.0.0-alpha.17 <span>22 de novembro de 2026</span>", "2.0.0-alpha.17 <span>22 de noviembre de 2026</span>"],
+      ["2.0.0-alpha.16 <span>November 2026</span>", "2.0.0-alpha.16 <span>novembro de 2026</span>", "2.0.0-alpha.16 <span>noviembre de 2026</span>"],
+      ["2.0.0-alpha.15 <span>November 2026</span>", "2.0.0-alpha.15 <span>novembro de 2026</span>", "2.0.0-alpha.15 <span>noviembre de 2026</span>"],
+      ["2.0.0-alpha.14 <span>November 2026</span>", "2.0.0-alpha.14 <span>novembro de 2026</span>", "2.0.0-alpha.14 <span>noviembre de 2026</span>"],
+      ["2.0.0-alpha.13 <span>November 10, 2026</span>", "2.0.0-alpha.13 <span>10 de novembro de 2026</span>", "2.0.0-alpha.13 <span>10 de noviembre de 2026</span>"],
+      ["2.0.0-alpha.12 <span>November 3, 2026</span>", "2.0.0-alpha.12 <span>3 de novembro de 2026</span>", "2.0.0-alpha.12 <span>3 de noviembre de 2026</span>"],
+      ["Drag and drop of projects, videos, subtitles, WAV and peak files onto the main window.",
+       "Arrastar e soltar projetos, vídeos, legendas e arquivos WAV e peak na janela principal.",
+       "Arrastrar y soltar proyectos, vídeos, subtítulos y archivos WAV y peak en la ventana principal."],
+      ["Main window shortcuts work while the Error report window is focused.",
+       "Os atalhos da janela principal funcionam com a janela Error report em foco.",
+       "Los atajos de la ventana principal funcionan con la ventana Error report activa."],
+      ["New <strong>Text in uppercase</strong> item with the <kbd>Ctrl</kbd>+<kbd>U</kbd> shortcut.",
+       "Novo item <strong>Text in uppercase</strong> com o atalho <kbd>Ctrl</kbd>+<kbd>U</kbd>.",
+       "Nuevo elemento <strong>Text in uppercase</strong> con el atajo <kbd>Ctrl</kbd>+<kbd>U</kbd>."],
+      ["Other styles: text positions (<code>{\\an1}</code> to <code>{\\an9}</code>) and case changes (lowercase, UPPERCASE, Capitalize every word) now work.",
+       "Other styles: as posições do texto (<code>{\\an1}</code> a <code>{\\an9}</code>) e as trocas de maiúsculas/minúsculas (lowercase, UPPERCASE, Capitalize every word) agora funcionam.",
+       "Other styles: las posiciones del texto (<code>{\\an1}</code> a <code>{\\an9}</code>) y los cambios de mayúsculas/minúsculas (lowercase, UPPERCASE, Capitalize every word) ya funcionan."],
+      ["Save button on the toolbar, next to the synchronization controls.",
+       "Botão Salvar na barra de ferramentas, ao lado dos controles de sincronia.",
+       "Botón Guardar en la barra de herramientas, junto a los controles de sincronización."],
+      ["VisualSubSync Enhanced error checking plugins, with Fix working again.",
+       "Plugins de verificação de erros do VisualSubSync Enhanced, com o Fix funcionando de novo.",
+       "Plugins de comprobación de errores de VisualSubSync Enhanced, con Fix funcionando de nuevo."],
+      ["New Audio sync and Line balance checks.", "Novas verificações Audio sync e Line balance.", "Nuevas comprobaciones Audio sync y Line balance."],
+      ["Error report shows how many errors are left; Clear &amp; Forget is enabled.",
+       "O Error report mostra quantos erros faltam; o Clear &amp; Forget foi habilitado.",
+       "Error report muestra cuántos errores quedan; Clear &amp; Forget está habilitado."],
+      ["The original VisualSubSync help, with its tutorials (\"Making a transcript\" and \"Synchronizing an already made transcript\") and the full list of menus and shortcuts, is installed with the program. Open it from <strong>? → Help → Index</strong> or from the Start menu.",
+       "A ajuda original do VisualSubSync, com os tutoriais (\"Making a transcript\" e \"Synchronizing an already made transcript\") e a lista completa de menus e atalhos, é instalada junto com o programa (em inglês). Abra em <strong>? → Help → Index</strong> ou pelo menu Iniciar.",
+       "La ayuda original de VisualSubSync, con sus tutoriales (\"Making a transcript\" y \"Synchronizing an already made transcript\") y la lista completa de menús y atajos, se instala con el programa (en inglés). Ábrela desde <strong>? → Help → Index</strong> o desde el menú Inicio."],
+      ["Found a bug or have a suggestion? <a href=\"https://github.com/Hayllander/VisualSubSyncNET/issues\" target=\"_blank\" rel=\"noopener\">Open an issue on GitHub</a>.",
+       "Achou um erro ou tem uma sugestão? <a href=\"https://github.com/Hayllander/VisualSubSyncNET/issues\" target=\"_blank\" rel=\"noopener\">Abra uma issue no GitHub</a>.",
+       "¿Encontraste un error o tienes una sugerencia? <a href=\"https://github.com/Hayllander/VisualSubSyncNET/issues\" target=\"_blank\" rel=\"noopener\">Abre una issue en GitHub</a>."],
+      ["Troubleshooting", "Solução de problemas", "Solución de problemas"],
+      ["Problem", "Problema", "Problema"],
+      ["What to try", "O que tentar", "Qué probar"],
+      ["The waveform does not appear", "A forma de onda não aparece", "La forma de onda no aparece"],
+      ["Check that the video has an audio track. Large files take a while: the peaks are computed over the whole audio once and then saved in a <code>.peak</code> file, so the next opening is fast.",
+       "Confira se o vídeo tem faixa de áudio. Arquivos grandes demoram: os picos são calculados sobre todo o áudio uma vez e salvos em um arquivo <code>.peak</code>, então a próxima abertura é rápida.",
+       "Comprueba que el vídeo tenga pista de audio. Los archivos grandes tardan: los picos se calculan sobre todo el audio una vez y se guardan en un archivo <code>.peak</code>, así que la siguiente apertura es rápida."],
+      ["Video does not play", "O vídeo não toca", "El vídeo no se reproduce"],
+      ["Try View → Detach video window, or convert the video to MP4 (H.264/AAC) and open it again.",
+       "Tente View → Detach video window, ou converta o vídeo para MP4 (H.264/AAC) e abra de novo.",
+       "Prueba View → Detach video window, o convierte el vídeo a MP4 (H.264/AAC) y ábrelo de nuevo."],
+      ["Settings were lost after updating", "Perdi as configurações ao atualizar", "Perdí la configuración al actualizar"],
+      ["They live in <code>%APPDATA%\\VisualSubSync.ini</code>, which updates do not touch.",
+       "Elas ficam em <code>%APPDATA%\\VisualSubSync.ini</code>, que as atualizações não alteram.",
+       "Está en <code>%APPDATA%\\VisualSubSync.ini</code>, que las actualizaciones no tocan."],
+      ["VisualSubSync was created by <strong>Christophe Paris</strong>. VisualSubSync.NET is a derivative work, distributed under the <a href=\"https://github.com/Hayllander/VisualSubSyncNET/blob/main/LICENSE\" target=\"_blank\" rel=\"noopener\">GNU GPL version 2</a>.",
+       "O VisualSubSync foi criado por <strong>Christophe Paris</strong>. O VisualSubSync.NET é uma obra derivada, distribuída sob a <a href=\"https://github.com/Hayllander/VisualSubSyncNET/blob/main/LICENSE\" target=\"_blank\" rel=\"noopener\">GNU GPL versão 2</a>.",
+       "VisualSubSync fue creado por <strong>Christophe Paris</strong>. VisualSubSync.NET es una obra derivada, distribuida bajo la <a href=\"https://github.com/Hayllander/VisualSubSyncNET/blob/main/LICENSE\" target=\"_blank\" rel=\"noopener\">GNU GPL versión 2</a>."],
+      ["Built with mpv/libmpv, FFmpeg, Jint, Hunspell (WeCantSpell) and CommunityToolkit.Mvvm.",
+       "Feito com mpv/libmpv, FFmpeg, Jint, Hunspell (WeCantSpell) e CommunityToolkit.Mvvm.",
+       "Hecho con mpv/libmpv, FFmpeg, Jint, Hunspell (WeCantSpell) y CommunityToolkit.Mvvm."],
+      ["Maintained by", "Mantido por", "Mantenido por"]
+    ];
+
+    var META = {
+      en: { title: document.title, alt: null },
+      pt: { title: "VisualSubSync.NET · Sincronização de legendas para Windows",
+            alt: "Janela principal do VisualSubSync.NET: forma de onda do áudio com as legendas, vídeo à direita e a lista de legendas abaixo" },
+      es: { title: "VisualSubSync.NET · Sincronización de subtítulos para Windows",
+            alt: "Ventana principal de VisualSubSync.NET: forma de onda del audio con los subtítulos, vídeo a la derecha y la lista de subtítulos debajo" }
+    };
+    var LANGS = ["en", "pt", "es"];
+    var norm = function (s) { return s.replace(/\s+/g, " ").trim(); };
+    var lookup = {};
+    T.forEach(function (row) { lookup[norm(row[0])] = row; });
+
+    // Mark every element whose text matches a table row (outermost match wins).
+    var targets = [];
+    document.querySelectorAll("main *, .nav a, footer *").forEach(function (el) {
+      if (el.closest("[data-i18n-done]")) return;
+      var row = lookup[norm(el.innerHTML)];
+      if (row) { el.setAttribute("data-i18n-done", ""); targets.push({ el: el, row: row }); }
+    });
+
+    var shotImg = document.querySelector(".shot img");
+    META.en.alt = shotImg.alt;
+
+    function setLang(lang) {
+      var i = Math.max(0, LANGS.indexOf(lang));
+      lang = LANGS[i];
+      targets.forEach(function (t) { t.el.innerHTML = t.row[i]; });
+      document.documentElement.lang = lang === "pt" ? "pt-BR" : lang;
+      document.title = META[lang].title;
+      shotImg.alt = META[lang].alt;
+      document.querySelectorAll(".lang button").forEach(function (b) {
+        b.setAttribute("aria-pressed", b.getAttribute("data-lang") === lang ? "true" : "false");
+      });
+      try { localStorage.setItem("vssnet-lang", lang); } catch (e) {}
+    }
+
+    document.querySelectorAll(".lang button").forEach(function (b) {
+      b.addEventListener("click", function () { setLang(b.getAttribute("data-lang")); });
+    });
+
+    var saved = null;
+    try { saved = localStorage.getItem("vssnet-lang"); } catch (e) {}
+    var fromUrl = (location.search.match(/[?&]lang=(en|pt|es)\b/) || [])[1];
+    var browser = (navigator.language || "en").slice(0, 2).toLowerCase();
+    setLang(fromUrl || saved || (LANGS.indexOf(browser) >= 0 ? browser : "en"));
+  </script>
 </body>
 </html>
