@@ -1249,3 +1249,14 @@ Pedido do usuário: no menu de contexto da lista de legendas, logo abaixo de "Te
 ## Atalhos com o Error report focado — 21/11/2026 (2.0.0-alpha.16)
 
 Correção de paridade relatada pelo usuário: no VSS original, com a janela Error report aberta e focada, os atalhos da janela principal continuam funcionando (a VCL repassa ao MainForm, em `Application.IsShortCut`, as teclas que a janela focada não usou). Aqui era preciso clicar na janela principal ou fechar o Error report. Agora `ErrorReportWindow.OnPreviewKeyDown` trata Esc (fecha) e Del (Clear & Forget) e manda as outras teclas para `MainWindow.ExecuteActionShortcut` (o antigo trecho de `OnPreviewKeyDown` da janela principal, o `TCustomActionList.IsShortCut`); tecla sem ação segue para a lista de erros (setas, Home/End). Com um menu do Error report aberto, as teclas ficam com o menu. As ações que põem o foco na forma de onda ou no editor de texto ativam antes a janela principal, como o `SetFocus` da VCL.
+
+## Arrastar e soltar arquivos na janela principal — 21/11/2026 (2.0.0-alpha.17)
+
+Pedido do usuário. Não existe no VSS original nem no Enhanced (nenhum `WM_DROPFILES`/`DragAcceptFiles` nos fontes); segue as regras mais próximas: `ProcessParams` e o preenchimento do `TProjectForm`. Soltar um `.vssprj` abre o projeto como o Open Project (pergunta antes se há alterações não salvas). Soltar vídeo, legenda(s), `.wav` ou `.peak` abre o New Project preenchido com as mesmas regras dos botões de procurar (`SetVideoFile`/`SetSubtitleFile` em `ProjectFormWindow`); a primeira legenda é a do projeto e a segunda, a VO; a legenda é aplicada antes do vídeo para o projeto levar o nome dela. Outros arquivos são ignorados. `MainWindow.DragDrop.cs` usa os eventos Preview (as caixas de texto recusariam arquivos) e abre os diálogos depois de responder ao Explorer.
+
+Testes: `DroppedFilesTests` (classificação dos arquivos).
+
+
+## Publicação alpha.17 — 22/11/2026
+
+Build Release sem avisos ou erros. Testes sequenciais: 241 Core, 17 App e 8 Media, total 266 aprovados, sem falhas ou ignorados. Instalador local conferido pelo SHA-256 registrado nas notas da alpha.17; publicação como Latest inclui os avanços das versões alpha.14 a alpha.17.

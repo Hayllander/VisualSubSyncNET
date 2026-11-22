@@ -283,7 +283,34 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
 
     /// <summary>ActionNewProjectExecute: fecha o projeto, recolhe os dados e cria o .vssprj.</summary>
     [RelayCommand]
-    private async Task NewProject()
+    private Task NewProject() => CreateNewProject(new ProjectFormData { NewProject = true });
+
+    /// <summary>
+    /// Arquivos soltos na janela: um .vssprj abre como em Open Project; vídeo, legendas, WAV e
+    /// picos abrem o diálogo de novo projeto já preenchido.
+    /// </summary>
+    public async Task OpenDroppedFiles(IEnumerable<string> paths)
+    {
+        var dropped = DroppedFiles.Classify(paths);
+        if (dropped.ProjectFile is { } project)
+        {
+            await LoadProject(project).ConfigureAwait(true);
+        }
+        else if (dropped.HasNewProjectFiles)
+        {
+            await CreateNewProject(new ProjectFormData
+            {
+                NewProject = true,
+                VideoSource = dropped.VideoFile ?? string.Empty,
+                SubtitlesFile = dropped.SubtitleFile ?? string.Empty,
+                SubtitlesVO = dropped.SubtitleVoFile ?? string.Empty,
+                WavFile = dropped.WavFile ?? string.Empty,
+                PeakFile = dropped.PeakFile ?? string.Empty,
+            }).ConfigureAwait(true);
+        }
+    }
+
+    private async Task CreateNewProject(ProjectFormData initial)
     {
         if (!CheckSubtitlesAreSaved())
         {
@@ -292,7 +319,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
 
         CloseProject();
 
-        if (_dialogs.ShowProjectForm(new ProjectFormData { NewProject = true }) is not { } form)
+        if (_dialogs.ShowProjectForm(initial) is not { } form)
         {
             return;
         }

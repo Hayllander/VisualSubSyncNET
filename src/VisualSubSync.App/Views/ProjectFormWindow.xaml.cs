@@ -46,6 +46,7 @@ public partial class ProjectFormWindow : Window
         if (data.NewProject)
         {
             ConfigureInNewProjectMode();
+            ApplyDroppedFiles(data);
         }
         else
         {
@@ -225,43 +226,87 @@ public partial class ProjectFormWindow : Window
 
     // ---------------------------------------------------------------- navegação
 
+    /// <summary>
+    /// Arquivos soltos na janela principal: cada campo passa pelas mesmas regras dos botões
+    /// de navegação. A legenda vem antes do vídeo para o projeto levar o nome dela.
+    /// </summary>
+    private void ApplyDroppedFiles(ProjectFormData data)
+    {
+        if (data.SubtitlesFile.Length > 0)
+        {
+            SetSubtitleFile(data.SubtitlesFile);
+        }
+
+        if (data.SubtitlesVO.Length > 0)
+        {
+            SubtitleVOEdit.Text = data.SubtitlesVO;
+        }
+
+        if (data.VideoSource.Length > 0)
+        {
+            SetVideoFile(data.VideoSource);
+            UpdateExtractEnabled();
+        }
+
+        if (data.WavFile.Length > 0)
+        {
+            WavFileEdit.Text = data.WavFile;
+            WavSelectMode(ProjectWavMode.External);
+            AutoCompleteSubtitleAndProject(data.WavFile, ".srt");
+        }
+        else if (data.PeakFile.Length > 0)
+        {
+            PeakFileEdit.Text = data.PeakFile;
+            WavSelectMode(ProjectWavMode.PeakOnly);
+            AutoCompleteSubtitleAndProject(data.PeakFile, ".srt");
+        }
+
+        UpdateColor();
+    }
+
     private void OnBrowseVideo(object sender, RoutedEventArgs e)
     {
         if (_dialogs.OpenFile(VideoFilter, VideoFileEdit.Text) is { } path)
         {
-            VideoFileEdit.Text = path;
-
-            string wav = Path.ChangeExtension(path, ".wav");
-            string peak = Path.ChangeExtension(path, ".peak");
-            if (DelphiText.Trim(GetWavFilename()).Length == 0 && File.Exists(wav))
-            {
-                WavFileEdit.Text = wav;
-                WavSelectMode(ProjectWavMode.External);
-            }
-            else if (DelphiText.Trim(GetPeakFilename()).Length == 0 && File.Exists(peak))
-            {
-                PeakFileEdit.Text = peak;
-                WavSelectMode(ProjectWavMode.PeakOnly);
-            }
-            else
-            {
-                WavSelectMode(ProjectWavMode.PeakOnly);
-            }
-
-            if (DelphiText.Trim(SubtitleFileEdit.Text).Length == 0)
-            {
-                SubtitleFileEdit.Text = Path.ChangeExtension(path, ".srt");
-                UpdateFormatCombobox();
-            }
-
-            if (DelphiText.Trim(ProjectFileEdit.Text).Length == 0)
-            {
-                ProjectFileEdit.Text = Path.ChangeExtension(path, ".vssprj");
-            }
+            SetVideoFile(path);
         }
 
         UpdateExtractEnabled();
         _ = RefreshAudioTracksAsync();
+    }
+
+    /// <summary>Vídeo escolhido: adota WAV/picos de mesmo nome e completa legenda e projeto vazios.</summary>
+    private void SetVideoFile(string path)
+    {
+        VideoFileEdit.Text = path;
+
+        string wav = Path.ChangeExtension(path, ".wav");
+        string peak = Path.ChangeExtension(path, ".peak");
+        if (DelphiText.Trim(GetWavFilename()).Length == 0 && File.Exists(wav))
+        {
+            WavFileEdit.Text = wav;
+            WavSelectMode(ProjectWavMode.External);
+        }
+        else if (DelphiText.Trim(GetPeakFilename()).Length == 0 && File.Exists(peak))
+        {
+            PeakFileEdit.Text = peak;
+            WavSelectMode(ProjectWavMode.PeakOnly);
+        }
+        else
+        {
+            WavSelectMode(ProjectWavMode.PeakOnly);
+        }
+
+        if (DelphiText.Trim(SubtitleFileEdit.Text).Length == 0)
+        {
+            SubtitleFileEdit.Text = Path.ChangeExtension(path, ".srt");
+            UpdateFormatCombobox();
+        }
+
+        if (DelphiText.Trim(ProjectFileEdit.Text).Length == 0)
+        {
+            ProjectFileEdit.Text = Path.ChangeExtension(path, ".vssprj");
+        }
     }
 
     private void OnBrowseWav(object sender, RoutedEventArgs e)
@@ -292,12 +337,18 @@ public partial class ProjectFormWindow : Window
         };
         if (_dialogs.OpenFile(SubtitleFilter, SubtitleFileEdit.Text, index) is { } path)
         {
-            SubtitleFileEdit.Text = path;
-            UpdateFormatCombobox();
-            if (DelphiText.Trim(ProjectFileEdit.Text).Length == 0)
-            {
-                ProjectFileEdit.Text = Path.ChangeExtension(path, ".vssprj");
-            }
+            SetSubtitleFile(path);
+        }
+    }
+
+    /// <summary>Legenda escolhida: ajusta o formato e completa o projeto vazio.</summary>
+    private void SetSubtitleFile(string path)
+    {
+        SubtitleFileEdit.Text = path;
+        UpdateFormatCombobox();
+        if (DelphiText.Trim(ProjectFileEdit.Text).Length == 0)
+        {
+            ProjectFileEdit.Text = Path.ChangeExtension(path, ".vssprj");
         }
     }
 

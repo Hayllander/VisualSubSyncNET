@@ -8,7 +8,7 @@ behaves*, and **VisualSubSync Enhanced 1.2.29** is the *visual* reference (layou
 tooltips, icons, shortcuts and colours). Neither the original nor the Enhanced sources are modified
 by this project.
 
-**Current version: `2.0.0-alpha.16`** — [Download the Windows installer](https://github.com/Hayllander/VisualSubSyncNET/releases/latest)
+**Current version: `2.0.0-alpha.17`** — [Download the Windows installer](https://github.com/Hayllander/VisualSubSyncNET/releases/latest)
 
 ---
 
@@ -108,7 +108,7 @@ The published build is self-contained, so end users do not need a .NET runtime i
 # Restore and build
 dotnet build VisualSubSync.slnx -c Release
 
-# Tests (260 total: 235 Core, 17 App, 8 Media)
+# Tests (266 total: 241 Core, 17 App, 8 Media)
 dotnet test VisualSubSync.slnx -c Release
 
 # Run against a project file, or with no argument
@@ -199,7 +199,7 @@ routine, window, action and ini key of the original has a counterpart or a docum
 the final migration check). From here VisualSubSyncNET evolves as an independent project. Current state:
 
 - Build: no warnings, no errors (`TreatWarningsAsErrors` is enabled).
-- Tests: **260 passing** (235 Core, 17 App, 8 Media); 0 failures, 0 skipped.
+- Tests: **266 passing** (241 Core, 17 App, 8 Media); 0 failures, 0 skipped.
 - The App tests run on an STA thread with dialog and media substitutes.
 - The Media tests use real FFmpeg/libmpv against synthetic audio and produce no audiovisual output. On 2026-11-03 the EOF loop timing assertion failed under concurrent suite execution; all 8 Media tests passed when run separately. This timing instability remains under investigation.
 

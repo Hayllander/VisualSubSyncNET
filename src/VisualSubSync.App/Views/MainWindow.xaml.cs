@@ -78,6 +78,7 @@ public partial class MainWindow : Window
         };
         viewModel.RecentProjectsChanged += (_, _) => FillRecentMenu();
         ApplyTextPipeVisibility();
+        InitializeFileDrop();
     }
 
     /// <summary>Largura do MemoTextPipe enquanto escondido (o TRichEdit guarda a sua).</summary>
