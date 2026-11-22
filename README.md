@@ -8,12 +8,43 @@ behaves*, and **VisualSubSync Enhanced 1.2.29** is the *visual* reference (layou
 tooltips, icons, shortcuts and colours). Neither the original nor the Enhanced sources are modified
 by this project.
 
-**Current version: `2.0.0-alpha.17`** — [Download the Windows installer](https://github.com/Hayllander/VisualSubSyncNET/releases/latest)
+**Current version: `2.0.0-alpha.17`** (2026-11-22) —
+[**Download the Windows installer**](https://github.com/Hayllander/VisualSubSyncNET/releases/download/v2.0.0-alpha.17/VisualSubSyncNET-2.0.0-alpha.17-Setup.exe)
+(64-bit, 117 MB) · [All releases](https://github.com/Hayllander/VisualSubSyncNET/releases) ·
+[Project page](http://legendasrt.com.br/VisualSubSyncNET/)
+
+![VisualSubSync.NET main window: waveform with subtitles, video, subtitle list and editor](website/images/main-window.png)
+
+## What's new in alpha.17
+
+- **Drag and drop files onto the main window.** Dropping a `.vssprj` opens the project; dropping a
+  video and/or subtitle (also `.wav` or `.peak`) opens **New Project** already filled in, and a
+  second subtitle becomes the VO subtitle. New in VisualSubSync.NET.
+- **Text in uppercase** (`Ctrl+U`, configurable) in the subtitle list context menu, keeping tags,
+  in a single undo step.
+- **Error report shortcuts:** with the Error report focused, the main window shortcuts keep working
+  like in the original; `Esc` closes it and `Del` does Clear & Forget.
+
+See the [release notes](docs/releases/) for every version.
+
+## Installing
+
+1. Download `VisualSubSyncNET-2.0.0-alpha.17-Setup.exe` from the link above.
+   SHA-256: `60c344308aa11512219ba49008ec017e224b4ca0bf6829ea96d3889645fec33f`
+2. Run it. The installer is not signed yet, so Windows SmartScreen may warn you: click
+   **More info → Run anyway**.
+3. It installs to `C:\Program Files\VisualSubSyncNET` with a Start menu shortcut. A new version
+   installs over the previous one and keeps your settings (`%APPDATA%\VisualSubSync.ini`).
+4. Open the program and drag a video and a subtitle onto the window, or use **File → New Project**.
+
+Requirements: Windows 10 or 11, 64-bit. No .NET runtime or codecs need to be installed.
 
 ---
 
 ## Table of contents
 
+- [What's new in alpha.17](#whats-new-in-alpha17)
+- [Installing](#installing)
 - [Overview](#overview)
 - [Features](#features)
 - [Architecture](#architecture)
@@ -53,9 +84,11 @@ Parity rules applied throughout the port:
   rounding, comment lines discarded) and the SSA *timing mode*.
 - **Import and export:** legacy projects and settings, plus CUE, TXT and CSV export.
 - **Project files** (`.vssprj`) written as UTF-16 LE, matching the original byte layout.
-- **Editing:** multi-selection, split/merge, styles, presets, find, go-to, delay, silent zones,
-  vertical scaling and undo/redo.
-- **Error checking plugins** in JavaScript (Jint), running the original `jsplugin/` scripts.
+- **Editing:** multi-selection, split/merge, styles, text positions and case changes, presets, find,
+  go-to, delay, silent zones, vertical scaling and undo/redo.
+- **Drag and drop** of projects, videos and subtitles onto the main window *(new)*.
+- **Error checking plugins** in JavaScript (Jint), running the VisualSubSync Enhanced `jsplugin/`
+  scripts with right-click Fix, plus the new **Audio sync** and **Line balance** checks.
 - **Spell checking** with Hunspell dictionaries (`dict/`).
 - **VO / translation helper** and karaoke (SSA) timing support.
 - **Built-in web server** that publishes the subtitle list for external suggestions.
